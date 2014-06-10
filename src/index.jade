@@ -1,0 +1,89 @@
+doctype html
+head
+  meta(charset="utf-8")
+  meta(
+    name="viewport"
+    content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+  )
+
+  title Jesse the Game
+  <!-- inject:html -->
+  <!-- endinject -->
+  <!-- inject:css -->
+  <!-- endinject -->
+body(ng-app="jtg" google-maps-async="")
+
+  header
+    //- nav
+    //-   a(ui-sref="feed") Journal
+    //-   a(ui-sref="rewards") Rewards
+    //-   a(ui-sref="assignments") Quests
+    section#session(ng-controller="SessionCtrl" spinner="auth.connecting")
+
+      section#login(ng-if="!session.user")
+        form(ng-submit="auth.connect(name)")
+          input(type="text" ng-model="name" placeholder="Name")
+          input(type="submit" value="Connect")
+
+      section#profile(ng-if="!!session.user" user="session.user")
+        .name {{user.name}}
+        .points {{user.points}}
+        button(ng-click="auth.disconnect()") Disconnect
+
+  view#onboarding(ng-controller-off="OnboardCtrl")
+    //- p Connect a social account to save your progress and collect points
+    //- p Your progress is also stored in a a cookie
+    //- p This page guides you through your first reward into your first spend
+
+  view#feed(ng-controller-off="SocialCtrl")
+    //- TODO dynamic templates
+    //- Tweet
+    //- Facebook
+    //- Github (commits to master branch)
+    story(ng-repeat="story in stories")
+
+  view#quests(ng-controller-off="QuestCtrl")
+    //- p Every tweet with #jessethegame is pulled in as a quest
+    //- p Every retweet gives it points
+    //- p Every spend gives it points
+
+  view#grind(ng-controller-off="GrindCtrl")
+    //- p Every hour get points (up to 24)
+    //- p Every mention get points
+    //- p Every listen get points
+    //- p Every follow get points
+    //- p Every like get points
+    //- p Every (github) follow get points
+
+  aside#chat(ng-controller="ChatCtrl")
+    form(ng-submit="setName()" ng-if="!isNameSet")
+      label Your name!
+      input(type="text" ng-model="model.name")
+      input(type="submit" value="submit")
+
+    p(ng-repeat="message in messages track by $index") {{message}}
+
+    form(
+      ng-if="!!model.name"
+      ng-submit="broadcast(message); message=''"
+    )
+      input(ng-model="message" type="text")
+      input(type="submit" value="Send")
+
+  aside#game(ng-controller="GameCtrl")
+    minimap
+
+  main(ui-view="")
+    h1 Hey, it's a start.
+
+  aside#filters(ng-controller-off="FilterCtrl")
+    //- p Control the feed
+
+  aside#accounts(ng-controller="AccountCtrl")
+    account(ng-repeat="account in accounts")
+
+  script(src="http://localhost:8081/socket.io/socket.io.js")
+  <!-- inject:js -->
+  <!-- endinject -->
+  <!-- inject:templates.js -->
+  <!-- endinject -->
