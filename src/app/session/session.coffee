@@ -1,7 +1,6 @@
 angular.module 'jtg'
 
 # TODO
-
 .service 'session', (emitter) ->
   session =
     user: null
@@ -17,13 +16,23 @@ angular.module 'jtg'
       # session.token = null
 
 
-.service 'auth', (jtg, session) ->
+.service 'auth', (jtg, session, $cookies) ->
+  return auth =
+    connect: (name) ->
+      console.log 'USER', name
+      auth.identify $cookies.token = name
+    disconnect: ->
+      delete $cookies.token
+      session.disconnect()
+    identify: (token) ->
+      session.connect name: token
+
   auth =
     connect: (provider, creds) ->
       request.post '/session',
         data: {provider, creds}
       .then ({token}) ->
-        $cookies.token = jtg.token = token
+        auth.identify $cookies.token = jtg.token = token
 
     disconnect: ->
       events.emit 'session.disconnect'
@@ -39,10 +48,10 @@ angular.module 'jtg'
         delete jtg.token
         delete $cookies.token
 
-.run ($rootScope, $cookies, auth) ->
-  $rootScope.session = auth
+.run ($rootScope, $cookies, session, auth) ->
+  $rootScope.session = session
 
   auth.identify $cookies.token if $cookies.token
 
-.controller 'SessionCtrl', ($scope, session) ->
-  $scope.session = session
+.controller 'SessionCtrl', ($scope, session, auth) ->
+  $scope.auth = auth

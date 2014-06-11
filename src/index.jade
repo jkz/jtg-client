@@ -14,20 +14,21 @@ head
 body(ng-app="jtg" google-maps-async="")
 
   header
+    h1 Jesse the Game
+
     //- nav
     //-   a(ui-sref="feed") Journal
     //-   a(ui-sref="rewards") Rewards
     //-   a(ui-sref="assignments") Quests
     section#session(ng-controller="SessionCtrl" spinner="auth.connecting")
 
-      section#login(ng-if="!session.user")
-        form(ng-submit="auth.connect(name)")
-          input(type="text" ng-model="name" placeholder="Name")
-          input(type="submit" value="Connect")
+      form#login(ng-if="!session.user" ng-submit="auth.connect(name)")
+        input(type="text" ng-model="name" placeholder="Name")
+        input(type="submit" value="Connect")
 
-      section#profile(ng-if="!!session.user" user="session.user")
-        .name {{user.name}}
-        .points {{user.points}}
+      section#profile(ng-if="!!session.user")
+        span.name {{session.user.name}}!
+        span.points {{session.user.points}}
         button(ng-click="auth.disconnect()") Disconnect
 
   view#onboarding(ng-controller-off="OnboardCtrl")
@@ -55,34 +56,32 @@ body(ng-app="jtg" google-maps-async="")
     //- p Every like get points
     //- p Every (github) follow get points
 
-  aside#chat(ng-controller="ChatCtrl")
-    form(ng-submit="setName()" ng-if="!isNameSet")
-      label Your name!
-      input(type="text" ng-model="model.name")
-      input(type="submit" value="submit")
-
-    p(ng-repeat="message in messages track by $index") {{message}}
-
-    form(
-      ng-if="!!model.name"
-      ng-submit="broadcast(message); message=''"
-    )
-      input(ng-model="message" type="text")
-      input(type="submit" value="Send")
+  chat#chat
 
   aside#game(ng-controller="GameCtrl")
     minimap
+    h2 Hey, it's a start.
 
   main(ui-view="")
-    h1 Hey, it's a start.
 
   aside#filters(ng-controller-off="FilterCtrl")
     //- p Control the feed
+    //- filter All
+    //- filter Social
+    //- filter Game
+    //- filter Code
+
+    //- filter Twitter
+    //- filter Facebook
+    //- filter Github
+
+    //- filter Quests
+    //- filter Rewards
 
   aside#accounts(ng-controller="AccountCtrl")
     account(ng-repeat="account in accounts")
 
-  script(src="http://localhost:8081/socket.io/socket.io.js")
+  script(src="http://pewpew.nl:5000/socket.io/socket.io.js")
   <!-- inject:js -->
   <!-- endinject -->
   <!-- inject:templates.js -->

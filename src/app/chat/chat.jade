@@ -1,0 +1,9 @@
+.messages
+  p(ng-repeat="message in messages track by $index") {{message}}
+
+form(
+  ng-if="!!session.user.name"
+  ng-submit="broadcast(model.message); model.message=''"
+)
+  input(ng-model="model.message" type="text" placeholder="chat away...")
+  input(type="submit" value="Send")

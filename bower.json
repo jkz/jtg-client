@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "angular": "~1.2.16",
-    "jquery": "*"
+    "jquery": "*",
+    "angular-cookies": "~1.2.17"
   },
   "devDependencies": {
     "socket.io-client": "~1.0.4"

@@ -1,4 +1,6 @@
 angular.module 'jtg', [
+  'ngCookies'
+
   'emitter'
   'socket.io'
   'rest'
@@ -7,6 +9,8 @@ angular.module 'jtg', [
 
 .config (socketProvider) ->
   socketProvider.config.host = 'http://localhost:8081'
+  socketProvider.config.host = 'https://hub-jessethegame.herokuapp.com:443'
+  socketProvider.config.host = 'http://pewpew.nl:5000'
 
 .run (socket) ->
   socket.on 'connect', ->

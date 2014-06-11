@@ -1,16 +1,33 @@
 @import url(http://fonts.googleapis.com/css?family=Quicksand:300,400,700)
 
+*
+  box-sizing border-box
+
 body
   margin 0
+  margin-top 6em
   font-family "Quicksand", Helvetica, sans-serif
+  background-color #eee
+
+h1,
+h2
+  font-size 200%
+  font-weight inherit
+  height 2em
+  line-height 2em
+  margin 0
 
 h1
-  font-weight inherit
+  position absolute
+  top 0
+  left 0
+  padding 0 .5em
+
+h2
   text-align center
 
 minimap
   margin auto
-  margin-top 20px
   display flex
   width 400px
   height 400px
@@ -29,3 +46,92 @@ google-map
 
 ng-controller-off
   display none
+
+button,
+input
+  height 2em
+  line-height 2em
+  border 0
+  outline 0
+  margin 0
+  padding 0 .5em
+  // font-size inherit
+  font inherit
+
+  &[type="text"]
+    box-shadow inset .25em .25em rgba(0,0,0,0.3)
+
+button
+[type="submit"]
+  cursor pointer
+  margin -.25em 0 0 -.25em
+  box-shadow .25em .25em rgba(0,0,0,0.3)
+  background-color #c694d7
+  color #fff
+
+
+header
+  z-index 100
+  position fixed
+  top 0
+  left 0
+  width 100%
+  height 4em
+  background-color rgba(255,255,255,0.8)
+  box-shadow 0 .5em rgba(0,0,0,0.3)
+  padding 1em
+
+#session
+  padding 1em
+  position absolute
+  right 0
+  top 0
+
+#game
+  display inline-block
+
+#chat
+  margin 1em
+  width 16em
+
+  display inline-block
+  position fixed
+  bottom .5em
+  right .5em
+
+  .messages
+    height 20em
+    padding .5em
+    overflow-y scroll
+    box-shadow inset .25em .25em rgba(0,0,0,0.3)
+    background-color #fff
+    margin-bottom .25em
+  form
+    display flex
+  input
+    &[type=text]
+      flex 4
+    &[type=submit]
+      flex 1
+
+@-webkit-keyframes loading
+  0%, 100%
+    border-top solid 2px red
+  25%
+    border-right solid 2px red
+  50%
+    border-bottom solid 2px red
+  75%
+    border-left solid 2px red
+
+#session,
+#chat,
+.loading
+  -webkit-animation-name loading
+  -webkit-animation-duration 2s
+  -webkit-animation-timing-function ease-in
+  -webkit-animation-delay 0
+  -webkit-animation-iteration-count infinite
+  -webkit-animation-direction normal
+  -webkit-animation-play-state running
+

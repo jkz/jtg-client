@@ -1,5 +1,5 @@
 angular.module 'jtg'
-###
+
 .service 'mock', ->
   headers =
     response:
@@ -25,7 +25,7 @@ angular.module 'jtg'
     {date: 2, text: 'Reward 2', points: 20}
   ]
 
-
+###
 .run ($httpBackend, mock) ->
   $httpBackend
     .when 'POST', '/tokens/facebook',
