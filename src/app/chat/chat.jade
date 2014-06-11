@@ -1,5 +1,6 @@
 .messages
-  p(ng-repeat="message in messages track by $index") {{message}}
+  p(ng-repeat="message in messages track by $index")
+    | {{message}}
 
 form(
   ng-if="!!session.user.name"
