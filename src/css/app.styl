@@ -2,12 +2,23 @@
 
 *
   box-sizing border-box
+  vertical-align top
+
+html,
+body
+  height 100%
+  position relative
 
 body
-  margin 0
-  margin-top 6em
   font-family "Quicksand", Helvetica, sans-serif
   background-color #eee
+  margin 1em
+  margin-top 5em
+
+  @media screen and (min-width 600px)
+    margin 0
+    margin-top 4em
+    margin-bottom 1em
 
 h1,
 h2
@@ -31,6 +42,7 @@ minimap
   display flex
   width 400px
   height 400px
+  width auto
   // border-radius 50%
   box-shadow .5em .5em rgba(0,0,0,0.3)
   background-color #eee
@@ -66,8 +78,11 @@ button
   cursor pointer
   margin -.25em 0 0 -.25em
   box-shadow .25em .25em rgba(0,0,0,0.3)
-  background-color #c694d7
+  background-color #99cc66
   color #fff
+
+  &:hover
+    background-color #aadd77
 
 
 header
@@ -90,22 +105,22 @@ header
 #game
   display inline-block
 
+#profile
+  span
+    display inline-block
+    height 2em
+    line-height 2em
+    margin-right .5em
+
 #chat
-  margin 1em
-  width 16em
-
-  display inline-block
-  position fixed
-  bottom .5em
-  right .5em
-
   .messages
+    width 100%
     height 20em
     padding .5em
     overflow-y scroll
     box-shadow inset .25em .25em rgba(0,0,0,0.3)
     background-color #fff
-    margin-bottom .25em
+    margin-bottom 1em
   form
     display flex
   input
@@ -113,6 +128,24 @@ header
       flex 4
     &[type=submit]
       flex 1
+
+main
+  display block
+  height 100%
+
+  @media screen and (min-width 600px)
+    display flex
+
+#chat,
+#game
+  display block
+
+  @media screen and (min-width 600px)
+    display inline-block
+
+    padding 1em
+    flex 1 auto
+
 
 @-webkit-keyframes loading
   0%, 100%

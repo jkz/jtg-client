@@ -56,13 +56,14 @@ body(ng-app="jtg" google-maps-async="")
     //- p Every like get points
     //- p Every (github) follow get points
 
-  chat#chat
+  main
+    aside#game(ng-controller="GameCtrl")
+      minimap
+      h2 Hey, it's a start.
 
-  aside#game(ng-controller="GameCtrl")
-    minimap
-    h2 Hey, it's a start.
+    chat#chat
 
-  main(ui-view="")
+  //- main(ui-view="")
 
   aside#filters(ng-controller-off="FilterCtrl")
     //- p Control the feed

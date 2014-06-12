@@ -1,3 +1,5 @@
+conf = require 'conf'
+
 module.exports = compile =
 
   jade:
