@@ -22,17 +22,20 @@ body
 
 h1,
 h2
-  font-size 200%
   font-weight inherit
   height 2em
   line-height 2em
   margin 0
+  font-size 200%
 
 h1
   position absolute
   top 0
   left 0
   padding 0 .5em
+
+  @media screen and (min-width 600px)
+    position static
 
 h2
   text-align center
@@ -93,8 +96,13 @@ header
   width 100%
   height 4em
   background-color rgba(255,255,255,0.8)
-  box-shadow 0 .5em rgba(0,0,0,0.3)
+  box-shadow 0 .5em rgba(0,0,0,0.15)
   padding 1em
+
+  font-size 75%%
+
+  @media screen and (min-width 600px)
+    font-size 100%
 
 #session
   padding 1em
@@ -111,6 +119,11 @@ header
     height 2em
     line-height 2em
     margin-right .5em
+
+    @media screen and (min-width 600px)
+      display block
+
+
 
 #chat
   .messages

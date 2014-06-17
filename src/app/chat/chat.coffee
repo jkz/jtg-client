@@ -7,10 +7,10 @@ angular.module 'jtg'
   $scope.broadcast = (msg) ->
     now = new Date
     name = session.user?.name ? 'Anonymous'
-    socket.emit 'broadcast', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
+    socket.emit 'chat', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
 
-  socket.on 'broadcast', (msg) ->
-    console.log 'broadcast', msg
+  socket.on 'chat', (msg) ->
+    console.log 'chat', msg
     $scope.messages.push msg
 
 .directive 'chat', (socket, session, $timeout) ->
@@ -23,12 +23,21 @@ angular.module 'jtg'
     scope.broadcast = (msg) ->
       now = new Date
       name = session.user?.name ? 'Anonymous'
-      socket.emit 'broadcast', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
+      socket.emit 'chat', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
 
-    socket.on 'broadcast', (msg) ->
-      console.log 'broadcast', msg
+    socket.on 'chat.history', (messages) ->
+      scope.messages = [messages..., scope.messages...]
+
+    socket.on 'chat', (msg) ->
       scope.messages.push msg
-      $timeout ->
-        elem.animate {scrollTop: 10000}, 200
-      , 0
 
+    socket.emit 'chat.init'
+
+.directive 'watchBottom', ->
+  restrict: 'A'
+  scope:
+    target: '=watchBottom'
+    transition: '='
+  link: (scope, elem) ->
+    scope.$watch 'target', ->
+      elem.animate {scrollTop: elem.height()}, scope.transition ? 0
