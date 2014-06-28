@@ -1,0 +1,5 @@
+div(ng-class="challenge.category")
+  h2 {{categories[challenge.category].title}}
+  p {{challenge.text}}
+  p {{challenge.points}}
+  button(ng-click="challenge.boost(1)") +1

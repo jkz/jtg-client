@@ -56,28 +56,46 @@ body(ng-app="jtg" google-maps-async="")
     //- p Every like get points
     //- p Every (github) follow get points
 
-  main
-    aside#game(ng-controller="GameCtrl")
-      minimap
-      h2 Hey, it's a start.
+  view#challenges(ng-controller="ChallengeCtrl")
+    form(ng-submit="challenge.create()")
+      input(type="text" ng-model="challenge.text")
+      //- select(ng-model="challenge.category" ng-options="[['a', 'A'], ['b', 'B']]")
+      input(type="submit" value="Challenge")
 
+    challenge(ng-repeat="challenge in challenges")
+
+  main
+    h2 Hey, it's a start.
+
+    aside#accounts(ng-controller="AccountCtrl")
+      account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
+
+    provider(ng-if="!accounts[slug]" ng-repeat="(slug, provider) in providers")
+
+
+    aside#game(ng-controller="GameCtrl")
     chat#chat
 
-    section#intro
-      h2 Huh?
 
-      p
-        | This is an effort to realise my pipedream of
-        | turning my world into an actual game.
-        | Of inventing a new class of entertainment.
-        | Of becoming the world's first pop-programmer.
-        | Or being the puppet of the internet.
-        | Or performing a large scale social experiment.
+  .map-wrapper
+    minimap
+    .map-overlay
 
-      p
-        | This page will be progressively enhanced and turn
-        | into something more interesting.
-        | For now
+  section#intro
+    h2 Huh?
+
+    p
+      | This is an effort to realise my pipedream of
+      | turning my world into an actual game.
+      | Of inventing a new class of entertainment.
+      | Of becoming the world's first pop-programmer.
+      | Or being the puppet of the internet.
+      | Or performing a large scale social experiment.
+
+    p
+      | This page will be progressively enhanced and turn
+      | into something more interesting.
+      | For now
 
   //- main(ui-view="")
 
@@ -95,10 +113,7 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Quests
     //- filter Rewards
 
-  aside#accounts(ng-controller="AccountCtrl")
-    account(ng-repeat="account in accounts")
-
-  script(src="http://pewpew.nl:5000/socket.io/socket.io.js")
+  script(src="http://localhost:8080/socket.io/socket.io.js")
   <!-- inject:js -->
   <!-- endinject -->
   <!-- inject:templates.js -->

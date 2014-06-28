@@ -55,7 +55,7 @@ angular.module('google.maps', [])
     new google.maps.Map elem, options
 
   createMarker: (map, options) ->
-    new google.maps.Marker map: map
+    new google.maps.Marker map: map, options
 
 .directive('googleMap', ['$timeout', ($timeout) ->
   restrict: 'E'
@@ -73,38 +73,50 @@ angular.module('google.maps', [])
       #map.$scope = $scope
       #maps.hash[attr.id] = $scope.map if attr.id
 
-      scope.marker = new google.maps.Marker
-        map: scope.map
-        draggable: true
 
-      scope.circle = new google.maps.Circle
-        map: scope.map
-        fillColor: 'green'
-        fillOpacity: 0.25
-        strokeOpacity: 0
+      $.roundImageURL
+        src: '/img/jesse.jpg'
+        radius: 24
+      , (url) ->
+        console.log url
+        img = new Image
+        img.src = url
+        document.body.appendChild img
+        scope.marker = new google.maps.Marker
+          map: scope.map
+          draggable: false
+          # icon: 'https://graph.facebook.com/jesse.zwaan/picture?size=small'
+          icon: url
 
-      updateMarker = (event) ->
-        console.log "MAP EVENT", event
-        scope.$apply ->
-          scope.area.longitude = event.latLng.lng()
-          scope.area.latitude = event.latLng.lat()
+        scope.circle = new google.maps.Circle
+          map: scope.map
+          fillColor: 'green'
+          fillOpacity: 0.25
+          strokeOpacity: 0
 
-      google.maps.event.addListener scope.map, 'click', updateMarker
-      google.maps.event.addListener scope.marker, 'dragend', updateMarker
+        updateMarker = (event) ->
+          console.log "MAP EVENT", event
+          scope.$apply ->
+            scope.area.longitude = event.latLng.lng()
+            scope.area.latitude = event.latLng.lat()
 
-      scope.$watch 'area', (area) ->
-        console.log 'area', area
+        google.maps.event.addListener scope.map, 'click', updateMarker
+        google.maps.event.addListener scope.marker, 'dragend', updateMarker
 
-        return unless area
+        scope.$watch 'area', (area) ->
+          console.log 'area', area
 
-        location = new google.maps.LatLng area.latitude, area.longitude
-        scope.map.setCenter location
-        scope.marker.setPosition location
+          return unless area
 
-        if area.radius
-          scope.circle.setOptions
-            center: location
-            radius: area.radius * 500
+          location = new google.maps.LatLng area.latitude, area.longitude
+          scope.map.setCenter location
+          scope.marker.setPosition location
+
+          if area.radius
+            scope.circle.setOptions
+              center: location
+              radius: area.radius * 500
+        scope.$apply()
       , true
 
     ), 2000)

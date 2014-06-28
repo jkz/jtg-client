@@ -5,12 +5,18 @@ angular.module 'jtg', [
   'socket.io'
   'rest'
   'google.maps'
+  'facebook'
+  'reject'
+  'concurrency'
 ]
 
+.config (facebookProvider) ->
+  facebookProvider.config.appId = 299095383509760
+
 .config (socketProvider) ->
-  socketProvider.config.host = 'http://localhost:8081'
   socketProvider.config.host = 'https://hub-jessethegame.herokuapp.com:443'
   socketProvider.config.host = 'http://pewpew.nl:5000'
+  socketProvider.config.host = 'http://localhost:8080'
 
 .run (socket) ->
   socket.on 'connect', ->
@@ -55,10 +61,8 @@ angular.module 'jtg', [
     put:  (url, options) -> jtg.request 'PUT', url, options
 
 .service 'jtg', (Api) ->
-  new Api '/api/v1'
-
-.factory 'User', (jtg) ->
-  jtg.model 'users'
+  # new Api '/api/v1'
+  jtg = new Api 'http://localhost:3000'
 
 .factory 'Story', (jtg) ->
   jtg.model 'stories', 'story'

@@ -26,9 +26,15 @@ gulp.task 'css', ->
     .pipe $.connect.reload()
 
 gulp.task 'js', ->
+  gulp.src ['src/**/*.js', '!src/**/*.spec.js']
+    .pipe gulp.dest 'build'
+    .pipe $.connect.reload()
+
   gulp.src ['src/**/*.coffee', '!src/**/*.spec.coffee']
     .pipe $.cached 'js'
     .pipe $.coffee()
+    .on 'error', (err) ->
+      console.log 'oops!', err
     .pipe gulp.dest 'build'
     .pipe $.connect.reload()
 
@@ -71,14 +77,14 @@ gulp.task 'index', ['lib', 'css', 'js', 'templates'], ->
 
 gulp.task 'serve', ->
   $.connect.server
-    port: argv.port || 8080
-    root: 'public'
+    port: argv.port || 8000
+    root: ['public', 'static']
     livereload: true
 
 gulp.task 'compile', ['index']
 
 gulp.task 'build', ->
-  runSequence 'clean', ['compile', 'static'], ->
+  runSequence 'clean', ['compile'], ->
     symlink 'build', 'public'
 
 gulp.task 'watch', ['clean', 'build'], ->

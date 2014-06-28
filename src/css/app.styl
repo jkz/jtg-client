@@ -4,6 +4,7 @@
   box-sizing border-box
   vertical-align top
 
+
 html,
 body
   height 100%
@@ -15,7 +16,7 @@ body
   margin 1em
   margin-top 5em
 
-  @media screen and (min-width 600px)
+  @media (min-width: 600px)
     margin 0
     margin-top 4em
     margin-bottom 1em
@@ -34,23 +35,61 @@ h1
   left 0
   padding 0 .5em
 
-  @media screen and (min-width 600px)
+  @media (min-width: 600px)
     position static
 
 h2
   text-align center
 
+mapsize = 600px
+
 minimap
-  margin auto
-  display flex
-  width 400px
-  height 400px
-  width auto
+  // display flex
+  width mapsize
+  height mapsize
+  // width auto
   // border-radius 50%
-  box-shadow .5em .5em rgba(0,0,0,0.3)
+  // box-shadow .5em .5em rgba(0,0,0,0.3)
   background-color #eee
-  position relative
+  position absolute
+  top 50%
+  left 50%
+  margin-top (mapsize / -2)
+  margin-left (mapsize / -2)
+
+  z-index -1
+
+.map-wrapper
+  width 300px
+  height 300px
   overflow hidden
+  border-radius 50%
+  position fixed
+
+  bottom 0
+  left 0
+
+  bottom -50px
+  left -50px
+
+  // -webkit-transform translate3d(-200px, 200px, 0)
+  -webkit-transform scale(.5) translate3d(10px, -10px, 0)
+
+  transition all 0.3s
+
+  &.show,
+  &:hover
+    // -webkit-transform translate3d(20px, -20px, 0)
+    -webkit-transform scale(1) translate3d(100px, -100px, 0)
+
+
+.map-overlay
+  width 300px
+  height 300px
+  border-radius 50%
+  box-shadow inset 0 0 0 .25em rgba(0,0,0,0.3)
+  z-index 1000
+  pointer-events none
 
 google-map
   overflow hidden
@@ -87,7 +126,6 @@ button
   &:hover
     background-color #aadd77
 
-
 header
   z-index 100
   position fixed
@@ -99,10 +137,11 @@ header
   box-shadow 0 .5em rgba(0,0,0,0.15)
   padding 1em
 
-  font-size 75%%
+  font-size 75%
 
-  @media screen and (min-width 600px)
+  @media (min-width: 600px)
     font-size 100%
+
 
 #session
   padding 1em
@@ -120,7 +159,7 @@ header
     line-height 2em
     margin-right .5em
 
-    @media screen and (min-width 600px)
+    @media (min-width: 600px)
       display block
 
 
@@ -146,14 +185,14 @@ main
   display block
   height 100%
 
-  @media screen and (min-width 600px)
+  @media (min-width: 600px)
     display flex
 
 #chat,
 #game
   display block
 
-  @media screen and (min-width 600px)
+  @media (min-width: 600px)
     display inline-block
 
     padding 1em
@@ -173,11 +212,20 @@ main
 #session,
 #chat,
 .loading
-  -webkit-animation-name loading
-  -webkit-animation-duration 2s
-  -webkit-animation-timing-function ease-in
-  -webkit-animation-delay 0
-  -webkit-animation-iteration-count infinite
-  -webkit-animation-direction normal
-  -webkit-animation-play-state running
+  animation-name loading
+  animation-duration 2s
+  animation-timing-function ease-in
+  animation-delay 0
+  animation-iteration-count infinite
+  animation-direction normal
+  animation-play-state running
+
+
+challenge
+  width 30%
+  display inline-block
+  background-color white
+  padding 1em
+  box-shadow .5em .5em rgba(0,0,0,0.15)
+  margin 1em
 

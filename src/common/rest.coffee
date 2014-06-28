@@ -19,12 +19,21 @@ angular.module 'rest', [
     constructor: (@endpoint) ->
       @models = {}
 
-    register: (Model) ->
+    register: (Model) =>
       @models[Model.plural] = Model
-      return
-      socket.subscribe "/rocket/#{Model.plural}", (obj) ->
-        Model.cache[obj.id] ?= {}
-        Model.cache[obj.id].extend obj
+
+      # Subscribe to socket events
+      socket.on "/rocket/#{Model.plural}", ({event, data}) =>
+        remote = data[@singular]
+        local  = Model.cache[remote.id] ?= new @
+
+        switch event
+          when 'create', 'update'
+            local.extend remote
+          when 'delete'
+            delete Model.cache[local.id]
+
+        Model.emit event, local
 
     http: (method, url, data) =>
       $http
@@ -32,12 +41,12 @@ angular.module 'rest', [
         method: method
         data: data
       .then ({data}) ->
-        console.log 'rest', method, url, response.data
-        response.data
-      .fail ({data}) ->
+        console.log 'rest', method, url, data
         data
-      .fail ({code, reason}) ->
-        console.log 'rest.fail', code, reason
+      .catch ({data}) ->
+        data
+      .catch ({code, reason}) ->
+        console.log 'rest.catch', code, reason
 
     get:  (url, query) -> @http 'get', url, query
     post: (url, params) -> @http 'post', url, params
@@ -67,7 +76,7 @@ angular.module 'rest', [
         @index: (query) ->
           api.get @endpoint, query
           .then (data) =>
-            new @ obj for obj in data
+            new @ obj for obj in data[@plural]
 
         @show: (id) ->
           if obj = @cache[id]
