@@ -1,0 +1,17 @@
+{
+    "tweets": [
+        {
+            "username": "jessethegame",
+            "image": "/img/jesse.jpg",
+            "text": "Drink 5 cans of beer then try to kick them off a block cement. #jtg-skills"
+        }, {
+            "username": "jessethegame",
+            "image": "/img/jesse.jpg",
+            "text": "Get a job. #jtg-skills"
+        }, {
+            "username": "jessethegame",
+            "image": "/img/jesse.jpg",
+            "text": "Collect 100 GBP in coins and build a tower. #jtg-100 "
+        }
+    ]
+}

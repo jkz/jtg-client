@@ -1,3 +1,5 @@
+# A simple wrapper around the $rootScope to provide
+# a less ugly service and some extra functionality
 angular.module 'emitter', []
 
 .service 'emitter', ($rootScope) ->

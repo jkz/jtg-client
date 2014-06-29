@@ -6,7 +6,7 @@ angular.module 'jtg', [
   'rest'
   'google.maps'
   'facebook'
-  'reject'
+  'promise'
   'concurrency'
 ]
 
@@ -63,9 +63,6 @@ angular.module 'jtg', [
 .service 'jtg', (Api) ->
   # new Api '/api/v1'
   jtg = new Api 'http://localhost:3000'
-
-.factory 'Story', (jtg) ->
-  jtg.model 'stories', 'story'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

@@ -1,0 +1,14 @@
+{
+    "likes": [
+        {
+            "deeplink": "/#/tweets/1.json",
+            "user": "jessethegame",
+            "image": "/img/jesse.jpg"
+        },
+        {
+            "deeplink": "/#/tweets/2.json",
+            "user": "jessethegame",
+            "image": "/img/jesse.jpg"
+        }
+    ]
+}
