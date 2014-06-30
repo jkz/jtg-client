@@ -1,6 +1,6 @@
 angular.module 'jtg'
 
-.service 'Provider', (jtg, session, auth) ->
+.service 'Provider', (jtg, auth) ->
   class Provider
     @cache = {}
 

@@ -11,15 +11,16 @@ angular.module 'events', []
 # it's descendants.
 .factory 'EventEmitter', ($rootScope) ->
   class EventEmitter
-    @scope: $rootScope.$new()
+    constructor: ->
+      @scope = $rootScope.$new()
 
-    @on: (event, callback) =>
+    on: (event, callback) =>
       @scope.$on event, callback
 
-    @emit: (event, data) =>
+    emit: (event, data) =>
       @scope.$emit event, data
 
-    @once: (event, callback) =>
+    once: (event, callback) =>
       remove = @scope.$on event, (data) =>
         remove()
         callback data

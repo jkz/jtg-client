@@ -64,7 +64,7 @@ angular.module 'concurrency', []
 # ## Lock
 # ---
 # A special case mutex for a single function
-.factory 'lock', (throttle) ->
+.factory 'lock', (mutex) ->
   (reason, func) ->
     if not func?
       func ?= reason

@@ -61,11 +61,13 @@ gulp.task 'index', ['lib', 'css', 'js', 'templates'], ->
     .pipe $.jade pretty: true
     .pipe $.inject(
       gulp.src([
-        'build/lib/jquery/*.{css,js}'
-        'build/lib/**/*.{css,js}'
+        # 'build/lib/jquery/*.{css,js}'
+        # 'build/lib/angular/*.{css,js}'
+        # 'build/lib/**/*.{css,js}'
         'build/**/module.js'
         'build/**/*.{css,js}'
         '!build/templates.js'
+        '!build/lib/**/*'
       ], read: false)
     , ignorePath: 'build')
     .pipe $.inject(

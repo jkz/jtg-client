@@ -1,6 +1,6 @@
 angular.module 'jtg'
 
-.factory 'Challenge', (jtg, socket) ->
+.factory 'Challenge', (jtg) ->
   Challenge = jtg.model 'challenges'
 
   Challenge::boost = (amount) ->

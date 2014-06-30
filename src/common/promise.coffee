@@ -1,5 +1,8 @@
 # An extension of the lovely $q service
-angular.module 'promise' []
+angular.module 'promise', [
+  'toast'
+  'log'
+]
 
 # Extend the $q object
 .run ($q) ->
@@ -8,6 +11,9 @@ angular.module 'promise' []
     dfd = $q.defer()
     dfd.resolve args...
     dfd.promise
+
+.service 'promise', (resolve, reject) ->
+  {resolve, reject}
 
 .service 'resolve', ($q, toast, log) ->
   # TODO

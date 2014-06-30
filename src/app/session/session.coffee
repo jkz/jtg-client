@@ -27,3 +27,7 @@ angular.module 'jtg'
 # Expose the session to the DOM
 .run ($rootScope, session) ->
   $rootScope.session = session
+
+
+.controller 'SessionCtrl', ($scope) ->
+  null

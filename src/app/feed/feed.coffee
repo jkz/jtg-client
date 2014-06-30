@@ -1,4 +1,4 @@
-angular.module 'jtg.feed', []
+angular.module 'jtg'
 
 # Story
 # ---

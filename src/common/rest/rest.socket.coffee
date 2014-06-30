@@ -1,5 +1,6 @@
 # Socket adapter for rest model backend
 angular.module 'rest.socket', [
+  'rest'
   'socket.io'
   'events'
 ]
@@ -11,11 +12,12 @@ angular.module 'rest.socket', [
   @socket = undefined
 
   @$get = (io) =>
-    @socket ||= io.connect @config.host
+    socket: @socket ||= io.connect @config.host
+    config: @config
 
     # Subscribe to socket events
-    register: (Model) ->
-      socket.on "#{Model.plural}", ({event, data}) =>
+    register: (Model) =>
+      @socket.on "#{Model.plural}", ({event, data}) =>
         remote = data[Model.singular]
         local  = Model.cache[remote.id] ?= new Model
 
@@ -30,5 +32,5 @@ angular.module 'rest.socket', [
     this
 
 .run (rest, rocket) ->
-  rest.on 'Api:new', (api) ->
-    api.on 'Model:new', rocket.register
+  rest.emitter.on 'Api:new', (api) ->
+    api.emitter.on 'Model:new', rocket.register

@@ -1,12 +1,18 @@
+# TODO decouple this from jtg and make it rest.auth
 angular.module 'jtg'
 
-# Manages authentication and authorization via a token.
-# The token is retrieved by connecting with a provider and credentials.
-# The token is then attached to the cookies and the api.
-# The api sends the token with every request
-.service 'auth', (jtg, reject, User, emitter, $cookies, lock) ->
-  auth =
-    # ### Token
+# TODO WORK ON THIS
+# add .set, .clear
+.service 'Token', (jtg, User) ->
+  Token =
+    fetch: (data) ->
+      jtg
+        .post '/tokens', data
+        .error token.clear
+        .then (data) ->
+          Token.set data.token
+          data
+
     set: (token) ->
       $cookies.token = jtg.token = token
 
@@ -14,36 +20,40 @@ angular.module 'jtg'
       delete jtg.token
       delete $cookies.token
 
+    identify: ->
+      User.show 'me'
+
+
+# Manages authentication and authorization via a token.
+# The token is retrieved by connecting with a provider and credentials.
+# The token is then attached to the cookies and the api.
+# The api sends the token with every request
+.service 'auth', (promise, lock, Token, User, EventEmitter) ->
+  auth =
+    emitter: new EventEmitter
+
     # ### Connection
     # TODO pass Provider ({name, slug}) in stead of slug?
-    connect: lock "Busy connecting", (provider, creds) ->
+    connect: lock "Connecting", (provider, creds) ->
+      return promise.reject "No provider specified" unless provider
 
-      jtg
-        .post '/tokens', data: {provider, creds}
-        .then ({token, new_user, new_account}) ->
+      Token
+        .fetch {provider, creds}
+        .then ({new_user, new_account}) ->
 
-          auth
-            .identify token
+          Token
+            .identify()
             .then (user) ->
               account = user.accounts[provider]
 
-              emitter.emit 'auth.identify', {user, account}
-              emitter.emit 'auth.new_user', user if new_user
-              emitter.emit 'auth.new_account', account if new_account
+              auth.emitter.emit 'connect', {user, account}
+              auth.emitter.emit 'new_user', user if new_user
+              auth.emitter.emit 'new_account', account if new_account
 
-    disconnect: ->
-      auth.clear()
-
-    # ### Identity
-    identify: lock "Busy identifying", (token) ->
-      return reject "No token specified" unless token
-
-      auth.set token
-
-      User
-        .show 'me'
-        .catch auth.clear
+    disconnect: lock "Disconnecting", ->
+      Token.clear()
+      promise.resolve()
 
 # Identify a cookie if it's present
-.run ($cookies, auth) ->
-  auth.identify $cookies.token if $cookies.token
+.run ($cookies, Token) ->
+  Token.set $cookies.token if $cookies.token

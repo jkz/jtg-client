@@ -1,4 +1,4 @@
 angular.module 'jtg'
 
-.service 'User', (jtg, session) ->
+.service 'User', (jtg) ->
   jtg.model 'users'

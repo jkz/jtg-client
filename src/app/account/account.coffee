@@ -4,14 +4,14 @@ angular.module 'jtg'
 # ---
 # Just there to provide the means to obtain creds
 # to connect an account to a user, or create a new.
-.service 'Provider', (auth, Account) ->
-  class Provider
-    constructor: (name, slug) ->
-      @slug ?= name.toLowerCase()
-      Account.providers[@slug] = @
+# .service 'Provider', (auth, Account) ->
+#   class Provider
+#     constructor: (name, slug) ->
+#       @slug ?= name.toLowerCase()
+#       Account.providers[@slug] = @
 
-    connect: (creds) ->
-      auth.connect @slug, creds
+#     connect: (creds) ->
+#       auth.connect @slug, creds
 
 
 # ## Account
@@ -27,7 +27,7 @@ angular.module 'jtg'
   Account.providers = {}
 
   Account::init = ->
-    # TOOD this replaces the provider atttribute and could
+    # TODO this replaces the provider attribute and could
     # result in unexpected behaviour
     @provider = Account.providers @provider
 
@@ -39,9 +39,9 @@ angular.module 'jtg'
 .controller 'AccountCtrl', ($scope, Account) ->
   $scope.providers = Account.providers
 
-.directive 'provider', ->
-  restrict: 'E'
-  templateUrl: 'app/provider/provider.html'
+# .directive 'provider', ->
+#   restrict: 'E'
+#   templateUrl: 'app/provider/provider.html'
 
 .directive 'account', ->
   restrict: 'E'

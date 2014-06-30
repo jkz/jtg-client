@@ -22,14 +22,14 @@ body(ng-app="jtg" google-maps-async="")
     //-   a(ui-sref="assignments") Quests
     section#session(ng-controller="SessionCtrl" spinner="auth.connecting")
 
-      form#login(ng-if="!session.user" ng-submit="auth.connect(name)")
+      form#login(ng-if="!session.user" ng-submit="session.connect('dummy', {name: name})")
         input(type="text" ng-model="name" placeholder="Name")
         input(type="submit" value="Connect")
 
       section#profile(ng-if="!!session.user")
         span.name {{session.user.name}}!
         span.points {{session.user.points}}
-        button(ng-click="auth.disconnect()") Disconnect
+        button(ng-click="session.disconnect()") Disconnect
 
   view#onboarding(ng-controller-off="OnboardCtrl")
     //- p Connect a social account to save your progress and collect points
@@ -114,6 +114,9 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Rewards
 
   script(src="http://localhost:8080/socket.io/socket.io.js")
+  script(src="/lib/jquery/dist/jquery.js")
+  script(src="/lib/angular/angular.js")
+  script(src="/lib/angular-cookies/angular-cookies.js")
   <!-- inject:js -->
   <!-- endinject -->
   <!-- inject:templates.js -->

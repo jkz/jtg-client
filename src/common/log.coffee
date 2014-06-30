@@ -1,7 +1,14 @@
 # TODO
 # - log level critical to emit to socket or post
-# - colors
 angular.module 'log', []
+
+# TODO
+# - colors
+.service 'colors', ->
+  colors = {}
+  for color in ['gray', 'yellow', 'red', 'red']
+    do (color) ->
+      colors[color] = (s) -> "#{color.toUpperCase()}: #{s}"
 
 .service 'log', (colors) ->
   log =
@@ -13,9 +20,9 @@ angular.module 'log', []
 
     logger: (level) ->
       (args...) ->
-        console.log level.toUpperCase(), (colors[levels[level]] arg for arg in args)...
+        console.log level.toUpperCase(), (colors[log.levels[level]] arg for arg in args)...
 
-  for level of levels
+  for level of log.levels
     log[level] = log.logger level
 
   log

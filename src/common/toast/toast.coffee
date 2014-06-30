@@ -1,28 +1,28 @@
 angular.module 'toast', []
 
-.provider 'toast', ($timeout) ->
+.provider 'toast', ->
   @config =
     duration: 3000
     templateUrl: 'common/toast/toast.html'
 
-  @$get = =>
+  @$get = ($timeout) =>
     toast =
-      toasts = []
+      toasts: []
 
-    create: (payload, {duration}={}) =>
-      duration ?= @config.duration
-      timestamp = new Date().getTime()
-      toast.toasts.push {timestamp, payload}
+      create: (payload, {duration}={}) =>
+        duration ?= @config.duration
+        timestamp = new Date().getTime()
+        toast.toasts.push {timestamp, payload}
 
-      # TODO this can remove the wrong toast if a long
-      # is followed by a short one
-      $timeout (-> toasts.shift()), duration if duration
+        # TODO this can remove the wrong toast if a long
+        # is followed by a short one
+        $timeout (-> toasts.shift()), duration if duration
 
   @
 
 .directive 'toast', (toast) ->
   restrict: 'E'
-  template: toast.templateUrl
+  template: toast.config.templateUrl
 
 .run ($rootScope, toast) ->
   $rootScope.toasts = toast.toasts
