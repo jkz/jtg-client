@@ -5,7 +5,6 @@ angular.module 'jtg'
 # The token is then attached to the cookies and the api.
 # The api sends the token with every request
 .service 'auth', (jtg, reject, User, emitter, $cookies, lock) ->
-
   auth =
     # ### Token
     set: (token) ->
@@ -18,7 +17,6 @@ angular.module 'jtg'
     # ### Connection
     # TODO pass Provider ({name, slug}) in stead of slug?
     connect: lock "Busy connecting", (provider, creds) ->
-      return reject "#{provider} already connected" if session.user?.accounts[provider]
 
       jtg
         .post '/tokens', data: {provider, creds}
@@ -27,18 +25,18 @@ angular.module 'jtg'
           auth
             .identify token
             .then (user) ->
-              emitter.emit 'auth.identify', user: user, account: user.accounts[provider]
+              account = user.accounts[provider]
+
+              emitter.emit 'auth.identify', {user, account}
               emitter.emit 'auth.new_user', user if new_user
-              emitter.emit 'auth.new_account', user.accounts[provider] if new_account
+              emitter.emit 'auth.new_account', account if new_account
 
     disconnect: ->
       auth.clear()
-      session.disconnect()
 
     # ### Identity
     identify: lock "Busy identifying", (token) ->
-      return reject "Already connected" if session.user
-      return reject "No token specified" if token
+      return reject "No token specified" unless token
 
       auth.set token
 
@@ -47,7 +45,5 @@ angular.module 'jtg'
         .catch auth.clear
 
 # Identify a cookie if it's present
-.run ($rootScope, $cookies, auth) ->
+.run ($cookies, auth) ->
   auth.identify $cookies.token if $cookies.token
-
-  $rootScope.auth = auth
