@@ -1,37 +1,41 @@
-###
+# This is a rest api adapter for proper resources.
+#
+# .factory 'api', (rest) ->
+#   new rest '/api/v1'
+#
+# .factory 'Book', (api) ->
+#   api.model 'books'
+#
+# .factory 'Property' (api) ->
+#   api.model 'properties', 'property'
+#
+# TODO decide on inheritance vs composition, in this case for the eventemitter
+angular.module 'rest', [
+  'events'
+]
 
-.factory 'api', (rest) ->
-  new rest '/api/v1'
+.factory 'Rest', (EventEmitter) ->
+  class Rest extends EventEmitter
+    constructor: ->
+      @apis = {}
 
-.factory 'Book', (api) ->
-  api.model 'books'
+    register: (api) ->
+      @apis[api.name] = api
+      @emit 'Api:new', api
 
-.factory 'Property' (api) ->
-  api.model 'properties', 'property'
+.service 'rest', (Rest) ->
+  new Rest
 
-###
-angular.module 'rest', []
-
-.factory 'Api', ($http, $q, EventEmitter) ->
+.factory 'Api', ($http, $q, rest, EventEmitter) ->
   class Api extends EventEmitter
-    constructor: (@endpoint) ->
+    constructor: (@name, @endpoint) ->
       @models = {}
+
+      rest.register this
 
     register: (Model) =>
       @models[Model.plural] = Model
-
-      # Subscribe to socket events
-      socket.on "/rocket/#{Model.plural}", ({event, data}) =>
-        remote = data[@singular]
-        local  = Model.cache[remote.id] ?= new @
-
-        switch event
-          when 'create', 'update'
-            local.extend remote
-          when 'delete'
-            delete Model.cache[local.id]
-
-        Model.emit event, local
+      @emit 'Model:new', Model
 
     http: (method, url, data) =>
       $http
@@ -52,7 +56,7 @@ angular.module 'rest', []
     del:  (url) -> @http 'delete', url
 
     model: (plural, singular, parent) ->
-      api = @
+      api = this
 
       class Model extends EventEmitter
         @plural = plural
@@ -68,13 +72,13 @@ angular.module 'rest', []
         @fields = []
         @schema = {}
 
-        api.register @
+        api.register this
 
         ### Class Methods ###
         @index: (query) ->
           api.get @endpoint, query
           .then (data) =>
-            new @ obj for obj in data[@plural]
+            new this obj for obj in data[@plural]
 
         @show: (id) ->
           if obj = @cache[id]
@@ -84,7 +88,7 @@ angular.module 'rest', []
 
           api.get "#{@endpoint}/#{id}"
           .then (data) =>
-            new @ data
+            new this data
 
         @update: (id, data) ->
           params = {}
@@ -99,13 +103,13 @@ angular.module 'rest', []
         ### Instance Methods ###
 
         constructor: (data, uncached=false) ->
-          angular.extend @, data
+          angular.extend this, data
           @init()
 
           # TODO we don't want to cache the minis I guess...
           return if uncached
 
-          @constructor.cache[@id] = @ if @id
+          @constructor.cache[@id] = this if @id
 
         init: ->
           null
@@ -116,7 +120,7 @@ angular.module 'rest', []
           console.log 'prefix', prefix
 
           params = {}
-          obj = params[@constructor.singular] = @
+          obj = params[@constructor.singular] = this
           api.post "#{prefix}/#{@constructor.endpoint}", params
           .then (data) =>
             obj.id = data.id
@@ -130,7 +134,7 @@ angular.module 'rest', []
             obj
 
         update: ->
-          @constructor.update @id, @
+          @constructor.update @id, this
 
         destroy: ->
           @constructor.destroy @id

@@ -4,7 +4,7 @@ angular.module 'jtg'
 # The token is retrieved by connecting with a provider and credentials.
 # The token is then attached to the cookies and the api.
 # The api sends the token with every request
-.service 'auth', (jtg, session, reject, User, emitter, $cookies, lock) ->
+.service 'auth', (jtg, reject, User, emitter, $cookies, lock) ->
 
   auth =
     # ### Token
@@ -26,10 +26,10 @@ angular.module 'jtg'
 
           auth
             .identify token
-            .then ->
-              emitter.emit 'auth.identify', user: session.user, account: user.accounts[provider]
-              emitter.emit 'auth.new_user', session.user if new_user
-              emitter.emit 'auth.new_account', session.user.accounts[provider] if new_account
+            .then (user) ->
+              emitter.emit 'auth.identify', user: user, account: user.accounts[provider]
+              emitter.emit 'auth.new_user', user if new_user
+              emitter.emit 'auth.new_account', user.accounts[provider] if new_account
 
     disconnect: ->
       auth.clear()
@@ -44,7 +44,6 @@ angular.module 'jtg'
 
       User
         .show 'me'
-        .then session.connect
         .catch auth.clear
 
 # Identify a cookie if it's present
