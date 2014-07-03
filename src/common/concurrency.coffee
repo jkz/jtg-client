@@ -38,7 +38,7 @@ angular.module 'concurrency', []
     (args...) ->
       return $q.reject "Throttled" if count >= max
       count += 1
-      func(args...).finally ->
+      func.apply(this, args).finally ->
         count -= 1
 
 
@@ -56,7 +56,7 @@ angular.module 'concurrency', []
       wrap = (args...) ->
         $q.reject reason if semaphore
         wrap.locked = mutex.locked = semaphore = on
-        func(args...).finally ->
+        func.apply(this, args).finally ->
           wrap.locked = mutex.locked = semaphore = off
       wrap.locked = mutex.locked = semaphore
       wrap

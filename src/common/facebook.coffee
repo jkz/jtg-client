@@ -83,12 +83,22 @@ angular.module 'facebook', []
       # Read full documentation here
       # https://developers.facebook.com/docs/reference/javascript/FB.login
       facebook.login = (options) ->
+        dfd = $q.defer()
+
         facebook.sdk (FB) ->
-          FB.login null, options
+          FB.login ({authResponse}) ->
+            dfd.resolve authResponse.access_token
+          , options
+
+        dfd.promise
 
       facebook.logout = ->
+        dfd = $q.defer()
+
         facebook.sdk (FB) ->
-          FB.logout()
+          FB.logout dfd.resolve
+
+        dfd.promise
 
       facebook.identify = (callback) ->
         facebook.api '/me', (user) ->
@@ -120,7 +130,7 @@ angular.module 'facebook', []
       facebook
   ]
 
-  @
+  this
 
 .run ['facebook', '$rootScope', '$window', (facebook, $rootScope, $window) ->
   $rootScope.facebook = facebook

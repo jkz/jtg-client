@@ -90,7 +90,9 @@ gulp.task 'build', ->
     symlink 'build', 'public'
 
 gulp.task 'watch', ['clean', 'build'], ->
-  gulp.watch 'src/**/*', ['compile']
+  watcher = gulp.watch 'src/**/*', ['compile']
+  watcher.setMaxListeners 50
+  watcher
 
 gulp.task 'clean', ->
   gulp.src [

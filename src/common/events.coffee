@@ -14,13 +14,13 @@ angular.module 'events', []
     constructor: ->
       @scope = $rootScope.$new()
 
-    on: (event, callback) =>
-      @scope.$on event, callback
+    on: (name, callback) =>
+      @scope.$on name, (event, data) -> callback data, event
 
-    emit: (event, data) =>
-      @scope.$emit event, data
+    emit: (name, data) =>
+      @scope.$emit name, data
 
-    once: (event, callback) =>
-      remove = @scope.$on event, (data) =>
+    once: (name, callback) =>
+      remove = @scope.$on name, (event, data) =>
         remove()
-        callback data
+        callback data, event

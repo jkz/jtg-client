@@ -1,10 +1,7 @@
 angular.module 'jtg'
 
-.service 'Dummy', (Provider, facebook) ->
+.service 'Dummy', (Provider, resolve) ->
   dummy = new Provider 'Dummy'
-
-  facebook.connect = ->
-    facebook.login()
-
-  facebook.on 'auth.login', ->
-    Provider.connect.call facebook, token: facebook.session.token
+  dummy.creds = resolve
+  dummy.disconnect = resolve
+  dummy

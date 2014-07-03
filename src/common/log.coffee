@@ -9,6 +9,7 @@ angular.module 'log', []
   for color in ['gray', 'yellow', 'red', 'red']
     do (color) ->
       colors[color] = (s) -> "#{color.toUpperCase()}: #{s}"
+  colors
 
 .service 'log', (colors) ->
   log =

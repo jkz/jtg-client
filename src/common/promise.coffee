@@ -20,7 +20,7 @@ angular.module 'promise', [
   # - clear toast circumstances
   (reason, level='info') ->
     log[level] reason
-    toast reason
+    toast.create reason
     $q.resolve reason
 
 .service 'reject', ($q, toast, log) ->
@@ -28,5 +28,5 @@ angular.module 'promise', [
   # - minimum level to toast
   (reason, level='info') ->
     log[level] reason
-    toast reason
+    toast.create reason
     $q.reject reason

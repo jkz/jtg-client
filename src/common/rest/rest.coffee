@@ -32,6 +32,7 @@ angular.module 'rest', [
     constructor: (@name, @endpoint) ->
       @emitter = new EventEmitter
       @models = {}
+      @headers = {}
 
       rest.register this
 
@@ -44,6 +45,7 @@ angular.module 'rest', [
         url: "#{@endpoint}#{url}.json"
         method: method
         data: data
+        headers: @headers
       .error ({data}) ->
         data
       .error ({code, reason}) ->
@@ -102,7 +104,7 @@ angular.module 'rest', [
 
         @destroy: (id) ->
           api
-            .del "#{@endpoint}/#{id}"
+            .del "#{endpoint}/{id}"
             .then (data) =>
               delete @cache[id]
 
@@ -122,8 +124,6 @@ angular.module 'rest', [
 
         create: (owner) ->
           prefix = if owner then "#{owner.constructor.endpoint}/#{owner.id}" else ''
-          console.log "CREATING", 'owner', owner
-          console.log 'prefix', prefix
 
           params = {}
           obj = params[@constructor.singular] = this
@@ -133,8 +133,6 @@ angular.module 'rest', [
               obj.id = data.id
               obj
             .then (obj) =>
-              console.log 'OBJ', obj
-              console.log '@constructor', @constructor
               @constructor.cache[obj.id] = obj
             .then (obj) =>
               (owner[@constructor.plural] ?= []).push obj if owner

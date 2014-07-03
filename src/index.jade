@@ -20,9 +20,9 @@ body(ng-app="jtg" google-maps-async="")
     //-   a(ui-sref="feed") Journal
     //-   a(ui-sref="rewards") Rewards
     //-   a(ui-sref="assignments") Quests
-    section#session(ng-controller="SessionCtrl" spinner="auth.connecting")
+    section#session(ng-controller="SessionCtrl" spinner="auth.connect.locked")
 
-      form#login(ng-if="!session.user" ng-submit="session.connect('dummy', {name: name})")
+      form#login(ng-if="!session.user" ng-submit="providers.dummy.connect({name: name})")
         input(type="text" ng-model="name" placeholder="Name")
         input(type="submit" value="Connect")
 
@@ -70,7 +70,7 @@ body(ng-app="jtg" google-maps-async="")
     aside#accounts(ng-controller="AccountCtrl")
       account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
-    provider(ng-if="!accounts[slug]" ng-repeat="(slug, provider) in providers")
+      provider(ng-if="!accounts[slug]" ng-repeat="(slug, provider) in providers")
 
 
     aside#game(ng-controller="GameCtrl")

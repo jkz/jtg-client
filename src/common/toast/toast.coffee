@@ -16,9 +16,9 @@ angular.module 'toast', []
 
         # TODO this can remove the wrong toast if a long
         # is followed by a short one
-        $timeout (-> toasts.shift()), duration if duration
+        $timeout (-> toast.toasts.shift()), duration if duration
 
-  @
+  this
 
 .directive 'toast', (toast) ->
   restrict: 'E'

@@ -3,7 +3,10 @@ angular.module 'jtg', [
 
   'events'
   'socket.io'
+
   'rest'
+  'rest.auth'
+
   'google.maps'
   'facebook'
   'promise'
@@ -35,7 +38,7 @@ angular.module 'jtg', [
 
 .service 'jtg', (Api) ->
   # new Api '/api/v1'
-  jtg = new Api 'jtg', 'http://localhost:3000'
+  new Api 'jtg', 'http://localhost:3000'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

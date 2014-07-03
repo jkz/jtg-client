@@ -1,33 +1,51 @@
 angular.module 'jtg'
 
+.factory 'DummyUser', (User) ->
+  new User
+    accounts:
+      facebook:
+        provider: 'facebook'
+        id: 1412910151
+        name: 'Jesse Kwabena Osei Zwaan'
+      dummy:
+        provider: 'dummy'
+        name: 'Jesse the Game'
+
 # Holds the login information and emits events on changes
-.service 'session', (emitter, auth, reject) ->
+.service 'session', (jtg, reject, lock, User) ->
   session =
     # The logged in user.
     # `if session.user` is the idomatic way of checking for login
     # Please do not set or remove it manually, but use (dis)connect.
     user: null
 
-    connect: ->
-      reject "Already connected" if session.user
-
-      auth
-        .connect()
-        .then (user) ->
-          session.user = user
+    connect: (provider, creds) ->
+      # reject "Already connected" if session.user
+      jtg.auth.connect provider, creds
 
     disconnect: ->
-      reject "Already disconnect" unless session.user
+      # reject "Already disconnect" unless session.user
+      jtg.auth.disconnect()
 
-      auth
-        .disconnect()
-        .then ->
-          session.user = null
+    identify: lock "Identifying", ->
+      User
+        .show 'me'
+        .then session.set
 
-# Expose the session to the DOM
-.run ($rootScope, session) ->
+    set: (user) -> session.user = user
+    clear: -> session.user = null
+
+  jtg.auth.emitter.on 'connect', session.identify
+  jtg.auth.emitter.on 'disconnect', session.clear
+
+  session
+
+.run ($rootScope, session, jtg) ->
   $rootScope.session = session
 
+  session.identify() if jtg.auth.token.key
 
-.controller 'SessionCtrl', ($scope) ->
-  null
+
+.controller 'SessionCtrl', ($scope, Account) ->
+  $scope.Account = Account
+  $scope.providers = Account.providers

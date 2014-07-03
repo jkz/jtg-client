@@ -18,21 +18,23 @@ angular.module 'jtg'
 # ---
 # An account is a provider/uid combination which ties
 # User objects to providers and enables login.
-.service 'Account', (jtg) ->
+.service 'Account', (jtg, providers) ->
   Account = jtg.model 'accounts'
 
-  # Providers are autoregistered on the account model
-  # TODO this seems slightly tangled up, we might want to
-  # swap the dependency
-  Account.providers = {}
+  Account.providers = providers
 
   Account::init = ->
     # TODO this replaces the provider attribute and could
     # result in unexpected behaviour
-    @provider = Account.providers @provider
+    @provider = Account.providers[@provider]
+    console.log "Account::init", provider: @provider, providers: Account.providers
 
   # Rename for aesthetic/symmetric purposes
-  Account::disconnect = Account::destroy
+  Account::disconnect = ->
+    console.log "Account::disconnect", this, Account.providers
+    jtg
+      .del "/accounts/#{@provider.slug}"
+      .then @provider.disconnect
 
   Account
 

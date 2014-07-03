@@ -1,13 +1,17 @@
 angular.module 'jtg'
 
-.factory 'Challenge', (jtg) ->
+.factory 'Challenge', (jtg, toast, session) ->
   Challenge = jtg.model 'challenges'
 
   Challenge::boost = (amount) ->
     jtg
       .post "/challenges/#{@id}/points", {amount}
+      .catch ({message}) ->
+        toast message ? "Could not boost the challenge"
       .then =>
+        # TODO maybe return challenge and user total in response
         @points += amount
+        session.user.points -= amount
 
   Challenge
 
@@ -32,13 +36,9 @@ angular.module 'jtg'
       title: "Social Challenge"
       text: "What social experiment should Jesse perform?"
 
-  $scope.challenges = []
+  $scope.challenges = Challenge.cache
 
-  Challenge
-    .index()
-    .then (challenges) ->
-      # $scope.challenges = Challenge.cache
-      $scope.challenges = challenges
+  Challenge.index()
 
 .directive 'challenge', ->
   restrict: 'E'
