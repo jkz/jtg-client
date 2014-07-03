@@ -1,7 +1,6 @@
 angular.module 'jtg'
 
 .controller 'ChatCtrl', ($scope, socket, session) ->
-  console.log "ChatCtrl"
   $scope.messages = []
 
   $scope.broadcast = (msg) ->
@@ -10,7 +9,6 @@ angular.module 'jtg'
     socket.emit 'chat', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
 
   socket.on 'chat', (msg) ->
-    console.log 'chat', msg
     $scope.messages.push msg
 
 .directive 'chat', (socket, session, $timeout) ->

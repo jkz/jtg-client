@@ -27,11 +27,9 @@ angular.module 'jtg'
     # TODO this replaces the provider attribute and could
     # result in unexpected behaviour
     @provider = Account.providers[@provider]
-    console.log "Account::init", provider: @provider, providers: Account.providers
 
   # Rename for aesthetic/symmetric purposes
   Account::disconnect = ->
-    console.log "Account::disconnect", this, Account.providers
     jtg
       .del "/accounts/#{@provider.slug}"
       .then @provider.disconnect

@@ -23,7 +23,6 @@ angular.module 'rest.auth', [
           data
 
     set: (token) =>
-      console.log "Token.set", {token}
       @key = $cookies[@cookey] = @api.headers['Authorization'] = token
 
     clear: =>
@@ -40,11 +39,9 @@ angular.module 'rest.auth', [
   class Auth
     constructor: (@token) ->
       @emitter = new EventEmitter
-      console.log "AUTH", this
 
     # ### Connection
     connect: lock "Connecting", (creds) ->
-      console.log "CONNECT", this
       @token
         .fetch creds
         .then (data) =>
@@ -60,4 +57,3 @@ angular.module 'rest.auth', [
   rest.emitter.on 'Api:new', (api) ->
     api.auth = new Auth new Token api
     $rootScope.$apply()
-    console.log "NEW API AUTH", {api}

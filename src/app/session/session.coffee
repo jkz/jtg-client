@@ -32,8 +32,11 @@ angular.module 'jtg'
         .show 'me'
         .then session.set
 
-    set: (user) -> session.user = user
-    clear: -> session.user = null
+    set: (user) ->
+      session.user = user
+
+    clear: ->
+      session.user = null
 
   jtg.auth.emitter.on 'connect', session.identify
   jtg.auth.emitter.on 'disconnect', session.clear
