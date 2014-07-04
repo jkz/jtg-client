@@ -4,8 +4,7 @@ angular.module 'jtg'
   User = jtg.model 'users'
 
   User::init = ->
-    for provider, data of @accounts
-      data.provider = Provider.cache[provider]
-      @accounts[provider] = new Account data
+    for account in @accounts
+      @accounts[account.provider] = new Account account
 
   User

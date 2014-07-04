@@ -86,9 +86,13 @@ angular.module 'facebook', []
         dfd = $q.defer()
 
         facebook.sdk (FB) ->
-          FB.login ({authResponse}) ->
-            dfd.resolve authResponse.access_token
-          , options
+          FB.getLoginStatus ({status, authResponse}) ->
+            if status == 'connected'
+              dfd.resolve authResponse
+            else
+              FB.login ({authResponse}) ->
+                dfd.resolve authResponse
+              , options
 
         dfd.promise
 

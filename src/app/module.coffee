@@ -22,6 +22,7 @@ angular.module 'jtg', [
   socketProvider.config.host = 'https://hub-jessethegame.herokuapp.com:443'
   socketProvider.config.host = 'http://pewpew.nl:5000'
   socketProvider.config.host = 'http://localhost:8080'
+  socketProvider.config.host = 'http://jessethemacbook:8080'
 
 .run (socket) ->
   socket.on 'connect', ->
@@ -38,7 +39,7 @@ angular.module 'jtg', [
 
 .service 'jtg', (Api) ->
   # new Api '/api/v1'
-  new Api 'jtg', 'http://localhost:3000'
+  new Api 'jtg', 'http://jessethemacbook.local:3000'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

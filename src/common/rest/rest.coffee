@@ -95,7 +95,7 @@ angular.module 'rest', [
           api
             .get "#{@endpoint}/#{id}"
             .then (data) =>
-              new this data
+              new this data[@singular]
 
         @update: (id, data) ->
           params = {}

@@ -1,16 +1,5 @@
 angular.module 'jtg'
 
-.factory 'DummyUser', (User) ->
-  new User
-    accounts:
-      facebook:
-        provider: 'facebook'
-        id: 1412910151
-        name: 'Jesse Kwabena Osei Zwaan'
-      dummy:
-        provider: 'dummy'
-        name: 'Jesse the Game'
-
 # Holds the login information and emits events on changes
 .service 'session', (jtg, reject, lock, User) ->
   session =

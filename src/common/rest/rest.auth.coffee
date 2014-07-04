@@ -6,29 +6,36 @@ angular.module 'rest.auth', [
 ]
 
 # Manages the access token for an api
-.factory 'Token', ($cookies) ->
+.factory 'Token', ($cookieStore) ->
   class Token
     constructor: (@api, @endpoint) ->
       @endpoint ?= '/tokens'
       @cookey = "#{@api.name}.token"
 
-      @set $cookies[@cookey] if $cookies[@cookey]
+      cookie = $cookieStore.get @cookey
+      @set cookie if cookie
+      # @set $cookies[@cookey] if $cookies[@cookey]
 
-    fetch: (data) ->
+    fetch: (data) =>
       @api
         .post @endpoint, data
         .catch @clear
-        .then (data) =>
-          @set data.token.key
-          data
+        .then ({token}) =>
+          @set token.key
+          token
 
-    set: (token) =>
-      @key = $cookies[@cookey] = @api.headers['Authorization'] = token
+    set: (key) =>
+      # $cookies[@cookey] = @key = @api.headers['Authorization'] = key
+      @key = @api.headers['Authorization'] = key
+      $cookieStore.put @cookey, key
 
     clear: =>
+      console.log "Token.clear", this
+
       delete @key
       delete @api.headers['Authorization']
-      delete $cookies[@cookey]
+      # delete $cookies[@cookey]
+      $cookieStore.remove @cookey
 
 
 # Manages authentication and authorization via a token.
