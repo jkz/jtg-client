@@ -1,6 +1,6 @@
 angular.module 'jtg'
 
-.service 'Provider', (EventEmitter, jtg) ->
+.service 'Provider', (EventEmitter, jtg, lock) ->
   class Provider
     @cache = {}
 
@@ -10,15 +10,15 @@ angular.module 'jtg'
       @slug ?= @name.toLowerCase()
       Provider.cache[@slug] = this
 
+      @connect = lock "Connecting", (args...) =>
+        @creds args...
+          .then (creds) =>
+            jtg.auth.connect
+              provider: @slug
+              creds: creds
+
     creds: ->
       throw new Error "Not implemented"
-
-    connect: (args...) ->
-      @creds args...
-        .then (creds) =>
-          jtg.auth.connect
-            provider: @slug
-            creds: creds
 
   Provider
 

@@ -22,7 +22,7 @@ angular.module 'jtg', [
   socketProvider.config.host = 'https://hub-jessethegame.herokuapp.com:443'
   socketProvider.config.host = 'http://pewpew.nl:5000'
   socketProvider.config.host = 'http://localhost:8080'
-  socketProvider.config.host = 'http://jessethemacbook:8080'
+  socketProvider.config.host = 'http://jessethemacbook.local:8080'
 
 .run (socket) ->
   socket.on 'connect', ->

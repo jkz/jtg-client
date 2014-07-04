@@ -30,6 +30,8 @@ body(ng-app="jtg" google-maps-async="")
         span.name {{session.user.name}}!
         span.points {{session.user.points}}
         button(ng-click="session.disconnect()") Disconnect
+        .avatar(style="background-image: url({{session.user.image}})")
+
 
   view#onboarding(ng-controller-off="OnboardCtrl")
     //- p Connect a social account to save your progress and collect points
@@ -71,7 +73,6 @@ body(ng-app="jtg" google-maps-async="")
       account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
       provider(ng-if="!accounts[slug]" ng-repeat="(slug, provider) in providers")
-
 
     aside#game(ng-controller="GameCtrl")
     chat#chat
