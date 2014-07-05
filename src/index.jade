@@ -72,7 +72,7 @@ body(ng-app="jtg" google-maps-async="")
     aside#accounts(ng-controller="AccountCtrl")
       account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
-      provider(ng-if="!accounts[slug]" ng-repeat="(slug, provider) in providers")
+      provider(ng-if="!session.user.accounts[slug]" ng-repeat="(slug, provider) in providers")
 
     aside#game(ng-controller="GameCtrl")
     chat#chat

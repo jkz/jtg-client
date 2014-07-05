@@ -14,7 +14,9 @@ body
   font-family "Quicksand", Helvetica, sans-serif
   background-color #eee
   margin 1em
-  margin-top 5em
+  // margin-top 5em
+
+  padding 4em
 
   @media (min-width: 600px)
     margin 0
@@ -35,10 +37,24 @@ h1
   position absolute
   top 0
   left 0
+  padding-left 2em
   // padding 0 .5em
+  margin-right 1em
+  background-image url(/img/jesse.png)
+  background-repeat no-repeat
+  background-position .25em 0
+  background-size 1.5em
+
+  -webkit-transition background-position .3s
+
+  line-height 2em
 
   @media (min-width: 600px)
     position static
+
+header:hover
+  h1
+    background-position .25em -.25em
 
 h2
   text-align center
@@ -137,7 +153,7 @@ header
   height 4em
   background-color rgba(255,255,255,0.9)
   box-shadow 0 .5em rgba(0,0,0,0.15)
-  padding 1em
+  // padding 1em
 
   font-size 75%
 
@@ -168,14 +184,7 @@ header
         line-height 1em
 
   .avatar
-    height 4em
-    width 4em
-    margin -1em -1em -1em 1em
-
-    display inline-block
-
-    background-size cover
-    background-position center center
+    margin-left 1em
 
 
 
@@ -243,4 +252,85 @@ challenge
   padding 1em
   box-shadow .5em .5em rgba(0,0,0,0.15)
   margin 1em
+
+
+#accounts
+  position fixed
+  top 0
+  right 0
+  padding-top 5em
+  height 100%
+  width 12em
+
+  font-size 75%
+
+  @media (min-width: 600px)
+    font-size 100%
+
+  background-color rgba(255,255,255,0.9)
+  // box-shadow -.5em 0 rgba(0,0,0,0.15)
+
+  -webkit-transform translateX(8em)
+  -webkit-transition -webkit-transform .3s
+
+  &:hover
+    -webkit-transform translateX(.5em)
+
+  .avatar
+    height 4em
+    width 4em
+
+    margin -1em -1em -1em 1em
+
+    display inline-block
+
+    background-size cover
+    background-position center center
+
+  button
+    height 4em
+    width 100%
+    margin-bottom 1em
+
+    background-size 4em
+    background-repeat no-repeat
+    padding-left 4em
+
+    background-size 5em
+
+    -webkit-transition background .3s
+
+    background-position 0 .5em
+    background-position 0 .5em
+    &:hover
+      background-position 0 -.5em
+      background-position 0 -.5em
+
+  .account
+    background-position -.75em 0em
+    &:hover
+      background-position -.75em -.25em
+
+  .facebook
+    background-image url(/img/facebook.png)
+    background-color #6666ee
+    color #fff
+    &:hover
+      background-color #7777ff
+
+  .twitter
+    background-image url(/img/twitter.png)
+    background-color #66eeff
+    background-color #55acee
+    color #fff
+    &:hover
+      background-color #77ffff
+      background-color #66bdff
+
+  .github
+    background-image url(/img/github.png)
+    background-color #222
+    color #fff
+    &:hover
+      background-color #333
 

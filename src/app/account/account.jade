@@ -1,2 +1,6 @@
-| {{account.name}} on {{account.provider.name}}
-button(ng-class="account.provider.slug" ng-click="account.disconnect()") Disconnect
+button.account(
+  style="background-image: url({{account.image}})"
+  ng-class="account.provider"
+  ng-click="account.disconnect()"
+)
+  | {{account.name}}
