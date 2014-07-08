@@ -41,7 +41,7 @@
     "gulp-plumber": "^0.6.3",
     "gulp-remember": "~0.2.0",
     "gulp-rev": "~0.4.0",
-    "gulp-s3": "~0.2.0",
+    "gulp-s3": "^0.3.0",
     "gulp-shell": "~0.2.5",
     "gulp-stylus": "~1.0.0",
     "gulp-symlink": "^1.1.0",

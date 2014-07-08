@@ -96,6 +96,18 @@ gulp.task 'watch', ['clean', 'build'], ->
   watcher.setMaxListeners 50
   watcher
 
+gulp.task 'deploy', ->
+  s3 =
+    conf: require './secrets/s3.json'
+    options:
+      gzippedOnly: true
+      headers:
+        'Cache-Control': "max-age=#{60 * 60 * 24 * 365 * 10}, no-transform, public"
+  gulp.src ['build/**/*', 'static/**/*']
+    .pipe $.gzip()
+    .pipe $.s3 s3.conf, s3.options
+
+
 gulp.task 'clean', ->
   gulp.src [
     'build/**/*'
