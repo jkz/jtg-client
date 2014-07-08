@@ -6,7 +6,10 @@ angular.module 'rest.auth', [
 ]
 
 # Manages the access token for an api
-.factory 'Token', ($cookieStore) ->
+# TODO
+# - emit Token:new event (and use that to do initial auth)
+# - Maybe specify a method that is called on every api request
+.service 'Token', ($cookieStore) ->
   class Token
     constructor: (@api, @endpoint) ->
       @endpoint ?= '/tokens'

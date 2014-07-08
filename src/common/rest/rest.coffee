@@ -80,6 +80,10 @@ angular.module 'rest', [
         api.register this
 
         ### Class Methods ###
+        @create: (args...) ->
+          instance = new this args...
+          instance.create()
+
         @index: (query) ->
           api
             .get @endpoint, query
@@ -108,10 +112,28 @@ angular.module 'rest', [
             .then (data) =>
               delete @cache[id]
 
+        @hasOne: (Other, key) ->
+          @many[key ? Other.singular] = Other
+
+        @hasMany: (Other, key) ->
+          @many[key ? Other.plural] = Other
+
         ### Instance Methods ###
 
         constructor: (data, uncached=false) ->
           angular.extend this, data
+
+          # WORK IN PROGRESS
+          # for key, Class of @many
+          #   @[key] =
+          #     switch typeof @[key]
+          #       when 'array'
+          #         (new Class data for data in @[key])
+          #       when 'object'
+          #         (new Class data for _, data of @[key])
+          #       else
+          #         []
+
           @init()
 
           # TODO we don't want to cache the minis I guess...

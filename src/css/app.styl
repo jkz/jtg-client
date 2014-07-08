@@ -4,6 +4,9 @@
   box-sizing border-box
   vertical-align top
 
+:focus
+  outline-color transparent
+  outline-style none
 
 html,
 body
@@ -20,11 +23,13 @@ body
 
   @media (min-width: 600px)
     margin 0
-    margin-top 4em
+    padding-top 5em
+    // margin-top 4em
     margin-bottom 1em
 
 h1,
-h2
+h2,
+h3
   font-weight inherit
   margin 0
   font-size 200%
@@ -210,7 +215,8 @@ main
   height 100%
 
   @media (min-width: 600px)
-    display flex
+    // display flex
+    display block
 
 #chat,
 #game
@@ -244,20 +250,77 @@ main
   animation-direction normal
   animation-play-state running
 
-
-challenge
-  width 30%
+challenge,
+form.challenge
+  width 90%
   display inline-block
   background-color white
-  padding 1em
-  box-shadow .5em .5em rgba(0,0,0,0.15)
+  // padding 1em
   margin 1em
 
+  @media (min-width: 720px)
+    width 44%
 
+  @media (min-width: 1140px)
+    width 30%
+
+challenge
+  box-shadow .5em .5em rgba(0,0,0,0.15)
+
+  text-align left
+
+  hgroup
+    h2
+      text-align left
+      font-size 150%
+      line-height 1.6em
+      height 1.6em
+    h3
+      font-size 80%
+      line-height 2em
+      height 2em
+
+  article
+    padding 0 1em
+
+  img
+    background-color #eee
+    height 4em
+    width 4em
+    box-shadow .25em .25em rgba(0,0,0,0.15)
+    margin -1.25em 1em 1em -1.25em
+    margin -.25em 1em 1em -.25em
+    float left
+
+
+form.challenge
+  box-shadow inset .5em .5em rgba(0,0,0,0.15)
+
+  padding 1em
+
+  textarea,
+  select,
+  input
+    width 100%
+    display block
+    margin-bottom 1em
+    font inherit
+
+  select
+    height 2em
+
+  textarea
+    resize none
+    border 0
+    height 5em
+    padding 1em
+    box-shadow inset .25em .25em rgba(0,0,0,0.15)
+
+
+#navigation,
 #accounts
   position fixed
   top 0
-  right 0
   padding-top 5em
   height 100%
   width 12em
@@ -269,10 +332,21 @@ challenge
 
   background-color rgba(255,255,255,0.9)
   // box-shadow -.5em 0 rgba(0,0,0,0.15)
+  box-shadow -.25em 0 rgba(0,0,0,0.05)
 
-  -webkit-transform translateX(8em)
+
   -webkit-transition -webkit-transform .3s
 
+#navigation
+  left 0
+  -webkit-transform translateX(-8em)
+  &:hover
+    -webkit-transform translateX(-.5em)
+  box-shadow .25em 0 rgba(0,0,0,0.05)
+
+#accounts
+  right 0
+  -webkit-transform translateX(8em)
   &:hover
     -webkit-transform translateX(.5em)
 
@@ -301,9 +375,7 @@ challenge
     -webkit-transition background .3s
 
     background-position 0 .5em
-    background-position 0 .5em
     &:hover
-      background-position 0 -.5em
       background-position 0 -.5em
 
   .account
@@ -334,3 +406,68 @@ challenge
     &:hover
       background-color #333
 
+#toasts
+  position fixed
+  bottom 0
+  left 2em
+  width 12em
+
+  font-size 75%
+
+  @media (min-width: 600px)
+    font-size 100%
+
+  background-color rgba(255,255,255,0.9)
+  // box-shadow -.5em 0 rgba(0,0,0,0.15)
+
+  -webkit-transition -webkit-transform .3s
+
+
+@-webkit-keyframes toast
+  0%
+    border solid 5px red
+  75%
+    border solid 5px green
+
+#toasts
+  z-index 1000
+
+  toast
+    margin-bottom 1em
+    display block
+
+    button
+      width 100%
+
+      -webkit-animation-name toast
+      -webkit-animation-duration 2s
+      -webkit-animation-timing-function ease-in
+      -webkit-animation-delay 0
+      -webkit-animation-iteration-count infinite
+      -webkit-animation-direction normal
+
+
+  toast:last-child
+    margin-bottom 0
+
+view
+  display block
+
+#intro
+  margin 1em
+  padding 1em
+  background-color rgba(255,255,255,0.9)
+  box-shadow .5em .5em rgba(0,0,0,0.05)
+
+.row
+  #chat,
+  #intro
+    display block
+
+  @media (min-width: 800px)
+    text-align center
+    #chat,
+    #intro
+      display inline-block
+      width 45%
+      text-align left

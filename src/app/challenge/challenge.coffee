@@ -1,7 +1,10 @@
 angular.module 'jtg'
 
-.factory 'Challenge', (jtg, toast, session) ->
+.service 'Challenge', (jtg, toast, session, User) ->
   Challenge = jtg.model 'challenges'
+
+  Challenge::init = ->
+    @user = new User @user
 
   Challenge::boost = (amount) ->
     jtg
@@ -15,11 +18,11 @@ angular.module 'jtg'
 
   Challenge
 
-.controller 'ChallengeCtrl', ($scope, Challenge) ->
+.controller 'ChallengeCtrl', ($scope, Challenge, lock, reject, toast) ->
   $scope.categories =
-    '$100':
-      title: "$100 Challenge"
-      text: "What should Jesse do with $100?"
+    '£100':
+      title: "£100 Challenge"
+      text: "What should Jesse do with £100?"
     busk:
       title: "Busking Challenge"
       text: "What song should Jesse busk?"
@@ -35,6 +38,15 @@ angular.module 'jtg'
     social:
       title: "Social Challenge"
       text: "What social experiment should Jesse perform?"
+
+  $scope.createChallenge = lock "Creating challenge", ->
+    return reject "That's not a challenge." unless $scope.challenge
+
+    new Challenge $scope.challenge
+      .create()
+      .catch toast.create
+      .then ->
+        $scope.challenge = null
 
   $scope.challenges = Challenge.cache
 

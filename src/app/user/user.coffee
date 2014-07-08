@@ -4,7 +4,7 @@ angular.module 'jtg'
   User = jtg.model 'users'
 
   User::init = ->
-    for account in @accounts
+    for account in @accounts ? []
       @accounts[account.provider] = new Account account
 
   User

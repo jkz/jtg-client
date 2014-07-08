@@ -13,16 +13,18 @@ angular.module 'jtg', [
   'concurrency'
   'toast'
   'log'
+
+  'popdown'
 ]
+
+.config (toastProvider) ->
+  toastProvider.config.autoExpose = true
 
 .config (facebookProvider) ->
   facebookProvider.config.appId = 299095383509760
 
 .config (socketProvider) ->
-  socketProvider.config.host = 'https://hub-jessethegame.herokuapp.com:443'
-  socketProvider.config.host = 'http://pewpew.nl:5000'
-  socketProvider.config.host = 'http://localhost:8080'
-  socketProvider.config.host = 'http://jessethemacbook.local:8080'
+  socketProvider.config.host = 'http://jessethegame.net:5000'
 
 .run (socket) ->
   socket.on 'connect', ->
@@ -37,9 +39,16 @@ angular.module 'jtg', [
   socket.on 'ack', ->
     console.log "ACK"
 
+.run (toast, session, $timeout) ->
+  session.emitter.on 'connect', (user) ->
+    toast.create "Welcome #{user.name}!"
+
+  session.emitter.on 'disconnect', (user) ->
+    toast.create "Bye #{user.name}!"
+
+
 .service 'jtg', (Api) ->
-  # new Api '/api/v1'
-  new Api 'jtg', 'http://jessethemacbook.local:3000'
+  new Api 'jtg', 'http://api.jessethegame.net'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

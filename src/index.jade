@@ -28,7 +28,7 @@ body(ng-app="jtg" google-maps-async="")
 
       section#profile(ng-if="!!session.user")
         span.name {{session.user.name}}!
-        span.points {{session.user.points}}
+        //- span.points {{session.user.points}}
         button(ng-click="session.disconnect()") Disconnect
         .avatar(style="background-image: url({{session.user.image}})")
 
@@ -58,45 +58,68 @@ body(ng-app="jtg" google-maps-async="")
     //- p Every like get points
     //- p Every (github) follow get points
 
-  view#challenges(ng-controller="ChallengeCtrl")
-    form(ng-submit="challenge.create()")
-      input(type="text" ng-model="challenge.text")
-      //- select(ng-model="challenge.category" ng-options="[['a', 'A'], ['b', 'B']]")
-      input(type="submit" value="Challenge")
-
-    challenge(ng-repeat="challenge in challenges")
-
   main
-    h2 Hey, it's a start.
-
     aside#accounts(ng-controller="AccountCtrl")
       account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
       provider(ng-if="!session.user.accounts[slug]" ng-repeat="(slug, provider) in providers")
 
-    aside#game(ng-controller="GameCtrl")
-    chat#chat
+    aside#navigation
+
+    .row
+
+      section#intro
+        h2 Jesse the Game?
+
+        p
+          | This is an effort to realise my pipedream of
+          | turning my world into an actual game.
+          | Of inventing a new class of entertainment.
+          | Of becoming the world's first pop-programmer.
+          | Of being the puppet of the internet.
+          | Of performing an extreme social experiment.
+
+        p
+          | You get to challenge me to do things.
+          | Funny things, funky things, crazy things.
+          | You also get to promote these challenges with
+          strong  Power Points
+          | . At the end of the week I will take on the challenge
+          | with the most points, and post a report once I'm done.
+
+        p
+          | This page will be progressively enhanced and turn
+          | into something more engaging.
+
+      chat#chat
+
+    view#challenges(ng-controller="ChallengeCtrl")
+      form.challenge(ng-submit="createChallenge()")
+        h2 {{categories[challenge.category].title || "Challenge"}}
+        textarea(ng-model="challenge.text" ng-maxlength="135" required)
+        select(
+          ng-model="challenge.category"
+          ng-options="slug as category.title for (slug, category) in categories"
+          required
+        )
+        input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
+
+      challenge(ng-repeat="challenge in challenges")
+
+
+    aside#toasts
+      toast(ng-repeat="toast in toast.toasts")
 
 
   //- .map-wrapper
   //-   minimap
   //-   .map-overlay
 
-  section#intro
-    h2 Huh?
+  //- form(ng-submit="toast.create(T.payload); T.payload = ''")
+  //-   input(type="text" ng-model="T.payload")
+  //-   input(type="submit" value="Toast")
 
-    p
-      | This is an effort to realise my pipedream of
-      | turning my world into an actual game.
-      | Of inventing a new class of entertainment.
-      | Of becoming the world's first pop-programmer.
-      | Or being the puppet of the internet.
-      | Or performing a large scale social experiment.
 
-    p
-      | This page will be progressively enhanced and turn
-      | into something more interesting.
-      | For now
 
   //- main(ui-view="")
 
@@ -114,7 +137,7 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Quests
     //- filter Rewards
 
-  script(src="http://jessethemacbook.local:8080/socket.io/socket.io.js")
+  script(src="//jessethegame.net:5000/socket.io/socket.io.js")
   script(src="/lib/jquery/dist/jquery.js")
   script(src="/lib/angular/angular.js")
   script(src="/lib/angular-cookies/angular-cookies.js")

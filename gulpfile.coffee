@@ -20,7 +20,7 @@ gulp.on 'error', (err) ->
 
 gulp.task 'css', ->
   gulp.src 'src/css/app.styl'
-    # .pipe $.cached 'css'
+    .pipe $.plumber()
     .pipe $.stylus()
     .pipe gulp.dest 'build'
     .pipe $.connect.reload()
@@ -32,15 +32,17 @@ gulp.task 'js', ->
 
   gulp.src ['src/**/*.coffee', '!src/**/*.spec.coffee']
     .pipe $.cached 'js'
+    .pipe $.plumber()
     .pipe $.coffee()
-    .on 'error', (err) ->
-      console.log 'oops!', err
     .pipe gulp.dest 'build'
     .pipe $.connect.reload()
 
 gulp.task 'templates', ->
   gulp.src 'src/**/*.jade'
+    .pipe $.plumber()
     .pipe $.jade()
+    .pipe gulp.dest 'build'
+    .pipe $.using color: 'cyan'
     .pipe $.angularTemplates module: pkg.name
     .pipe $.concat 'templates.js'
     .pipe gulp.dest 'build'

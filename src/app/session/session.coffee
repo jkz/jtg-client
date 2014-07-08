@@ -1,8 +1,10 @@
 angular.module 'jtg'
 
 # Holds the login information and emits events on changes
-.service 'session', (jtg, reject, lock, User) ->
+.service 'session', (jtg, reject, lock, User, EventEmitter) ->
   session =
+    emitter: new EventEmitter
+
     # The logged in user.
     # `if session.user` is the idomatic way of checking for login
     # Please do not set or remove it manually, but use (dis)connect.
@@ -23,8 +25,11 @@ angular.module 'jtg'
 
     set: (user) ->
       session.user = user
+      session.emitter.emit 'connect', user
+      user
 
     clear: ->
+      session.emitter.emit 'disconnect', session.user
       session.user = null
 
   jtg.auth.emitter.on 'connect', session.identify

@@ -1,5 +1,9 @@
 div(ng-class="challenge.category")
-  h2 {{categories[challenge.category].title}}
-  p {{challenge.text}}
-  p {{challenge.points}}
-  button(ng-click="challenge.boost(1)") +1
+  hgroup
+    img(ng-src="{{challenge.user.image}}")
+    h2 {{categories[challenge.category].title}}
+    h3 by {{challenge.user.name}}
+  article
+    p {{challenge.text}}
+    //- p {{challenge.points}}
+  //- button(ng-click="challenge.boost(1)") +1
