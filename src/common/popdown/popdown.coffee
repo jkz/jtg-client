@@ -1,3 +1,8 @@
+# Popdown is a blank page that passes query parameters over to
+# the parent screen with the value of `state` as key
+# on the _popdown object. The window then closes itself.
+# The parent window polls the child window until it's closed
+# and resolves a promise.
 angular.module 'popdown', []
 
 .provider 'popdown', ->
