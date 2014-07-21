@@ -101,9 +101,8 @@ gulp.task 'deploy', ->
     conf: require './secrets/s3.json'
     options:
       gzippedOnly: true
-      headers:
-        'Cache-Control': "max-age=#{60 * 60 * 24 * 365 * 10}, no-transform, public"
-  gulp.src ['build/**/*', 'static/**/*']
+      #headers: 'Cache-Control': "max-age=#{60 * 60 * 24 * 365 * 10}, no-transform, public"
+  gulp.src ['build/**/*'] #, 'static/**/*']
     .pipe $.gzip()
     .pipe $.s3 s3.conf, s3.options
 
