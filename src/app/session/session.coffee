@@ -42,6 +42,11 @@ angular.module 'jtg'
 
   session.identify() if jtg.auth.token.key
 
+.run (socket, jtg) ->
+  jtg.auth.emitter.on 'connect', ->
+    socket.emit 'auth', token: jtg.auth.token.key
+
+  socket.emit 'auth', token: jtg.auth.token.key if jtg.auth.token.key
 
 .controller 'SessionCtrl', ($scope, Account) ->
   $scope.Account = Account

@@ -7,7 +7,7 @@ angular.module 'jtg', [
   'rest'
   'rest.auth'
 
-  'google.maps'
+  # 'google.maps'
   'facebook'
   'promise'
   'concurrency'
@@ -24,7 +24,8 @@ angular.module 'jtg', [
   facebookProvider.config.appId = 299095383509760
 
 .config (socketProvider) ->
-  socketProvider.config.host = 'http://jessethegame.net:5000'
+  # socketProvider.config.host = 'http://jessethegame.net:5000'
+  socketProvider.config.host = 'http://localhost:8080'
 
 .run (socket) ->
   socket.on 'connect', ->
@@ -48,7 +49,8 @@ angular.module 'jtg', [
 
 
 .service 'jtg', (Api) ->
-  new Api 'jtg', 'http://api.jessethegame.net'
+  # new Api 'jtg', 'http://api.jessethegame.net'
+  new Api 'jtg', 'http://localhost:3000'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

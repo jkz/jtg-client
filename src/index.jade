@@ -28,7 +28,7 @@ body(ng-app="jtg" google-maps-async="")
 
       section#profile(ng-if="!!session.user")
         span.name {{session.user.name}}!
-        //- span.points {{session.user.points}}
+        span.points {{session.user.points}}
         button(ng-click="session.disconnect()") Disconnect
         .avatar(style="background-image: url({{session.user.image}})")
 
@@ -93,6 +93,15 @@ body(ng-app="jtg" google-maps-async="")
 
       chat#chat
 
+    .row
+
+      button(ng-click="locationFeed.start()") Feed
+      .map-wrapper
+        minimap
+        .map-overlay
+
+
+
     view#challenges(ng-controller="ChallengeCtrl")
       form.challenge(ng-submit="createChallenge()")
         h2 {{categories[challenge.category].title || "Challenge"}}
@@ -107,13 +116,9 @@ body(ng-app="jtg" google-maps-async="")
       challenge(ng-repeat="challenge in challenges")
 
 
-    aside#toasts
+    aside#toasts(ng-cloak="")
       toast(ng-repeat="toast in toast.toasts")
 
-
-  //- .map-wrapper
-  //-   minimap
-  //-   .map-overlay
 
   //- form(ng-submit="toast.create(T.payload); T.payload = ''")
   //-   input(type="text" ng-model="T.payload")
@@ -138,6 +143,7 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Rewards
 
   script(src="//jessethegame.net:5000/socket.io/socket.io.js")
+  script(src="//localhost:8080/socket.io/socket.io.js")
   script(src="/lib/jquery/dist/jquery.js")
   script(src="/lib/angular/angular.js")
   script(src="/lib/angular-cookies/angular-cookies.js")

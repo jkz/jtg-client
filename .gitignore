@@ -9,3 +9,5 @@ secrets
 npm-debug.log
 s3.json
 LICENSE.js
+
+.DS_STORE

@@ -1,0 +1,22 @@
+h2.heading
+  span.h2Wrapper
+    a(ng-href='//github.com/{{user}}', target='_blank') {{user}} on GitHub
+  ul.minifeedSmall
+    li(ng-repeat='activity in activities')
+      ng-switch(on='activity.type')
+        span(ng-switch-when='PushEvent')
+          | Committed to
+          a(href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+          | :
+          br
+          div(ng-repeat='commit in activity.payload.commits')
+            | -
+            a(ng-href='//github.com/{{activity.repo.name}}/commit/{{commit.sha}}') {{commit.message}}
+        span(ng-switch-when='CreateEvent')
+          | Created
+          a(ng-href='//github.com/{{activity.repo.name}}')
+            | {{activity.repo.name}}
+        span(ng-switch-when='WatchEvent')
+          | Followed
+          a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+      span.date(title='{{activity.created_at}}') {{activity.created_at|fuzzymoment}}

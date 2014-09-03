@@ -67,7 +67,7 @@ angular.module 'concurrency', []
 .factory 'lock', (mutex) ->
   (reason, func) ->
     if not func?
-      func ?= reason
+      func = reason
       reason = "Locked"
 
     mutex(reason) func

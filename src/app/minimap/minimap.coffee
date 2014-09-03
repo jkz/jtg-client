@@ -4,13 +4,20 @@ angular.module 'jtg'
   restrict: 'E'
   template: """
     {{area}}
-    <google-map area="coords"></google-map>
+    <google-map area="coords" markers="locations"></google-map>
   """
   link: (scope, elem) ->
     scope.coords =
       latitude: 0
       longitude: 0
 
-    socket.on 'location', (coords) ->
-      console.log {latitude, longitude}
-      scope.coords = {latitude, longitude} = coords
+    scope.locations = {}
+
+    socket.on 'location', ({user, coords}) ->
+      scope.locations[user.id] =
+        id: user.id
+        icon: user.image
+        latitude: coords.latitude
+        longitude: coords.longitude
+
+      # scope.coords = {latitude, longitude} = coords

@@ -1,0 +1,28 @@
+mapsize = 600px
+
+minimap
+  width mapsize
+  height mapsize
+  background-color #eee
+  z-index -1
+
+.map-wrapper
+  position relative
+
+  width 300px
+  height 300px
+  overflow hidden
+
+.map-overlay
+  position absolute
+  width 300px
+  height 300px
+  box-shadow inset .5em .5em rgba(0,0,0,0.15)
+  z-index 1000
+  pointer-events none
+
+google-map
+  overflow hidden
+  position absolute
+  height 100%
+  width 100%
