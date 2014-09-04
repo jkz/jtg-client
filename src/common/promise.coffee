@@ -18,14 +18,17 @@ angular.module 'promise', [
 .service 'resolve', ($q, toast, log) ->
   # TODO
   # - clear toast circumstances
-  (reason, level='info') ->
-    log[level] reason
-    toast.create reason
+  console.log 'resolve', {$q, toast, log}
+  (reason, level='quiet') ->
+    unless level == 'quiet'
+      log[level] reason
+      toast.create reason
     $q.resolve reason
 
 .service 'reject', ($q, toast, log) ->
   # TODO
   # - minimum level to toast
+  console.log 'reject', {$q, toast, log}
   (reason, level='info') ->
     log[level] reason
     toast.create reason

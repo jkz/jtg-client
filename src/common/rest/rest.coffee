@@ -108,7 +108,7 @@ angular.module 'rest', [
 
         @destroy: (id) ->
           api
-            .del "#{endpoint}/{id}"
+            .del "#{@endpoint}/{id}"
             .then (data) =>
               delete @cache[id]
 

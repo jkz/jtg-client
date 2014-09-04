@@ -19,9 +19,11 @@ angular.module 'jtg'
     scope.messages = []
 
     scope.broadcast = (msg) ->
+      return unless msg
       now = new Date
       name = session.user?.name ? 'Anonymous'
-      socket.emit 'chat', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
+      # socket.emit 'chat', "#{/\d\d:\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
+      socket.emit 'chat', "#{/\d\d:\d\d/i.exec now.toString()} #{name}: #{msg}"
 
     socket.on 'chat.history', (messages) ->
       scope.messages = [messages..., scope.messages...]

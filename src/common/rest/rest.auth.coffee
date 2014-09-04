@@ -1,23 +1,21 @@
 angular.module 'rest.auth', [
   'rest'
-  'ngCookies'
   'concurrency'
   'events'
+  'LocalStorageModule'
 ]
 
 # Manages the access token for an api
 # TODO
 # - emit Token:new event (and use that to do initial auth)
 # - Maybe specify a method that is called on every api request
-.service 'Token', ($cookieStore) ->
+.service 'Token', (localStorageService) ->
   class Token
     constructor: (@api, @endpoint) ->
       @endpoint ?= '/tokens'
-      @cookey = "#{@api.name}.token"
+      @storageKey = "#{@api.name}.token"
 
-      cookie = $cookieStore.get @cookey
-      @set cookie if cookie
-      # @set $cookies[@cookey] if $cookies[@cookey]
+      @set key if key = localStorageService.get @storageKey
 
     fetch: (data) =>
       @api
@@ -30,7 +28,7 @@ angular.module 'rest.auth', [
     set: (key) =>
       # $cookies[@cookey] = @key = @api.headers['Authorization'] = key
       @key = @api.headers['Authorization'] = key
-      $cookieStore.put @cookey, key
+      localStorageService.set @storageKey, key
 
     clear: =>
       console.log "Token.clear", this
@@ -38,7 +36,7 @@ angular.module 'rest.auth', [
       delete @key
       delete @api.headers['Authorization']
       # delete $cookies[@cookey]
-      $cookieStore.remove @cookey
+      localStorageService.remove @storageKey
 
 
 # Manages authentication and authorization via a token.

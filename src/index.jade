@@ -5,6 +5,7 @@ head
     name="viewport"
     content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
   )
+  link(href="http://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet" type="text/css")
 
   title Jesse the Game
   <!-- inject:html -->
@@ -115,6 +116,32 @@ body(ng-app="jtg" google-maps-async="")
 
       challenge(ng-repeat="challenge in challenges")
 
+    view#github(ng-controller="GithubCtrl")
+      h2
+        a(ng-href='//github.com/{{user}}', target='_blank') {{user}} on GitHub
+      ul
+        li(ng-repeat='activity in activities')
+          ng-switch(on='activity.type')
+            span(ng-switch-when='PushEvent') Committed to
+              = ' '
+              a(href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}:
+              br
+              div(ng-repeat='commit in activity.payload.commits')
+                = '- '
+                a(ng-href='//github.com/{{activity.repo.name}}/commit/{{commit.sha}}') {{commit.message}}
+            span(ng-switch-when='CreateEvent')
+              = 'Created '
+              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+            span(ng-switch-when='WatchEvent')
+              = 'Followed '
+              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+          = ' '
+          span.date(
+            title='{{activity.created_at}}'
+            am-time-ago="activity.created_at"
+          )
+
+
 
     aside#toasts(ng-cloak="")
       toast(ng-repeat="toast in toast.toasts")
@@ -142,11 +169,13 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Quests
     //- filter Rewards
 
-  script(src="//jessethegame.net:5000/socket.io/socket.io.js")
+  // script(src="//jessethegame.net:5000/socket.io/socket.io.js")
   script(src="//localhost:8080/socket.io/socket.io.js")
   script(src="/lib/jquery/dist/jquery.js")
   script(src="/lib/angular/angular.js")
-  script(src="/lib/angular-cookies/angular-cookies.js")
+  script(src="/lib/moment/moment.js")
+  script(src="/lib/angular-moment/angular-moment.js")
+  script(src="/lib/angular-local-storage/angular-local-storage.js")
   <!-- inject:js -->
   <!-- endinject -->
   <!-- inject:templates.js -->
