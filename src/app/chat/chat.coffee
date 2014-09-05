@@ -39,9 +39,6 @@ angular.module 'jtg'
     target: '=watchBottom'
     transition: '='
   link: (scope, elem) ->
-    _elem = elem[0]
-
-    # TODO make this work
     scope.$watch 'target', ->
-      # elem.animate {scrollTop: elem.height()}, scope.transition ? 0
-      _elem.scrollTop = _elem.offsetHeight
+      elem.scrollTop(elem[0].scrollHeight)
+    , true
