@@ -17,6 +17,7 @@ angular.module 'jtg', [
   'popdown'
 
   'angularMoment'
+  'filters'
 ]
 
 .config (toastProvider) ->

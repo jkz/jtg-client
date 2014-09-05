@@ -1,13 +1,14 @@
 angular.module 'jtg'
 
-.controller 'GithubCtrl', ($scope, github, $interval) ->
+.controller 'GithubCtrl', ($scope, socket) ->
   $scope.user = 'jessethegame'
+  $scope.activities = []
 
-  console.log {github}
+  socket.on 'github', (activity) ->
+    $scope.activities.push activity
 
-  do refreshActivities = ->
-    github.activities($scope.user).success (data) ->
-        $scope.activities = data.slice(0, 10)
+  socket.on 'github.history', (events) ->
+    $scope.activities = [events..., $scope.activities...]
 
-  # $interval refreshActivities, 60000
+  socket.emit 'github.init'
 

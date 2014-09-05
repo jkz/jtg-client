@@ -135,6 +135,13 @@ body(ng-app="jtg" google-maps-async="")
             span(ng-switch-when='WatchEvent')
               = 'Followed '
               a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+            span(ng-switch-when='IssuesEvent')
+              = '{{activity.payload.action|capitalize}} issue on '
+              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
+              br
+              = '- '
+              a(ng-href='{{activity.payload.issue.url}}') {{activity.payload.issue.title}}
+              br
           = ' '
           span.date(
             title='{{activity.created_at}}'
