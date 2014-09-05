@@ -18,6 +18,7 @@ angular.module 'jtg', [
 
   'angularMoment'
   'filters'
+  'directives'
 ]
 
 .config (toastProvider) ->

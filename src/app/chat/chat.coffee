@@ -32,13 +32,3 @@ angular.module 'jtg'
       scope.messages.push msg
 
     socket.emit 'chat.init'
-
-.directive 'watchBottom', ->
-  restrict: 'A'
-  scope:
-    target: '=watchBottom'
-    transition: '='
-  link: (scope, elem) ->
-    scope.$watch 'target', ->
-      elem.scrollTop(elem[0].scrollHeight)
-    , true

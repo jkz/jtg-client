@@ -119,7 +119,7 @@ body(ng-app="jtg" google-maps-async="")
     view#github(ng-controller="GithubCtrl")
       h2
         a(ng-href='//github.com/{{user}}', target='_blank') {{user}} on GitHub
-      ul
+      ul(watch-top="activities" transition="1000")
         li(ng-repeat='activity in activities')
           ng-switch(on='activity.type')
             span(ng-switch-when='PushEvent') Committed to
