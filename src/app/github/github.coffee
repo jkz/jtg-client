@@ -5,11 +5,10 @@ angular.module 'jtg'
   $scope.activities = []
 
   socket.on 'github', (activity) ->
-    console.log {activity}
-    $scope.activities.push activity
+    $scope.activities.unshift activity
 
   socket.on 'github.history', (events) ->
-    $scope.activities = [events..., $scope.activities...]
+    $scope.activities = [$scope.activities..., events...]
 
   socket.emit 'github.init'
 
