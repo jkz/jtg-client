@@ -1,6 +1,6 @@
 github-push
-  = ' '
-  a(href='//github.com/{{push.repo.name}}') {{activity.repo.name}}:
+  = 'Pushed to '
+  a(href='//github.com/{{push.repo.name}}') {{push.repo.name}}:
   br
   div(ng-repeat='commit in push.payload.commits')
     = '- '

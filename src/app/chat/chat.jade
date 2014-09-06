@@ -1,6 +1,6 @@
 .messages(watch-bottom="messages", transition='500')
   p(ng-repeat="message in messages | orderBy:timestamp:reverse")
-    | {{message.timestamp | amDateFormat:'hh:mm'}} {{message.user.name}} {{message.message}}
+    | {{message.timestamp | amDateFormat:'hh:mm'}} - {{message.user.name}}: {{message.message}}
 
 form(
   ng-if="!!session.user.name"
