@@ -116,42 +116,8 @@ body(ng-app="jtg" google-maps-async="")
 
       challenge(ng-repeat="challenge in challenges")
 
-    view#github(ng-controller="GithubCtrl")
-      h2
-        a(ng-href='//github.com/{{user}}', target='_blank') {{user}} on GitHub
-      ul(watch-top="activities" transition="1000")
-        li(ng-repeat='activity in activities')
-          ng-switch(on='activity.type')
-            span(ng-switch-when='PushEvent') Committed to
-              = ' '
-              a(href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}:
-              br
-              div(ng-repeat='commit in activity.payload.commits')
-                = '- '
-                a(ng-href='//github.com/{{activity.repo.name}}/commit/{{commit.sha}}') {{commit.message}}
-            span(ng-switch-when='CreateEvent')
-              = 'Created '
-              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
-            span(ng-switch-when='WatchEvent')
-              = 'Followed '
-              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
-            span(ng-switch-when='IssuesEvent')
-              = '{{activity.payload.action|capitalize}} issue on '
-              a(ng-href='//github.com/{{activity.repo.name}}') {{activity.repo.name}}
-              br
-              = '- '
-              a(ng-href='{{activity.payload.issue.url}}') {{activity.payload.issue.title}}
-              br
-          = ' '
-          span.date(
-            title='{{activity.created_at}}'
-            am-time-ago="activity.created_at"
-          )
-
     view#stories(ng-controller="StoryCtrl")
       story(ng-repeat="story in stories")
-
-
 
     aside#toasts(ng-cloak="")
       toast(ng-repeat="toast in toast.toasts")

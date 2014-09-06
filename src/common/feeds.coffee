@@ -28,9 +28,9 @@ angular.module 'feeds', [
         console.log name, {history}
         entries.push entry for entry in history
 
-      socket.on "entry", (entry) ->
-        console.log name, {entry}
-        entries.unshift entry
+      socket.on "data", (data) ->
+        console.log name, {data}
+        entries.unshift data
 
       remove = socket.on 'ready', ->
         remove()
