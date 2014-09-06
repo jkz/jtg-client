@@ -13,6 +13,7 @@ angular.module 'jtg', [
   'concurrency'
   'toast'
   'log'
+  'feeds'
 
   'popdown'
 
@@ -33,6 +34,10 @@ angular.module 'jtg', [
 .config (socketProvider) ->
   # socketProvider.config.host = 'http://jessethegame.net:5000'
   socketProvider.config.host = 'http://localhost:8080'
+
+.config (feedsProvider) ->
+  # feedsProvider.config.host = 'http://jessethegame.net:5000'
+  feedsProvider.config.host = 'http://localhost:8080/feeds'
 
 .run (socket) ->
   socket.on 'connect', ->

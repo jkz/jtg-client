@@ -1,0 +1,12 @@
+github-issue
+  = '{{issue.payload.action|capitalize}} issue on '
+  a(ng-href='//github.com/{{issue.repo.name}}') {{issue.repo.name}}
+  br
+  = '- '
+  a(ng-href='{{issue.payload.issue.url}}') {{issue.payload.issue.title}}
+  br
+  = ' '
+  span.date(
+    title='{{issue.created_at}}'
+    am-time-ago="issue.created_at"
+  )

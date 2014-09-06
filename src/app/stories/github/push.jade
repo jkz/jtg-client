@@ -1,0 +1,12 @@
+github-push
+  = ' '
+  a(href='//github.com/{{push.repo.name}}') {{activity.repo.name}}:
+  br
+  div(ng-repeat='commit in push.payload.commits')
+    = '- '
+    a(ng-href='//github.com/{{push.repo.name}}/commit/{{commit.sha}}') {{commit.message}}
+  = ' '
+  span.date(
+    title='{{push.created_at}}'
+    am-time-ago="push.created_at"
+  )

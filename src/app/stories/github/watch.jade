@@ -1,0 +1,8 @@
+github-watch
+  = 'Followed '
+  a(ng-href='//github.com/{{watch.repo.name}}') {{watch.repo.name}}
+  = ' '
+  span.date(
+    title='{{watch.created_at}}'
+    am-time-ago="watch.created_at"
+  )

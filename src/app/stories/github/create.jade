@@ -1,0 +1,8 @@
+github-create
+  = 'Created '
+  a(ng-href='//github.com/{{create.repo.name}}') {{create.repo.name}}
+  = ' '
+  span.date(
+    title='{{create.created_at}}'
+    am-time-ago="create.created_at"
+  )

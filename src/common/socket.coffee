@@ -8,26 +8,23 @@ angular.module('socket.io', [])
     disconnect: ->
       socket.disconnect()
 
-    socket:
-      disconnect: ->
-        socket.socket.disconnect()
+    socket: socket
 
     on: (eventName, callback) ->
-      socket.on eventName, ->
-        args = arguments
+      socket.on eventName, listener = (args...) ->
         console.log '-->', eventName, callback
         $rootScope.$apply ->
           callback.apply socket, args
+      ->
+        socket.removeListener eventName, listener
     emit: (eventName, data, callback) ->
       console.log '<<-', eventName, data, callback
-      socket.emit eventName, data, ->
-        args = arguments
+      socket.emit eventName, data, (args...) ->
         $rootScope.$apply ->
           callback.apply socket, args
     send: (eventName, data, callback) ->
       console.log '<--', eventName, data, callback
-      socket.send eventName, data, ->
-        args = arguments
+      socket.send eventName, data, (args...) ->
         $rootScope.$apply ->
           callback.apply socket, args
 

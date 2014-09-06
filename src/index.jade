@@ -148,6 +148,9 @@ body(ng-app="jtg" google-maps-async="")
             am-time-ago="activity.created_at"
           )
 
+    view#stories(ng-controller="StoryCtrl") {{stories}}
+      story(ng-repeat="story in stories")
+
 
 
     aside#toasts(ng-cloak="")

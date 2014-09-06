@@ -1,11 +1,12 @@
 angular.module 'jtg'
 
-.controller 'GithubCtrl', ($scope, socket, toast) ->
-  $scope.user = 'jessethegame'
-  $scope.activities = []
+.controller 'GithubCtrl', ($scope, toast, feeds) ->
+  {socket, entries} = feeds 'github'
 
-  socket.on 'github', (activity) ->
-    $scope.activities.unshift activity
+  $scope.user = 'jessethegame'
+  $scope.activities = entries
+
+  socket.on 'entry', (activity) ->
     toast
       payload: switch activity.type
         when 'PushEvent'
@@ -32,9 +33,3 @@ angular.module 'jtg'
           """
           I did something on github!
           """
-
-  socket.on 'github.history', (events) ->
-    $scope.activities = [$scope.activities..., events...]
-
-  socket.emit 'github.init'
-

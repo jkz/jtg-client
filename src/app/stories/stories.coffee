@@ -31,7 +31,7 @@ angular.module 'jtg'
 .directive 'story', ($compile, $templateCache, Story) ->
   restrict: 'E'
   link: (scope, elem) ->
-    story
+    scope.story
       .getPayload()
       .then (payload) ->
         scope[scope.story.model] = payload
@@ -39,7 +39,7 @@ angular.module 'jtg'
         elem.html template
         $compile(elem.contents())(scope)
 
-.controller 'StoryController', ($scope, Story) ->
+.controller 'StoryCtrl', ($scope, Story) ->
   $scope.stories = Story.cache
   Story.index()
 
