@@ -37,7 +37,7 @@ angular.module 'jtg', [
 
 .config (feedsProvider) ->
   # feedsProvider.config.host = 'http://jessethegame.net:5000'
-  feedsProvider.config.host = 'http://localhost:8080/feeds'
+  feedsProvider.config.host = 'http://localhost:8080'
 
 .run (socket) ->
   socket.on 'connect', ->
