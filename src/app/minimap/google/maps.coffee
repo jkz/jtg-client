@@ -40,7 +40,6 @@ angular.module('google.maps', [])
 .service 'mapsPromise', (mapsDeferred) ->
   mapsDeferred.promise
 
-
 .service 'maps', (google) ->
   return google.maps
 

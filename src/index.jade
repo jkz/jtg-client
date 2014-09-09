@@ -12,8 +12,7 @@ head
   <!-- endinject -->
   <!-- inject:css -->
   <!-- endinject -->
-body(ng-app="jtg" google-maps-async="")
-
+body#body(ng-app="jtg" google-maps-async="")
   header
     h1 Jesse the Game
 
@@ -23,9 +22,9 @@ body(ng-app="jtg" google-maps-async="")
     //-   a(ui-sref="assignments") Quests
     section#session(ng-controller="SessionCtrl" spinner="auth.connect.locked")
 
-      form#login(ng-if="!session.user" ng-submit="providers.dummy.connect({name: name})")
-        input(type="text" ng-model="name" placeholder="Name")
-        input(type="submit" value="Connect")
+      //- form#login(ng-if="!session.user" ng-submit="providers.dummy.connect({name: name})")
+      //-   input(type="text" ng-model="name" placeholder="Name")
+      //-   input(type="submit" value="Connect")
 
       section#profile(ng-if="!!session.user")
         span.name {{session.user.name}}!
@@ -83,42 +82,54 @@ body(ng-app="jtg" google-maps-async="")
         p
           | You get to challenge me to do things.
           | Funny things, funky things, crazy things.
-          | You also get to promote these challenges with
+          | You also get to enforce these challenges with
           strong  Power Points
-          | . At the end of the week I will take on the challenge
+          | . At the end of the week I take on the challenge
           | with the most points, and post a report once I'm done.
 
         p
-          | This page will be progressively enhanced and turn
-          | into something more engaging.
+          | Check in regularly for exciting updates!
 
-      chat#chat(
-        ng-click="expandChat = !expandChat"
-        ng-class="{expanded: expandChat}"
-      )
-
-    .row(ng-controller="LocationCtrl")
-      | {{locations}}
-
-      button(ng-click="locationFeed.start()") Feed
-      .map-wrapper
-        //- minimap
-        .map-overlay
-
-
-
-    view#challenges(ng-controller="ChallengeCtrl")
-      form.challenge(ng-submit="createChallenge()")
-        h2 {{categories[challenge.category].title || "Challenge"}}
-        textarea(ng-model="challenge.text" ng-maxlength="135" required)
-        select(
-          ng-model="challenge.category"
-          ng-options="slug as category.title for (slug, category) in categories"
-          required
+      section#challenges(ng-controller="ChallengeCtrl")
+        section#join(
+          ng-if="!session.user"
+          ng-controller="AccountCtrl"
         )
-        input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
+          h2 How to play?
+          provider(ng-repeat="(slug, provider) in providers")
+          p Connect a social account
 
-      challenge(ng-repeat="challenge in challenges")
+        section#first-points(
+          ng-if="session.user && session.user.points < 150"
+        )
+          h3 Congrats!
+
+          p You've earned your first {{session.user.points}} power points.
+
+          button(href="#/spend") Spend them
+          button(href="#/earn") Earn more
+
+
+        form.challenge(
+          ng-submit="createChallenge()"
+          ng-if="session.user && session.user.lifetimePoints >= 150"
+        )
+          textarea(ng-model="challenge.text" placeholder="Tell me what to do!" ng-maxlength="135" required)
+          input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
+
+
+    //- view#challenges(ng-controller="ChallengeCtrl")
+    //-   form.challenge(ng-submit="createChallenge()")
+    //-     h2 {{categories[challenge.category].title || "Challenge"}}
+    //-     textarea(ng-model="challenge.text" ng-maxlength="135" required)
+    //-     select(
+    //-       ng-model="challenge.category"
+    //-       ng-options="slug as category.title for (slug, category) in categories"
+    //-       required
+    //-     )
+    //-     input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
+
+    //-   challenge(ng-repeat="challenge in challenges")
 
     view#stories(ng-controller="StoryCtrl")
       story(
@@ -152,15 +163,62 @@ body(ng-app="jtg" google-maps-async="")
     //- filter Quests
     //- filter Rewards
 
+  aside#minimap(
+    ng-controller="MinimapCtrl"
+    ng-class="{expanded: expanded}"
+  )
+    .header(ng-click="expanded = !expanded") Minimap
+    .body
+      .map-wrapper
+        google-map(
+          center="map.center"
+          zoom="map.zoom"
+          draggable="true"
+        )
+          marker(
+            idKey="marker.idKey"
+            coords="marker.coords"
+            icon="marker.icon"
+            options="markerOptions"
+            ng-repeat="marker in markers"
+          )
+            marker-label(
+              content="marker.label"
+              anchor="0 0"
+              class="map-marker-label"
+              off-style=""
+            )
+        .map-overlay
+    .body
+      button(ng-click="locationFeed.start()") Feed
+
+  chat#chat(
+    ng-click="expandChat = !expandChat"
+    ng-class="{expanded: expandChat}"
+  )
+
   // script(src="//jessethegame.net:5000/socket.io/socket.io.js")
   script(src="//localhost:8080/socket.io/socket.io.js")
+  script(src="//jessethemacbook:8080/socket.io/socket.io.js")
   script(src="/lib/jquery/dist/jquery.js")
   script(src="/lib/angular/angular.js")
   script(src="/lib/moment/moment.js")
   script(src="/lib/angular-moment/angular-moment.js")
   script(src="/lib/angular-local-storage/angular-local-storage.js")
-  // script(src='//maps.googleapis.com/maps/api/js?sensor=false')
-  // script(src='/lib/lodash/dist/lodash.underscore.js')
+  // script(src="/lib/angular-ui-utils/ui-utils.js")
+  // script(src="/lib/angular-ui-map/ui-map.js")
+  // script.
+  //   // ui-map needs the google maps api to be loaded before bootstrap
+  //   function onGoogleReady() {
+  //     console.log("BOOTSTRAP");
+  //     // angular.bootstrap(document.getElementById("minimap"), ['jtg.minimap']);
+  //     angular.bootstrap(document.getElementById("body"), ['jtg']);
+  //   }
+  //   console.log("ON GOOGLE READY", onGoogleReady);
+  // script(src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleReady")
+
+  script(src='//maps.googleapis.com/maps/api/js?v=3&sensor=false')
+  script(src='/lib/lodash/dist/lodash.compat.js')
   script(src='/lib/angular-google-maps/dist/angular-google-maps.js')
   <!-- inject:js -->
   <!-- endinject -->

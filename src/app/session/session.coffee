@@ -37,15 +37,19 @@ angular.module 'jtg'
 
   session
 
-.run ($rootScope, session, jtg) ->
+.run ($rootScope, session, jtg, socket) ->
   $rootScope.session = session
+
+  session.emitter.on 'connect', ->
+    # TODO remove this, it is for testy purposes!!!
+    console.log "LOGIN", session.user
+    socket.emit 'login', session.user
 
   session.identify() if jtg.auth.token.key
 
 .run (socket, jtg) ->
-  jtg.auth.emitter.on 'connect', ->
+  jtg.auth.emitter.on 'connect', (user) ->
     socket.emit 'auth', token: jtg.auth.token.key
-
   socket.emit 'auth', token: jtg.auth.token.key if jtg.auth.token.key
 
 .controller 'SessionCtrl', ($scope, Account) ->

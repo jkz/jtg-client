@@ -5,7 +5,9 @@ angular.module 'jtg', [
   'rest'
   'rest.auth'
 
-  'ui.map'
+  'jtg.minimap'
+
+  # 'ui.map'
   # 'google.maps'
   # 'google'
   'facebook'
@@ -35,10 +37,11 @@ angular.module 'jtg', [
 .config (socketProvider) ->
   # socketProvider.config.host = 'http://jessethegame.net:5000'
   socketProvider.config.host = 'http://localhost:8080'
+  socketProvider.config.host = 'http://jessethemacbook.local:8080'
 
 .config (feedsProvider) ->
   # feedsProvider.config.host = 'http://jessethegame.net:5000'
-  feedsProvider.config.host = 'http://localhost:8080'
+  feedsProvider.config.host = 'http://jessethemacbook.local:8080'
 
 .run (socket) ->
   socket.on 'connect', ->
@@ -64,6 +67,7 @@ angular.module 'jtg', [
 .service 'jtg', (Api) ->
   # new Api 'jtg', 'http://api.jessethegame.net'
   new Api 'jtg', 'http://localhost:3000'
+  new Api 'jtg', 'http://jessethemacbook.local:3000'
 
 .factory 'Reward', (jtg) ->
   jtg.model 'rewards'

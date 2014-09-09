@@ -42,16 +42,20 @@ body
   font-family "Quicksand", Helvetica, sans-serif
   font-family "Quicksand", sans-serif !important
   background-color #eee
-  margin 1em
+  // margin 1em
   // margin-top 5em
 
-  padding 4em
+  padding 4em 0
+  padding-bottom 6em
 
   @media (min-width: 600px)
+    margin 1em
+    padding 4em
     margin 0
     padding-top 5em
     // margin-top 4em
     margin-bottom 1em
+    padding-bottom 3em
 
 h1,
 h2,
@@ -76,7 +80,7 @@ h1
   background-position .25em 0
   background-size 1.5em
 
-  -webkit-transition background-position .3s
+  transition background-position .3s
 
   line-height 2em
 
@@ -164,33 +168,21 @@ header
     margin-left 1em
 
 
-
+#minimap,
 .chat
   position fixed
   bottom 0
   background-color #fefefe
   margin-top -1em
 
+  height 28em
+
   transition transform .3s, width .3s
 
-  text-align left
   width 100%
-  right 0em
   // padding 1em
   background-color rgba(255,255,255,1)
   box-shadow .5em .5em rgba(0,0,0,0.05)
-
-  transform translateY(90%) translateX(0)
-  &.expanded
-    transform translateY(0%) translateX(0)
-
-  @media (min-width: 800px)
-    width 20em
-
-    transform translateY(90%) translateX(-5em)
-    &.expanded
-      transform translateY(0%) translateX(-5em)
-
 
   .header
     height 3em
@@ -207,6 +199,42 @@ header
   .body,
   .footer
     margin 1em
+
+#minimap
+  left 0
+  height 31em
+  transition-delay bottom .3s
+  transform translateY(90%) translateX(0)
+  transform translateY(25em) translateX(0)
+  &.expanded
+    transform translateY(0%) translateX(0)
+
+  @media (min-width: 800px)
+    bottom 0
+    width 20em
+    height 28em
+
+    transform translateY(90%) translateX(5em)
+    transform translateY(25em) translateX(5em)
+    &.expanded
+      transform translateY(0%) translateX(5em)
+
+
+.chat
+  text-align left
+  right 0em
+  transform translateY(90%) translateX(0)
+  transform translateY(25em) translateX(0)
+  &.expanded
+    transform translateY(0%) translateX(0)
+
+  @media (min-width: 800px)
+    width 20em
+
+    transform translateY(90%) translateX(-5em)
+    transform translateY(25em) translateX(-5em)
+    &.expanded
+      transform translateY(0%) translateX(-5em)
 
   .messages
     width 100%
@@ -237,7 +265,7 @@ header
     flex 1 auto
 
 
-@-webkit-keyframes loading
+@keyframes loading
   0%, 100%
     border-top solid 2px red
   25%
@@ -259,12 +287,10 @@ header
   animation-play-state running
 
 story,
-challenge,
-form.challenge
+challenge
   width 90%
   display inline-block
   background-color white
-  // padding 1em
   margin 1em
 
   @media (min-width: 720px)
@@ -303,7 +329,7 @@ challenge
 
 
 form.challenge
-  box-shadow inset .5em .5em rgba(0,0,0,0.15)
+  // box-shadow inset .5em .5em rgba(0,0,0,0.15)
 
   padding 1em
 
@@ -314,6 +340,11 @@ form.challenge
     display block
     margin-bottom 1em
     font inherit
+
+  input[type="submit"]
+    height 3em
+    line-height 3em
+    font-size 150%
 
   select
     height 2em
@@ -336,6 +367,9 @@ form.challenge
 
   font-size 75%
 
+  @media (min-width: 480px)
+    width 12em
+
   @media (min-width: 600px)
     font-size 100%
 
@@ -345,20 +379,28 @@ form.challenge
   box-shadow .25em 0 rgba(0,0,0,0.05)
 
 
-  -webkit-transition -webkit-transform .3s
+  transition transform .3s
 
 #navigation
   left 0
-  -webkit-transform translateX(-8em)
-  &:hover
-    -webkit-transform translateX(-.5em)
-  box-shadow .25em 0 rgba(0,0,0,0.05)
+
+  transform translateX(-12em)
+
+  @media (min-width: 600px)
+    transform translateX(-8em)
+    &:hover
+      transform translateX(-.5em)
+    box-shadow .25em 0 rgba(0,0,0,0.05)
 
 #accounts
   right 0
-  -webkit-transform translateX(8em)
-  &:hover
-    -webkit-transform translateX(.5em)
+
+  transform translateX(12em)
+
+  @media (min-width: 600px)
+    transform translateX(8em)
+    &:hover
+      transform translateX(.5em)
 
   .avatar
     height 4em
@@ -382,7 +424,7 @@ form.challenge
 
     background-size 5em
 
-    -webkit-transition background .3s
+    transition background .3s
 
     background-position 0 .5em
     &:hover
@@ -393,28 +435,24 @@ form.challenge
     &:hover
       background-position -.75em -.25em
 
-  .facebook
-    background-image url(/img/facebook.png)
-    background-color #6666ee
-    color #fff
-    &:hover
-      background-color #7777ff
 
-  .twitter
-    background-image url(/img/twitter.png)
-    background-color #66eeff
-    background-color #55acee
-    color #fff
-    &:hover
-      background-color #77ffff
-      background-color #66bdff
+#join
+  text-align center
+  provider
+    button
+      width 4em
+      height 4em
+      text-indent 9999em
+      margin 0 .5em
+      overflow hidden
+      display inline-block
 
-  .github
-    background-image url(/img/github.png)
-    background-color #222
-    color #fff
-    &:hover
-      background-color #333
+      background-size 4em
+
+#first-points
+  text-align center
+  button
+    margin 1em
 
 #toasts
   position fixed
@@ -434,9 +472,9 @@ form.challenge
   // background-color rgba(255,255,255,0.9)
   // box-shadow -.5em 0 rgba(0,0,0,0.15)
 
-  -webkit-transition -webkit-transform .3s
+  transition transform .3s
 
-@-webkit-keyframes toast
+@keyframes toast
   0%
     border solid 5px red
   75%
@@ -464,12 +502,12 @@ form.challenge
     // button
     //   width 100%
 
-    //   -webkit-animation-name toast
-    //   -webkit-animation-duration 2s
-    //   -webkit-animation-timing-function ease-in
-    //   -webkit-animation-delay 0
-    //   -webkit-animation-iteration-count infinite
-    //   -webkit-animation-direction normal
+    //   animation-name toast
+    //   animation-duration 2s
+    //   animation-timing-function ease-in
+    //   animation-delay 0
+    //   animation-iteration-count infinite
+    //   animation-direction normal
 
 
   // toast:last-child
@@ -478,7 +516,8 @@ form.challenge
 view
   display block
 
-#intro
+#intro,
+#challenges
   margin 1em
   padding 1em
   background-color rgba(255,255,255,0.9)
@@ -491,6 +530,8 @@ view
   @media (min-width: 800px)
     text-align center
     // #chat,
+    #minimap,
+    #challenges,
     #intro
       display inline-block
       width 45%
@@ -512,31 +553,6 @@ view
   .date
     font-weight 300
 
-story
-  padding 1em
-  box-shadow .5em .5em rgba(0,0,0,0.05)
-  box-shadow .25em .25em rgba(0,0,0,0.05)
-  position relative
-
-  &:before
-    width 2em
-    height 2em
-    position absolute
-    top -.25em
-    left -.25em
-    content ''
-    background-size 100%
-    box-shadow .25em .25em rgba(0,0,0,0.05)
-    background-position center center
-
-  &.provider-github:before
-    background-image url(/img/github.png)
-    background-color #222
-
-  &.provider-twitter:before
-    background-image url(/img/twitter.png)
-    background-color #55acee
-
 
 #toasts
   z-index 1100
@@ -555,3 +571,6 @@ main
   @media (min-width: 600px)
     // display flex
     display block
+
+@import 'providers'
+@import 'stories'

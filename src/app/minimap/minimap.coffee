@@ -1,7 +1,4 @@
-angular.module 'jtg.minimap', [
-  'ui.map'
-  'socket.io'
-]
+angular.module 'jtg.minimap'
 
 .directive 'minimap', (socket) ->
   restrict: 'E'

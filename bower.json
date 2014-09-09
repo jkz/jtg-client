@@ -5,6 +5,9 @@
     "angular": "~1.2.16",
     "jquery": "*",
     "angular-local-storage": "~0.0.7",
-    "angular-moment": "~0.8.1"
+    "angular-moment": "~0.8.1",
+    "angular-ui-map": "~0.5.0",
+    "lodash": "~2.4.1",
+    "angular-google-maps": "~1.2.1"
   }
 }

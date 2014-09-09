@@ -9,7 +9,7 @@ angular.module 'popdown', []
   @config =
     interval: 1000
     stateKey: 'state'
-    redirectUri: 'http://localhost:8000/common/popdown/popdown.html'
+    redirectUri: window.location.host + '/common/popdown/popdown.html'
     redirectKey: 'redirect_uri'
 
   @$get = ($window, $q, $interval) =>
