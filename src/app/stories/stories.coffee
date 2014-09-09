@@ -28,4 +28,4 @@ angular.module 'jtg'
 
 
 .controller 'StoryCtrl', ($scope, feeds) ->
-  $scope.stories = feeds('stories').entries
+  # $scope.stories = feeds('stories/hosts/jessethegame/all').entries

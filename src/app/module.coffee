@@ -5,6 +5,7 @@ angular.module 'jtg', [
   'rest'
   'rest.auth'
 
+  'ui.map'
   # 'google.maps'
   # 'google'
   'facebook'

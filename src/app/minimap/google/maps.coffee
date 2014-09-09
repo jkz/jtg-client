@@ -18,12 +18,13 @@ Desired usage:
 
 angular.module('google.maps', [])
 
-.directive('googleMapsAsync', ['$window', ($window) ->
+.directive('googleMapsAsync', ['$window', ($window, mapsPromise) ->
   restrict: 'EA'
   link: (scope, elem) ->
     id = 'google-maps-jssdk'
 
     $window.googleMapsAsyncInit = ->
+      mapsDeferred.resolve google.maps
       console.log "GOOGLE MAPS LOADED"
 
     unless $('#'+id).length
@@ -32,6 +33,13 @@ angular.module('google.maps', [])
         src: "//maps.googleapis.com/maps/api/js?sensor=false&callback=googleMapsAsyncInit"
       ).appendTo elem
 ])
+
+.service 'mapsDeferred', ($q) ->
+  $q.defer()
+
+.service 'mapsPromise', (mapsDeferred) ->
+  mapsDeferred.promise
+
 
 .service 'maps', (google) ->
   return google.maps

@@ -1,10 +1,20 @@
-.messages(watch-bottom="messages", transition='500')
-  p(ng-repeat="message in messages | orderBy:'timestamp'")
-    | {{message.timestamp | amDateFormat:'hh:mm'}} - {{message.user.name}}: {{message.message}}
-
-form(
-  ng-if="!!session.user.name"
-  ng-submit="broadcast(model.message); model.message=''"
+.chat(
+  ng-class="{expanded: expanded}"
 )
-  input(ng-model="model.message" type="text" placeholder="chat away...")
-  input(type="submit" value="Send")
+  .header(ng-class="newMessages" ng-click="expanded = !expanded") Chat
+    span(ng-if="readCount != messages.length") - ({{messages.length - readCount}} new)
+
+  .body
+    .messages(watch-bottom="messages", transition='500')
+      p(ng-repeat="message in messages | orderBy:'timestamp'")
+        | {{message.timestamp | amDateFormat:'hh:mm'}} - {{message.user.name}}: {{message.message}}
+
+  .footer
+    form(
+      ng-if="!!session.user.name"
+      ng-submit="broadcast(model.message); model.message=''"
+    )
+      input(ng-model="model.message" type="text" placeholder="chat away...")
+      input(type="submit" value="Send")
+
+    div(ng-if="!session.user") Sign in or up to chat

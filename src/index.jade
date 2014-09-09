@@ -92,13 +92,17 @@ body(ng-app="jtg" google-maps-async="")
           | This page will be progressively enhanced and turn
           | into something more engaging.
 
-      chat#chat
+      chat#chat(
+        ng-click="expandChat = !expandChat"
+        ng-class="{expanded: expandChat}"
+      )
 
-    .row
+    .row(ng-controller="LocationCtrl")
+      | {{locations}}
 
       button(ng-click="locationFeed.start()") Feed
       .map-wrapper
-        minimap
+        //- minimap
         .map-overlay
 
 
@@ -117,7 +121,10 @@ body(ng-app="jtg" google-maps-async="")
       challenge(ng-repeat="challenge in challenges")
 
     view#stories(ng-controller="StoryCtrl")
-      story(ng-repeat="story in stories")
+      story(
+        ng-repeat="story in stories"
+        class="provider-{{story.provider}} model-{{story.model}}"
+      )
 
     aside#toasts(ng-cloak="")
       toast(ng-repeat="toast in toast.toasts")
@@ -152,8 +159,8 @@ body(ng-app="jtg" google-maps-async="")
   script(src="/lib/moment/moment.js")
   script(src="/lib/angular-moment/angular-moment.js")
   script(src="/lib/angular-local-storage/angular-local-storage.js")
-  script(src='//maps.googleapis.com/maps/api/js?sensor=false')
-  script(src='/lib/lodash/dist/lodash.underscore.js')
+  // script(src='//maps.googleapis.com/maps/api/js?sensor=false')
+  // script(src='/lib/lodash/dist/lodash.underscore.js')
   script(src='/lib/angular-google-maps/dist/angular-google-maps.js')
   <!-- inject:js -->
   <!-- endinject -->
