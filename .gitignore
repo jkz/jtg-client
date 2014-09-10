@@ -1,6 +1,5 @@
 tmp
 node_modules
-lib
 public
 dist
 build
@@ -9,5 +8,6 @@ secrets
 npm-debug.log
 s3.json
 LICENSE.js
+bower
 
 .DS_STORE

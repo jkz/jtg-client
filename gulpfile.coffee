@@ -4,10 +4,13 @@ $    = do require 'gulp-load-plugins'
 es   = require 'event-stream'
 runSequence = require 'run-sequence'
 
+browser = require 'browser-sync'
+
 {argv}   = require 'yargs'
 
-pkg = JSON.parse fs.readFileSync './package.json'
-ssh = JSON.parse fs.readFileSync './secrets/ssh.json'
+pkg = require './package'
+ssh = require './secrets/ssh'
+s3  = require './secrets/s3'
 
 symlink = (src, dest) ->
   if fs.existsSync dest
@@ -23,19 +26,16 @@ gulp.task 'css', ->
     .pipe $.plumber()
     .pipe $.stylus()
     .pipe gulp.dest 'build'
-    .pipe $.connect.reload()
 
 gulp.task 'js', ->
   gulp.src ['src/**/*.js', '!src/**/*.spec.js']
     .pipe gulp.dest 'build'
-    .pipe $.connect.reload()
 
   gulp.src ['src/**/*.coffee', '!src/**/*.spec.coffee']
     .pipe $.cached 'js'
     .pipe $.plumber()
     .pipe $.coffee()
     .pipe gulp.dest 'build'
-    .pipe $.connect.reload()
 
 gulp.task 'templates', ->
   gulp.src 'src/**/*.jade'
@@ -46,19 +46,18 @@ gulp.task 'templates', ->
     .pipe $.angularTemplates module: pkg.name
     .pipe $.concat 'templates.js'
     .pipe gulp.dest 'build'
-    .pipe $.connect.reload()
 
-gulp.task 'lib', ->
+gulp.task 'vendor', ->
   $.bowerFiles()
     .pipe $.using color: 'cyan'
-    .pipe $.cached 'lib'
-    .pipe gulp.dest 'build/lib'
+    .pipe $.cached 'vendor'
+    .pipe gulp.dest 'build/vendor'
 
 gulp.task 'static', ->
   gulp.src 'static/**/*'
     .pipe $.symlink 'build'
 
-gulp.task 'index', ['lib', 'css', 'js', 'templates'], ->
+gulp.task 'index', ['vendor', 'css', 'js', 'templates'], ->
   gulp.src 'src/index.jade'
     .pipe $.jade pretty: true
     .pipe $.inject(
@@ -69,7 +68,7 @@ gulp.task 'index', ['lib', 'css', 'js', 'templates'], ->
         'build/**/module.js'
         'build/**/*.{css,js}'
         '!build/templates.js'
-        '!build/lib/**/*'
+        '!build/vendor/**/*'
       ], read: false)
     , ignorePath: 'build')
     .pipe $.inject(
@@ -80,10 +79,13 @@ gulp.task 'index', ['lib', 'css', 'js', 'templates'], ->
     .pipe gulp.dest 'build'
 
 gulp.task 'serve', ->
-  $.connect.server
-    port: argv.port || 8000
-    root: ['public', 'static']
-    livereload: true
+  browser
+    files: ['./src/**/*']
+    server:
+      baseDir: ['public', 'static']
+    injectChanges: true
+    watchOptions:
+      debounceDelay: 500
 
 gulp.task 'compile', ['index']
 
@@ -96,22 +98,28 @@ gulp.task 'watch', ['clean', 'build'], ->
   watcher.setMaxListeners 50
   watcher
 
-gulp.task 'deploy', ->
-  s3 =
-    conf: require './secrets/s3.json'
-    options:
-      gzippedOnly: true
-      #headers: 'Cache-Control': "max-age=#{60 * 60 * 24 * 365 * 10}, no-transform, public"
-  gulp.src ['build/**/*'] #, 'static/**/*']
-    .pipe $.gzip()
-    .pipe $.s3 s3.conf, s3.options
-
-
 gulp.task 'clean', ->
   gulp.src [
     'build/**/*'
     'public'
   ]
     .pipe $.clean()
+
+push = (env) ->
+  s3 =
+    conf: require('./secrets/s3.json')[env]
+    options:
+      gzippedOnly: true
+
+  runSequence 'clean', 'build', ->
+    gulp.src ['build/**/*'] #, 'static/**/*']
+      .pipe $.gzip()
+      .pipe $.s3 s3.conf, s3.options
+
+gulp.task 'stage', ->
+  push 'staging'
+
+gulp.task 'deploy', ->
+  push 'production'
 
 gulp.task 'default', ['build', 'serve', 'watch']

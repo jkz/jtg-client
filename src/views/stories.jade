@@ -1,0 +1,5 @@
+section#stories(ng-controller="StoryCtrl")
+  story(
+    ng-repeat="story in stories"
+    class="provider-{{story.provider}} model-{{story.model}}"
+  )

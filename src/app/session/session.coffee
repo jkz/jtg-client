@@ -40,11 +40,7 @@ angular.module 'jtg'
 .run ($rootScope, session, jtg, socket) ->
   $rootScope.session = session
 
-  session.emitter.on 'connect', ->
-    # TODO remove this, it is for testy purposes!!!
-    console.log "LOGIN", session.user
-    socket.emit 'login', session.user
-
+  console.log '.run identify'
   session.identify() if jtg.auth.token.key
 
 .run (socket, jtg) ->

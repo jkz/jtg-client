@@ -8,55 +8,27 @@ head
   link(href="http://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet" type="text/css")
 
   title Jesse the Game
+
   <!-- inject:html -->
   <!-- endinject -->
   <!-- inject:css -->
   <!-- endinject -->
-body#body(ng-app="jtg" google-maps-async="")
+
+body#body(ng-app="jtg")
   header
-    h1 Jesse the Game
+    h1(ng-class="{'jesse-on-map': expandMinimap}")
+      | Jesse the Game
 
-    //- nav
-    //-   a(ui-sref="feed") Journal
-    //-   a(ui-sref="rewards") Rewards
-    //-   a(ui-sref="assignments") Quests
-    section#session(ng-controller="SessionCtrl" spinner="auth.connect.locked")
+    aside#toasts(ng-cloak)
+      toast(ng-repeat="toast in toast.toasts")
 
-      //- form#login(ng-if="!session.user" ng-submit="providers.dummy.connect({name: name})")
-      //-   input(type="text" ng-model="name" placeholder="Name")
-      //-   input(type="submit" value="Connect")
+    aside#session(ng-controller="SessionCtrl" spinner="auth.connect.locked")
 
-      section#profile(ng-if="!!session.user")
+      #profile(ng-if="!!session.user")
         span.name {{session.user.name}}!
         span.points {{session.user.points}}
         button(ng-click="session.disconnect()") Disconnect
-        .avatar(style="background-image: url({{session.user.image}})")
-
-
-  view#onboarding(ng-controller-off="OnboardCtrl")
-    //- p Connect a social account to save your progress and collect points
-    //- p Your progress is also stored in a a cookie
-    //- p This page guides you through your first reward into your first spend
-
-  view#feed(ng-controller-off="SocialCtrl")
-    //- TODO dynamic templates
-    //- Tweet
-    //- Facebook
-    //- Github (commits to master branch)
-    story(ng-repeat="story in stories")
-
-  view#quests(ng-controller-off="QuestCtrl")
-    //- p Every tweet with #jessethegame is pulled in as a quest
-    //- p Every retweet gives it points
-    //- p Every spend gives it points
-
-  view#grind(ng-controller-off="GrindCtrl")
-    //- p Every hour get points (up to 24)
-    //- p Every mention get points
-    //- p Every listen get points
-    //- p Every follow get points
-    //- p Every like get points
-    //- p Every (github) follow get points
+        .avatar(ng-style="{'background-image': 'url(' + session.user.image + ')'}")
 
   main
     aside#accounts(ng-controller="AccountCtrl")
@@ -67,160 +39,40 @@ body#body(ng-app="jtg" google-maps-async="")
     aside#navigation
 
     .row
+      include ./views/intro
+      include ./views/onboard
 
-      section#intro
-        h2 Jesse the Game?
+    .row(ui-view)
 
-        p
-          | This is an effort to realise my pipedream of
-          | turning my world into an actual game.
-          | Of inventing a new class of entertainment.
-          | Of becoming the world's first pop-programmer.
-          | Of being the puppet of the internet.
-          | Of performing an extreme social experiment.
+    include ./views/challenges
+    include ./views/stories
 
-        p
-          | You get to challenge me to do things.
-          | Funny things, funky things, crazy things.
-          | You also get to enforce these challenges with
-          strong  Power Points
-          | . At the end of the week I take on the challenge
-          | with the most points, and post a report once I'm done.
+  footer
+    minimap#minimap
+    chat#chat
 
-        p
-          | Check in regularly for exciting updates!
-
-      section#challenges(ng-controller="ChallengeCtrl")
-        section#join(
-          ng-if="!session.user"
-          ng-controller="AccountCtrl"
-        )
-          h2 How to play?
-          provider(ng-repeat="(slug, provider) in providers")
-          p Connect a social account
-
-        section#first-points(
-          ng-if="session.user && session.user.points < 150"
-        )
-          h3 Congrats!
-
-          p You've earned your first {{session.user.points}} power points.
-
-          button(href="#/spend") Spend them
-          button(href="#/earn") Earn more
-
-
-        form.challenge(
-          ng-submit="createChallenge()"
-          ng-if="session.user && session.user.lifetimePoints >= 150"
-        )
-          textarea(ng-model="challenge.text" placeholder="Tell me what to do!" ng-maxlength="135" required)
-          input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
-
-
-    //- view#challenges(ng-controller="ChallengeCtrl")
-    //-   form.challenge(ng-submit="createChallenge()")
-    //-     h2 {{categories[challenge.category].title || "Challenge"}}
-    //-     textarea(ng-model="challenge.text" ng-maxlength="135" required)
-    //-     select(
-    //-       ng-model="challenge.category"
-    //-       ng-options="slug as category.title for (slug, category) in categories"
-    //-       required
-    //-     )
-    //-     input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
-
-    //-   challenge(ng-repeat="challenge in challenges")
-
-    view#stories(ng-controller="StoryCtrl")
-      story(
-        ng-repeat="story in stories"
-        class="provider-{{story.provider}} model-{{story.model}}"
-      )
-
-    aside#toasts(ng-cloak="")
-      toast(ng-repeat="toast in toast.toasts")
-
-
-  //- form(ng-submit="toast.create(T.payload); T.payload = ''")
-  //-   input(type="text" ng-model="T.payload")
-  //-   input(type="submit" value="Toast")
-
-
-
-  //- main(ui-view="")
-
-  aside#filters(ng-controller-off="FilterCtrl")
-    //- p Control the feed
-    //- filter All
-    //- filter Social
-    //- filter Game
-    //- filter Code
-
-    //- filter Twitter
-    //- filter Facebook
-    //- filter Github
-
-    //- filter Quests
-    //- filter Rewards
-
-  aside#minimap(
-    ng-controller="MinimapCtrl"
-    ng-class="{expanded: expanded}"
-  )
-    .header(ng-click="expanded = !expanded") Minimap
-    .body
-      .map-wrapper
-        google-map(
-          center="map.center"
-          zoom="map.zoom"
-          draggable="true"
-        )
-          marker(
-            idKey="marker.idKey"
-            coords="marker.coords"
-            icon="marker.icon"
-            options="markerOptions"
-            ng-repeat="marker in markers"
-          )
-            marker-label(
-              content="marker.label"
-              anchor="0 0"
-              class="map-marker-label"
-              off-style=""
-            )
-        .map-overlay
-    .body
-      button(ng-click="locationFeed.start()") Feed
-
-  chat#chat(
-    ng-click="expandChat = !expandChat"
-    ng-class="{expanded: expandChat}"
-  )
-
-  // script(src="//jessethegame.net:5000/socket.io/socket.io.js")
-  script(src="//localhost:8080/socket.io/socket.io.js")
-  script(src="//jessethemacbook:8080/socket.io/socket.io.js")
-  script(src="/lib/jquery/dist/jquery.js")
-  script(src="/lib/angular/angular.js")
-  script(src="/lib/moment/moment.js")
-  script(src="/lib/angular-moment/angular-moment.js")
-  script(src="/lib/angular-local-storage/angular-local-storage.js")
-  // script(src="/lib/angular-ui-utils/ui-utils.js")
-  // script(src="/lib/angular-ui-map/ui-map.js")
-  // script.
-  //   // ui-map needs the google maps api to be loaded before bootstrap
-  //   function onGoogleReady() {
-  //     console.log("BOOTSTRAP");
-  //     // angular.bootstrap(document.getElementById("minimap"), ['jtg.minimap']);
-  //     angular.bootstrap(document.getElementById("body"), ['jtg']);
-  //   }
-  //   console.log("ON GOOGLE READY", onGoogleReady);
-  // script(src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleReady")
+  case process.env.NODE_ENV
+    when 'production'
+      script(src="//hub.jessethegame.net/socket.io/socket.io.js")
+    when 'staging'
+      script(src="//hub.staging.jessethegame.net/socket.io/socket.io.js")
+    default
+      script(src="//localhost:8080/socket.io/socket.io.js")
 
   script(src='//maps.googleapis.com/maps/api/js?v=3&sensor=false')
-  script(src='/lib/lodash/dist/lodash.compat.js')
-  script(src='/lib/angular-google-maps/dist/angular-google-maps.js')
+
+  script(src="/vendor/jquery/dist/jquery.js")
+  script(src="/vendor/angular/angular.js")
+  script(src="/vendor/moment/moment.js")
+  script(src="/vendor/angular-moment/angular-moment.js")
+  script(src="/vendor/angular-local-storage/angular-local-storage.js")
+  script(src='/vendor/lodash/dist/lodash.compat.js')
+  script(src='/vendor/angular-google-maps/dist/angular-google-maps.js')
+
   <!-- inject:js -->
   <!-- endinject -->
   <!-- inject:templates.js -->
   <!-- endinject -->
+
+  script(src="/env/" + (process.env.NODE_ENV || 'development') + ".js")
+

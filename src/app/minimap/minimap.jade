@@ -1,0 +1,30 @@
+.minimap(
+  ng-class="{expanded: expandMinimap}"
+)
+  .header(ng-click="expandMinimap = !expandMinimap") Minimap
+  .body
+    .map-wrapper
+      google-map(
+        center="map.center"
+        zoom="map.zoom"
+        draggable="true"
+        events="{drag: rerenderMarkers}"
+      )
+        marker(
+          idKey="marker.idKey"
+          coords="marker.coords"
+          icon="marker.icon"
+          options="markerOptions"
+          ng-repeat="marker in markers"
+        )
+          marker-label(
+            content="marker.label"
+            anchor="0 0"
+            class="map-marker-label"
+            off-style
+          )
+      .map-overlay
+  .footer
+    button(ng-click="centerYou()") You
+    button(ng-click="centerHost()") Jesse
+    button(ng-click="minimap.feed.start()") Broadcast

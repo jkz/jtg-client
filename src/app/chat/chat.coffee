@@ -4,7 +4,7 @@ angular.module 'jtg'
   restrict: 'E'
   templateUrl: "app/chat/chat.html"
   link: (scope, elem) ->
-    {entries, socket} = feeds 'chat'
+    {entries, socket} = feeds '/chat'
 
     scope.session = session
     scope.messages = entries
@@ -17,9 +17,8 @@ angular.module 'jtg'
     scope.markRead = ->
       scope.readCount = scope.messages.length
 
-
-    scope.$watch 'expanded', ->
-      scope.markRead() if scope.expanded
+    scope.$watch 'expandChat', ->
+      scope.markRead() if scope.expandChat
 
     scope.$watch 'messages.length', ->
-      scope.markRead() if scope.expanded
+      scope.markRead() if scope.expandChat

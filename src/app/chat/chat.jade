@@ -1,7 +1,10 @@
 .chat(
-  ng-class="{expanded: expanded}"
+  ng-class="{expanded: expandChat}"
 )
-  .header(ng-class="newMessages" ng-click="expanded = !expanded") Chat
+  .header(
+    ng-click="expandChat = !expandChat"
+    ng-class="{'new-messages': readCount != messages.length}"
+  ) Chat
     span(ng-if="readCount != messages.length") - ({{messages.length - readCount}} new)
 
   .body

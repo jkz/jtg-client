@@ -1,0 +1,51 @@
+.chat
+  text-align left
+  right 0em
+  transform translateY(90%) translateX(0)
+  transform translateY(25em) translateX(0)
+  &.expanded
+    transform translateY(0%) translateX(0)
+
+  @media (min-width: 800px)
+    width 20em
+
+    transform translateY(90%) translateX(-5em)
+    transform translateY(25em) translateX(-5em)
+    &.expanded
+      transform translateY(0%) translateX(-5em)
+
+  .messages
+    width 100%
+    height 20em
+    padding .5em
+    overflow-y scroll
+    box-shadow inset .25em .25em rgba(0,0,0,0.15)
+    background-color #fff
+    background-color #fefefe
+    margin-bottom 1em
+
+  form
+    display flex
+  input
+    &[type=text]
+      flex 4
+    &[type=submit]
+      flex 1
+
+@-webkit-keyframes chat-header-flash
+  0%
+    background-color accent-color
+  50%
+    background-color accent-color
+  100%
+    background-color accent-color-active
+
+.chat
+  .header.new-messages
+    -webkit-animation-name chat-header-flash
+    -webkit-animation-duration 2s
+    -webkit-animation-timing-function ease-in
+    -webkit-animation-delay 0
+    -webkit-animation-iteration-count infinite
+    -webkit-animation-direction alternate
+    -webkit-animation-play-state running

@@ -1,7 +1,23 @@
 mapsize = 600px
 
-#minimap
-  flex 1
+.minimap
+  left 0
+  height 31em
+  transition-delay bottom .3s
+  transform translateY(90%) translateX(0)
+  transform translateY(25em) translateX(0)
+  &.expanded
+    transform translateY(0%) translateX(0)
+
+  @media (min-width: 800px)
+    bottom 0
+    width 20em
+    height 28em
+
+    transform translateY(90%) translateX(5em)
+    transform translateY(25em) translateX(5em)
+    &.expanded
+      transform translateY(0%) translateX(5em)
 
 minimap,
 google-map
@@ -19,7 +35,8 @@ google-map
   height 100%
   overflow hidden
 
-.map-overlay
+.map-wrapper:after
+  content ''
   position absolute
   top 0
   left 0
@@ -42,3 +59,15 @@ google-map,
 //   position absolute
 //   height 100%
 //   width 100%
+
+.minimap
+  .footer
+    display flex
+    flex-direction row
+    button
+      flex 1 1
+      margin 0 .5em
+      &:first-child
+        margin-left 0
+      &:last-child
+        margin-right 0

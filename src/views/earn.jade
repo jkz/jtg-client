@@ -1,0 +1,48 @@
+section#earn
+  h2 Earning Power Points
+
+  p There are various ways to earn Power Points.
+
+  h3 Twitter
+
+  ul
+    // Connect
+    li.completed(ng-if="user.accounts.twitter" points="100")
+      a(ng-click="providers.twitter.connect()") Connect your account
+    li(ng-if="user.accounts.twitter") Connect your account
+
+    // Follow
+    li.completed(ng-if="user.accounts.twitter.is_follower" points="150") Follow me
+    li(ng-if="!user.accounts.twitter.is_follower" ng-class="{disabled: !user.accounts.twitter}")
+      a(href="//twitter.com/jessethegame") Follow me
+
+    // Tweet
+    li(ng-class="{disabled: !user.accounts.twitter}" points="150")
+      | Mention @jessethegame, hashtag #jtg or retweet me!
+
+  h3 Github
+
+  ul
+    // Connect
+    li.completed(ng-if="user.accounts.github" points="100")
+      a(ng-click="providers.github.connect()") Connect your account
+    li(ng-if="user.accounts.github") Connect your account
+
+    // Follow
+    li.completed(ng-if="user.accounts.github.is_follower" points="150") Follow me
+    li(ng-if="!user.accounts.github.is_follower" ng-class="{disabled: !user.accounts.github}")
+      a(href="//github.com/jessethegame") Follow me
+
+    // Stargaze
+    li(ng-class="{disabled: !user.accounts.github}" points="150")
+      | Star any of
+      = ' '
+      a(href="//github.com/jessethegame") my repositories
+
+  h3 Facebook
+
+  ul
+    // Connect
+    li.completed(ng-if="user.accounts.facebook" points="100")
+      a(ng-click="providers.facebook.connect()") Connect your account
+    li(ng-if="user.accounts.facebook") Connect your account
