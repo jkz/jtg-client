@@ -69,6 +69,7 @@ gulp.task 'index', ['vendor', 'css', 'js', 'templates'], ->
         'build/**/*.{css,js}'
         '!build/templates.js'
         '!build/vendor/**/*'
+        '!build/env/**/*'
       ], read: false)
     , ignorePath: 'build')
     .pipe $.inject(
@@ -86,6 +87,7 @@ gulp.task 'serve', ->
     injectChanges: true
     watchOptions:
       debounceDelay: 500
+    ghostMode: false
 
 gulp.task 'compile', ['index']
 

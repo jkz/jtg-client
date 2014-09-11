@@ -27,6 +27,5 @@ angular.module 'jtg'
   templateUrl: 'app/provider/provider.html'
 
 .service 'providers', (Provider, Facebook, Twitter, Github) ->
-  # TODO make this a provider, so the set of providers
-  # are configurable
+  # TODO make these configurable (e.g as a provider)
   Provider.cache

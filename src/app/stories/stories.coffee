@@ -7,6 +7,7 @@ angular.module 'jtg'
   restrict: 'E'
   link: (scope, elem) ->
     update = ({provider, model, data}={}) ->
+      console.log {provider, model, data}
       return unless provider and model and data
       scope[model] = data
       templateUrl = "/app/stories/#{provider}/#{model}.html"
