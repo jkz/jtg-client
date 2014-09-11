@@ -18,6 +18,9 @@ angular.module 'jtg'
 .config (minimapProvider) ->
   minimapProvider.config.host = 'http://localhost:8080'
 
+.config (hubProvider) ->
+  hubProvider.config.host = 'http://localhost:8080'
+
 .run (Mock) ->
   # Enable the mock provider
   null

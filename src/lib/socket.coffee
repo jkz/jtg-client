@@ -1,32 +1,33 @@
 angular.module('socket.io', [])
 
 .service 'io', ($rootScope) ->
-  connect: (host) ->
-
-    socket = io.connect host
-
-    disconnect: ->
-      socket.disconnect()
-
-    socket: socket
-
-    on: (eventName, callback) ->
-      socket.on eventName, listener = (args...) ->
-        console.log 'socket.on', eventName#, callback
+  wrap = (socket) ->
+    on: (event, callback) ->
+      socket.on event, listener = (args...) ->
         $rootScope.$apply ->
           callback.apply socket, args
       ->
-        socket.removeListener eventName, listener
-    emit: (eventName, data, callback) ->
-      console.log 'socket.emit', eventName#, data, callback
-      socket.emit eventName, data, (args...) ->
+        socket.removeListener event, listener
+
+    emit: (event, data, callback) ->
+      socket.emit event, data, (args...) ->
         $rootScope.$apply ->
           callback.apply socket, args
-    send: (eventName, data, callback) ->
-      console.log 'socket.send', eventName, data#, callback
-      socket.send eventName, data, (args...) ->
-        $rootScope.$apply ->
-          callback.apply socket, args
+
+  service = (host) ->
+    socket = io.connect host
+    console.log {socket}
+    wrapped = wrap(socket)
+    wrapped.socket = socket
+    wrapped.disconnect = ->
+      socket.disconnect()
+    # Yeyeye, these are the exact same
+    wrapped.in = (room) ->
+      wrap(socket.in(room))
+    wrapped.to = (room) ->
+      wrap(socket.to(room))
+    wrapped
+  service.connect = service
 
 .provider 'socket', ->
   @config =

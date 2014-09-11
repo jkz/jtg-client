@@ -31,3 +31,6 @@ angular.module 'jtg', [
 .run (socket) ->
   socket.on 'connect', ->
     socket.emit 'init', 'client'
+
+.service 'jesse', (hub) ->
+  hub.hosts.for('jessethegame')

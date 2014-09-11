@@ -25,11 +25,13 @@ angular.module 'jtg'
 
     set: (user) ->
       session.user = user
+      session.user.current = true
       session.emitter.emit 'connect', user
       user
 
     clear: ->
       session.emitter.emit 'disconnect', session.user
+      session.user.current = false
       session.user = null
 
   jtg.auth.emitter.on 'connect', session.identify
@@ -40,7 +42,6 @@ angular.module 'jtg'
 .run ($rootScope, session, jtg, socket) ->
   $rootScope.session = session
 
-  console.log '.run identify'
   session.identify() if jtg.auth.token.key
 
 .run (socket, jtg) ->

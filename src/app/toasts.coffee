@@ -1,6 +1,6 @@
 angular.module 'jtg'
 
-.run (toast, session, feeds) ->
+.run (toast, session, feeds, io) ->
   session.emitter.on 'connect', (user) ->
     toast.create "Welcome #{user.name}!"
 
@@ -11,4 +11,7 @@ angular.module 'jtg'
     toast.create JSON.stringify(data)
 
   feeds('/rewards/all').socket.on 'data', (data) ->
+    toast.create JSON.stringify(data)
+
+  io.connect('http://localhost:8080/jessethegame').on 'data', (data) ->
     toast.create JSON.stringify(data)

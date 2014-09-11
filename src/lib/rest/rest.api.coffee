@@ -62,7 +62,7 @@ angular.module 'rest.api', [
     model: (plural, singular, parent) ->
       api = this
 
-      class Model
+      class Model extends EventEmitter
         @emitter = new EventEmitter
         @plural = plural
         @singular = singular ?= plural[...plural.length - 1] # Strip trailing s from plural unless given
@@ -121,6 +121,7 @@ angular.module 'rest.api', [
         ### Instance Methods ###
 
         constructor: (data, uncached=false) ->
+          super
           angular.extend this, data
 
           # WORK IN PROGRESS
