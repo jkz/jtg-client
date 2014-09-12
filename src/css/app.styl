@@ -63,10 +63,7 @@ body
 
 body
   font-family "Quicksand", Helvetica, sans-serif
-  font-family "Quicksand", sans-serif !important
   background-color #eee
-  // margin 1em
-  // margin-top 5em
   margin 0
   padding 4em 0
   padding-bottom 6em
@@ -78,7 +75,6 @@ body
     margin 1em
     padding 4em
     padding-top 5em
-    // margin-top 4em
     margin-bottom 1em
     padding-bottom 3em
 
@@ -676,9 +672,12 @@ main
   ul
     list-style none
     padding-left 3.5em
+    *
+      vertical-align middle
 
   li[points]
     display block
+    padding 0
     margin 1em 0
     &:before
       margin-left -3.5em
@@ -686,6 +685,7 @@ main
       display inline-block
       content '+' attr(points)
       padding .5em
+      margin-right .5em
       box-shadow inset .25em .25em rgba(0,0,0,0.15)
       background-color #eee
       color white
@@ -727,17 +727,6 @@ main
     background-color white
     background-color #fefefe
 
-  &:nth-child(5n + 0)
-    transform rotate(1deg)
-  &:nth-child(5n + 1)
-    transform rotate(-2deg)
-  &:nth-child(5n + 2)
-    transform rotate(2deg)
-  &:nth-child(5n + 3)
-    transform rotate(-1deg)
-  &:nth-child(5n + 4)
-    transform rotate(.5deg)
-
   position relative
   display inline-block
 
@@ -752,6 +741,19 @@ main
 
   @media (min-width: 1140px)
     width 30%
+
+.crooked
+  .card
+    &:nth-child(5n + 0)
+      transform rotate(1deg)
+    &:nth-child(5n + 1)
+      transform rotate(-2deg)
+    &:nth-child(5n + 2)
+      transform rotate(2deg)
+    &:nth-child(5n + 3)
+      transform rotate(-1deg)
+    &:nth-child(5n + 4)
+      transform rotate(.5deg)
 
 
 @import 'providers'
