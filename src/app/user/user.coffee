@@ -11,19 +11,11 @@ angular.module 'jtg'
       get: =>
         if @current then 'You' else @name
 
-    # @hub = hub.users.for(@id)
-    console.log """
-
-    Connection to /users namespace
-    hub.users.emit 'join', uid: #{@id}
-
-    """
     hub.users.emit 'join', uid: @id
 
     @on 'transaction', ({balance, value, data, ref}) =>
       # this.points = balance
       @points += value
-      console.log "TRANSACTION", points: @points
       toast.create """
         #{@mentionName} #{if value > 0 then 'earned' else 'lost'} #{Math.abs(value)} points for #{ref}!
       """
@@ -39,7 +31,6 @@ angular.module 'jtg'
       """
 
   hub.users.on 'data', ({uid, type, data}) ->
-    console.log "USER", {uid, type, data}
     user = User.cache[uid]?.emit type, data
 
   User

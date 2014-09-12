@@ -20,9 +20,6 @@ angular.module 'jtg.minimap'
 
     stopper = null
 
-    console.log {google}
-    console.log google.maps
-
     @feed =
       coords: undefined
       socket: io.connect("#{@config.host}#{@config.namespace}")
@@ -73,7 +70,6 @@ angular.module 'jtg.minimap'
 
     scope.centerYou = ->
       navigator.geolocation.getCurrentPosition ({coords}) ->
-        console.log "COORDS", {coords}
         scope.center coords
 
     scope.centerHost = ->

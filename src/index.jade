@@ -44,8 +44,9 @@ body#body(ng-app="jtg")
 
     .row(ui-view)
 
-    include ./views/challenges
-    include ./views/stories
+    .row
+      include ./views/challenges
+      include ./views/stories
 
   footer
     minimap#minimap

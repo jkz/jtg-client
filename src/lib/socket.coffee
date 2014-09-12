@@ -16,7 +16,6 @@ angular.module('socket.io', [])
 
   service = (host) ->
     socket = io.connect host
-    console.log {socket}
     wrapped = wrap(socket)
     wrapped.socket = socket
     wrapped.disconnect = ->

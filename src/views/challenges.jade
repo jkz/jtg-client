@@ -1,6 +1,13 @@
 section#challenges(ng-controller="ChallengeCtrl")
   h2 Challenges
 
+  form.challenge(
+    ng-submit="createChallenge()"
+  )
+    textarea(ng-model="challenge.text" placeholder="Tell me what to do!" ng-maxlength="135" required)
+    input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
+    p costs 150
+
   challenge(ng-repeat="challenge in challenges")
 
 

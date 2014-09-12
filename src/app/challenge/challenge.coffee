@@ -11,6 +11,8 @@ angular.module 'jtg'
       .post "/challenges/#{@id}/points", {amount}
       .catch ({message}) ->
         toast message ? "Could not boost the challenge"
+      .then ({user, challenge}) ->
+        console.log {user, challenge}
       .then =>
         # TODO maybe return challenge and user total in response
         @points += amount
@@ -19,26 +21,6 @@ angular.module 'jtg'
   Challenge
 
 .controller 'ChallengeCtrl', ($scope, Challenge, lock, reject, toast) ->
-  $scope.categories =
-    '£100':
-      title: "£100 Challenge"
-      text: "What should Jesse do with £100?"
-    busk:
-      title: "Busking Challenge"
-      text: "What song should Jesse busk?"
-    code:
-      title: "Coding Challenge"
-      text: "What feature should Jesse add to the site?"
-    skill:
-      title: "Skill Challenge"
-      text: "What skill should Jesse acquire in a week?"
-    assassin:
-      title: "Assassination Challenge"
-      text: "Who should Jesse assassinate by water gun?"
-    social:
-      title: "Social Challenge"
-      text: "What social experiment should Jesse perform?"
-
   $scope.createChallenge = lock "Creating challenge", ->
     return reject "That's not a challenge." unless $scope.challenge
 
