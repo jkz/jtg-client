@@ -78,6 +78,7 @@ h1
   // padding 0 .5em
   margin-right 1em
 
+  background-image url(/img/jesse.png)
   background-repeat no-repeat
   background-position .25em 0
   background-size 1.5em
@@ -93,10 +94,18 @@ header:hover
     background-position .25em -.25em
 
 header
-  h1.jesse-on-map
+  h1.duck
     background-position .25em 2em
 
 #intro
+  // h2
+  //   text-shadow .05em .05em rgba(0,0,0,0.05)
+  z-index 10000
+
+  &:before
+    background-color splash-color-2
+    transform translateX(-50%) rotate(-1deg)
+
   .logo
     width 12em
     height 12em
@@ -107,12 +116,14 @@ header
     background-image url(/img/jesse.png)
     background-size 8em
     background-repeat no-repeat
-    box-shadow inset .25em .25em rgba(0,0,0,0.05)
     transition background-position .3s
     background-color #eee
-    background-position center top
+    background-position center -1em
     &:hover
-      background-position center -1em
+      background-position center -2em
+
+    &.duck
+      background-position center 12em
 
 
 h2
@@ -498,19 +509,6 @@ view
   // background-color rgba(255,255,255,0.9)
   box-shadow .5em .5em rgba(0,0,0,0.05)
 
-.row
-  #intro
-    display block
-
-  @media (min-width: 800px)
-    text-align center
-    #challenges,
-    #intro
-      display inline-block
-      width 45%
-      text-align left
-
-
 #github
   margin 1em
   padding 1em
@@ -553,7 +551,6 @@ main
 
 .splash
   padding 8em 4em
-  margin 0 -5em
   position relative
   text-align center
   overflow hidden
@@ -580,31 +577,6 @@ main
   &:before
     background-color splash-color-1
     transform translateX(-50%) rotate(1deg)
-
-#intro
-  .logo
-    width 12em
-    height 12em
-    display block
-    margin auto
-    margin-top -8em
-    border-radius 50%
-    background-image url(/img/jesse.png)
-    background-size 70%
-    background-repeat no-repeat
-    background-position center top
-    box-shadow inset .25em .25em rgba(0,0,0,0.05)
-    background-color white
-
-  :hover
-    background-position .25em -.25em
-
-
-
-  &:before
-    background-color splash-color-2
-    transform translateX(-50%) rotate(-1deg)
-
 
 .card
   &:before

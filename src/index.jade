@@ -16,7 +16,7 @@ head
 
 body#body(ng-app="jtg")
   header
-    h1(ng-class="{'jesse-on-map': expandMinimap}")
+    h1(ng-class="{'duck': expandMinimap}")
       | Jesse the Game
 
     aside#toasts(ng-cloak)
@@ -30,6 +30,8 @@ body#body(ng-app="jtg")
         button(ng-click="session.disconnect()") Disconnect
         .avatar(ng-style="{'background-image': 'url(' + session.user.image + ')'}")
 
+  include ./views/intro
+
   main
     aside#accounts(ng-controller="AccountCtrl")
       account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
@@ -38,7 +40,6 @@ body#body(ng-app="jtg")
 
     aside#navigation
 
-    include ./views/intro
     include ./views/onboard
 
     .row(ui-view)
