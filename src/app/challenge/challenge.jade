@@ -5,5 +5,9 @@ div(ng-class="challenge.category")
     h3 by {{challenge.user.name}}
   article
     p {{challenge.text}}
+    span.date(
+      title='{{challenge.created_at}}'
+      am-time-ago="challenge.created_at"
+    )
     //- p {{challenge.points}}
   //- button(ng-click="challenge.boost(1)") +1

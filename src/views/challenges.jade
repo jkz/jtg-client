@@ -8,7 +8,7 @@ section#challenges(ng-controller="ChallengeCtrl")
     input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
     p costs 150
 
-  challenge(ng-repeat="challenge in challenges")
+  challenge(ng-repeat="challenge in challenges | orderBy:'created_at'")
 
 
 
