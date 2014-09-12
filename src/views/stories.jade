@@ -1,4 +1,9 @@
 section#stories(ng-controller="StoryCtrl")
+  .splash
+    h2 Keep tabs on
+
+    p Stalking for dummies. Never miss where I am and what I'm up to.
+
   story.card(
     ng-repeat="story in stories"
     class="provider-{{story.provider}} model-{{story.model}}"

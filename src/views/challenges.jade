@@ -1,14 +1,17 @@
 section#challenges(ng-controller="ChallengeCtrl")
-  h2 Challenges
+  .splash
+    h2 Control me
+    p Challenge me to anything. Keep it fun for everyone. Bring it on.
 
   form.challenge(
     ng-submit="createChallenge()"
   )
     textarea(ng-model="challenge.text" placeholder="Tell me what to do!" ng-maxlength="135" required)
-    input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
-    p costs 150
+    .button-bar
+      a.pricetag(title="This will consume 300 Power Points.") -300
+      input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
 
-  challenge(ng-repeat="challenge in challenges | orderBy:'created_at'")
+  challenge.card(ng-repeat="challenge in challenges | orderBy:'created_at'")
 
 
 

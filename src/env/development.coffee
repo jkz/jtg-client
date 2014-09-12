@@ -21,6 +21,6 @@ angular.module 'jtg'
 .config (hubProvider) ->
   hubProvider.config.host = 'http://localhost:8080'
 
-.run (Mock) ->
-  # Enable the mock provider
-  null
+# .run (Mock) ->
+#   # Enable the mock provider
+#   null

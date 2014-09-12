@@ -16,10 +16,10 @@ head
 
 body#body(ng-app="jtg")
   header
-    h1(ng-class="{'duck': expandMinimap}")
+    h1(ng-class="{'duck': expandMinimap || scrollAtIntro}")
       | Jesse the Game
 
-    aside#toasts(ng-cloak)
+    aside.toasts#toasts-header(ng-cloak ng-if="!scrollAtIntro")
       toast(ng-repeat="toast in toast.toasts")
 
     aside#session(ng-controller="SessionCtrl" spinner="auth.connect.locked")
@@ -33,19 +33,19 @@ body#body(ng-app="jtg")
   include ./views/intro
 
   main
-    aside#accounts(ng-controller="AccountCtrl")
-      account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
+    //- aside#accounts(ng-controller="AccountCtrl")
+    //-   account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
-      provider(ng-if="!session.user.accounts[slug]" ng-repeat="(slug, provider) in providers")
+    //-   provider(ng-if="!session.user.accounts[slug]" ng-repeat="(slug, provider) in providers")
 
-    aside#navigation
+    //- aside#navigation
 
     include ./views/onboard
 
     .row(ui-view)
 
-    include ./views/challenges
     include ./views/earn
+    include ./views/challenges
     include ./views/stories
 
   footer

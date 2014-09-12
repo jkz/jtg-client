@@ -1,26 +1,33 @@
 section#earn
   .splash
-    h2 Earning Power Points
+    h2 Collect Power Points
 
     p
-      | My harvester robots work day and night to reward you.
+      | My harvester robots work day and night for your rewards.
 
   .card.twitter
     h3 Twitter
 
     ul
       // Connect
-      li.completed(ng-if="user.accounts.twitter" points="100")
+      li(
+        points="100"
+        ng-class="{compleded: user.accounts.twitter}"
+      )
         a(ng-click="providers.twitter.connect()") Connect your account
-      li(ng-if="!user.accounts.twitter") Connect your account
 
       // Follow
-      li.completed(ng-if="user.accounts.twitter.is_follower" points="150") Follow me
-      li(ng-if="!user.accounts.twitter.is_follower" ng-class="{disabled: !user.accounts.twitter}")
+      li(
+        points="150"
+        ng-class="{completed: user.accounts.twitter.is_follower, disabled: !user.accounts.twitter}"
+      )
         a(href="//twitter.com/jessethegame") Follow me
 
       // Tweet
-      li(ng-class="{disabled: !user.accounts.twitter}" points="150")
+      li(
+        points="150"
+        ng-class="{disabled: !user.accounts.twitter}"
+      )
         | Mention @jessethegame, hashtag #jtg or retweet me!
 
   .card.github
@@ -28,17 +35,24 @@ section#earn
 
     ul
       // Connect
-      li.completed(ng-if="user.accounts.github" points="100")
+      li(
+        points="100"
+        ng-class="{completed: user.accounts.github}"
+      )
         a(ng-click="providers.github.connect()") Connect your account
-      li(ng-if="!user.accounts.github") Connect your account
 
       // Follow
-      li.completed(ng-if="user.accounts.github.is_follower" points="150") Follow me
-      li(ng-if="!user.accounts.github.is_follower" ng-class="{disabled: !user.accounts.github}")
+      li(
+        points="150"
+        ng-class="{completed: user.accounts.github.is_follower, disabled: !user.accounts.github}"
+      )
         a(href="//github.com/jessethegame") Follow me
 
       // Stargaze
-      li(ng-class="{disabled: !user.accounts.github}" points="150")
+      li(
+        points="150"
+        ng-class="{disabled: !user.accounts.github}"
+      )
         | Star any of
         = ' '
         a(href="//github.com/jessethegame") my repositories
@@ -48,6 +62,8 @@ section#earn
 
     ul
       // Connect
-      li.completed(ng-if="user.accounts.facebook" points="100")
+      li(
+        points="100"
+        ng-class="{completed: user.accounts.facebook}"
+      )
         a(ng-click="providers.facebook.connect()") Connect your account
-      li(ng-if="!user.accounts.facebook") Connect your account
