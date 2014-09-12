@@ -1,11 +1,20 @@
 angular.module 'jtg'
 
-.run (toast, session, feeds, io) ->
+.service 'slang', ->
+  sample = (arr) -> arr[Math.floor(Math.random() * arr.length)]
+
+  slang =
+    hi: ->
+      sample(['Hey', 'Sup', 'Hi', 'Welcome', 'Heya', 'Yo'])
+    bye: ->
+      sample(['Bye', 'Cya', 'Later', 'Ciao', 'Peace'])
+
+.run (toast, session, feeds, io, slang) ->
   session.emitter.on 'connect', (user) ->
-    toast.create "Welcome #{user.name}!"
+    toast.create "#{slang.hi()} #{user.name}!"
 
   session.emitter.on 'disconnect', (user) ->
-    toast.create "Bye #{user.name}!"
+    toast.create "#{slang.bye()} #{user.name}!"
 
   feeds('/mock/hosts/jessethegame/all').socket.on 'data', (data) ->
     toast.create JSON.stringify(data)

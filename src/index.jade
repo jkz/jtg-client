@@ -38,15 +38,14 @@ body#body(ng-app="jtg")
 
     aside#navigation
 
-    .row
-      include ./views/intro
-      include ./views/onboard
+    include ./views/intro
+    include ./views/onboard
 
     .row(ui-view)
 
-    .row
-      include ./views/challenges
-      include ./views/stories
+    include ./views/challenges
+    include ./views/earn
+    include ./views/stories
 
   footer
     minimap#minimap

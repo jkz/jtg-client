@@ -1,0 +1,68 @@
+@-webkit-keyframes roll
+  0%
+    background-color green
+    transform rotateX(0deg)
+    margin-top 0
+  15%
+    transform rotateX(0deg)
+    margin-top 0em
+  22.5%
+    transform rotateX(-90deg)
+    margin-top 2em
+  40%
+    transform rotateX(-90deg)
+    margin-top 2em
+  47.5%
+    transform rotateX(-180deg)
+    margin-top 4em
+  65%
+    margin-top 4em
+    transform rotateX(-180deg)
+  72.5%
+    transform rotateX(-270deg)
+    margin-top 6em
+  90%
+    margin-top 6em
+    transform rotateX(-270deg)
+  100%
+    transform rotateX(-350deg)
+    background-color blue
+
+.roll
+  perspective 1000px
+
+roll
+  -webkit-animation-name roll
+  -webkit-animation-duration 12s
+  -webkit-animation-timing-function ease-in-out
+  -webkit-animation-delay 0
+  -webkit-animation-iteration-count infinite
+  -webkit-animation-direction normal
+  -webkit-animation-play-state running
+
+  transform-style preserve-3d
+
+  position relative
+  display block
+  height 4em
+  width 12em
+  // background-color #222
+
+  side
+    line-height 4em
+    background-color #222
+    color white
+    height 100%
+    width 100%
+    top 0
+    left 0
+    position absolute
+
+    &:nth-child(1)
+      transform rotateX(90deg) translateZ(2em)
+    &:nth-child(2)
+      transform rotateX(180deg) translateZ(2em)
+    &:nth-child(3)
+      transform rotateX(270deg) translateZ(2em)
+    &:nth-child(4)
+      transform rotateX(0deg) translateZ(2em)

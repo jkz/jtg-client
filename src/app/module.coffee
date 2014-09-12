@@ -34,3 +34,6 @@ angular.module 'jtg', [
 
 .service 'jesse', (hub) ->
   hub.hosts.for('jessethegame')
+
+  #TODO keep track of the avatar location and scale
+  # and render the toast bubbles accordingly
