@@ -23,7 +23,7 @@ angular.module 'rest.socket', [
 
         switch event
           when 'create', 'update'
-            local.extend remote
+            angular.extend local, remote
           when 'delete'
             delete Model.cache[local.id]
 

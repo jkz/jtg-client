@@ -153,7 +153,7 @@ angular.module 'rest.api', [
           api
             .post "#{prefix}/#{@constructor.endpoint}", params
             .then (data) =>
-              obj.id = data.id
+              angular.extend obj, data[@constructor.singular]
               obj
             .then (obj) =>
               @constructor.cache[obj.id] = obj
