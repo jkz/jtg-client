@@ -5,7 +5,7 @@ head
     name="viewport"
     content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
   )
-  link(rel="stylesheet" href="http://fonts.googleapis.com/css?family=Quicksand:300,400,700")
+  link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Quicksand:300,400,700")
   link(rel="stylesheet" href="/vendor/fontawesome/css/font-awesome.css")
 
   title Jesse the Game
@@ -19,10 +19,6 @@ body#body(ng-app="jtg")
   header
     h1(ng-class="{'duck': expandMinimap || scrollAtIntro}")
       | Jesse the Game
-      i.fa.fa-lg.facebook
-      i.fa.fa-lg.github
-      i.fa.fa-lg.soundcloud
-      i.fa.fa-lg.twitter
 
     aside.toasts#toasts-header(ng-cloak ng-if="!scrollAtIntro")
       toast(ng-repeat="toast in toast.toasts")

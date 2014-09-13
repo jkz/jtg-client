@@ -1,10 +1,8 @@
 .splash#intro
-  .logo(ng-class="{duck: expandMinimap || !scrollAtIntro}")
+  .jesse(ng-class="{duck: expandMinimap || !scrollAtIntro}")
 
   aside.toasts#toasts-intro(ng-cloak ng-if="scrollAtIntro")
     toast(ng-repeat="toast in toast.toasts")
-
-
 
   h2 Jesse the Game
 

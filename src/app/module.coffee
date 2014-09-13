@@ -40,4 +40,3 @@ angular.module 'jtg', [
 
 .service 'jesse', (hub) ->
   hub.hosts.for('jessethegame')
-

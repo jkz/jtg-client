@@ -14,7 +14,7 @@ section#earn
         points="100"
         ng-class="{compleded: user.accounts.twitter}"
       )
-        a(ng-click="providers.twitter.connect()") Connect your account
+        a(ng-click="session.connect('twitter')") Connect your account
 
       // Follow
       li(
@@ -39,7 +39,7 @@ section#earn
         points="100"
         ng-class="{completed: user.accounts.github}"
       )
-        a(ng-click="providers.github.connect()") Connect your account
+        a(ng-click="session.connect('github')") Connect your account
 
       // Follow
       li(
@@ -66,4 +66,4 @@ section#earn
         points="100"
         ng-class="{completed: user.accounts.facebook}"
       )
-        a(ng-click="providers.facebook.connect()") Connect your account
+        a(ng-click="session.connect('facebook')") Connect your account

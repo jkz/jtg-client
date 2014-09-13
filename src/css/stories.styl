@@ -4,22 +4,23 @@ story
   box-shadow .25em .25em rgba(0,0,0,0.05)
   position relative
 
-  &:after
+  &:before
     width 2em
     height 2em
     position absolute
     top -.25em
     left -.25em
+    float left
     content ''
     background-size 100%
     box-shadow .25em .25em rgba(0,0,0,0.05)
     background-position center center
 
-  &.provider-github:after
+  &.provider-github:before
     background-image url(/img/github.png)
     background-color #222
 
-  &.provider-twitter:after
+  &.provider-twitter:before
     background-image url(/img/twitter.png)
     background-color #55acee
 

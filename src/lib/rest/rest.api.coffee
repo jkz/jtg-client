@@ -71,6 +71,8 @@ angular.module 'rest.api', [
 
         @cache = {}
 
+        @_one = {}
+
         # TODO
         # These are not used atm, but could be a way to define model fields
         # to send on create/update, or even marshal the data.
@@ -79,50 +81,67 @@ angular.module 'rest.api', [
 
         api.register this
 
+        # Either
+        # - (id) return an instance by id
+        # - (object with id) return an updated instance by id
+        # - (object without id) return a fresh uncached instance
+        @build: (data={}, options) =>
+          return @cache[data] if not typeof data == 'object'
+          instance = @cache[data.id] if data.id
+          return instance.extend(data) if instance
+          new this data, options
+
+        @cacheAdd: (obj) =>
+          @cache[obj.id] = obj if obj?.id
+
         ### Class Methods ###
-        @create: (args...) ->
-          instance = new this args...
+        @create: (data, options) =>
+          throw "Don't pass in id for create!" if data?.id
+          instance = new this data, options
           instance.create()
 
-        @index: (query) ->
+        @index: (query) =>
           api
             .get @endpoint, query
             .then (data) =>
-              new this obj for obj in data[@plural]
+              @build obj for obj in data[@plural]
 
-        @show: (id) ->
-          if obj = @cache[id]
-            dfd = $q.defer()
-            dfd.resolve obj
-            return dfd.promise
+        @show: (id) =>
+          return $.when @cache[id] if @cache[id]?
 
           api
             .get "#{@endpoint}/#{id}"
             .then (data) =>
-              new this data[@singular]
+              @build data[@singular]
 
-        @update: (id, data) ->
+        @update: (id, data) =>
           params = {}
           params[@singular] = data
-          api.put "#{@endpoint}", params
+          api.put @endpoint, params
 
-        @destroy: (id) ->
+        @destroy: (id) =>
           api
             .del "#{@endpoint}/{id}"
             .then (data) =>
               delete @cache[id]
 
-        @hasOne: (Other, key) ->
-          @many[key ? Other.singular] = Other
+        @hasOne: (Other, key) =>
+          @_one[key ? Other.singular] = Other
 
-        @hasMany: (Other, key) ->
-          @many[key ? Other.plural] = Other
+        @hasMany: (Other, key) =>
+          @_many[key ? Other.plural] = Other
 
         ### Instance Methods ###
 
-        constructor: (data, uncached=false) ->
+        constructor: (data, {uncached}={}) ->
           super
-          angular.extend this, data
+
+          # Important to extend before caching, because the id needs to
+          # be on the instance before it can be cached. Duh? :D
+          @extend data
+
+          # TODO we don't want to cache the minis I guess...
+          @constructor.cacheAdd this unless uncached
 
           # WORK IN PROGRESS
           # for key, Class of @many
@@ -134,29 +153,23 @@ angular.module 'rest.api', [
           #         (new Class data for _, data of @[key])
           #       else
           #         []
-
           @init()
 
-          # TODO we don't want to cache the minis I guess...
-          return if uncached
-
-          @constructor.cache[@id] = this if @id
 
         init: ->
           null
 
-        create: (owner) ->
+        create: (owner) =>
           prefix = if owner then "#{owner.constructor.endpoint}/#{owner.id}" else ''
 
           params = {}
           obj = params[@constructor.singular] = this
           api
             .post "#{prefix}/#{@constructor.endpoint}", params
-            .then (data) =>
-              angular.extend obj, data[@constructor.singular]
-              obj
-            .then (obj) =>
-              @constructor.cache[obj.id] = obj
+            .then (response) =>
+              response[@constructor.singular]
+            .then @extend
+            .then @constructor.cacheAdd
             .then (obj) =>
               (owner[@constructor.plural] ?= []).push obj if owner
               obj
@@ -166,3 +179,33 @@ angular.module 'rest.api', [
 
         destroy: ->
           @constructor.destroy @id
+
+        # XXX experimental, this could easily have unwanted side effects
+        extend: (data={}) =>
+          for key, val of data
+            @[key] = switch
+              when @[key]?.extend?
+                @[key].extend val
+              when Class = @constructor._one[key]
+                Class.build val
+              # when Class = @constructor._many[key]
+              #   switch typeof @[key]
+              #     when 'array'
+              #       (new Class data for data in val)
+              #     when 'object'
+              #       (new Class data for _, data of val)
+              #     else
+              #       []
+              else
+                @[key] = val
+          this
+
+        serialize: =>
+          obj = {}
+          for key, val of this
+            obj[key] =
+              if val?.serialize?
+                val.serialize()
+              else
+                val
+          obj

@@ -5,9 +5,9 @@ angular.module 'jtg'
 
   User::init = ->
     for account in @accounts ? []
-      @accounts[account.provider] = new Account account
+      @accounts[account.provider] = Account.build account
 
-    Object.defineProperty this, 'mentionName',
+    Object.defineProperty this, 'mention_name',
       get: =>
         if @current then 'You' else @name
 
@@ -17,17 +17,17 @@ angular.module 'jtg'
       # this.points = balance
       @points += value
       toast.create """
-        #{@mentionName} #{if value > 0 then 'earned' else 'lost'} #{Math.abs(value)} points for #{ref}!
+        #{@mention_name} #{if value > 0 then 'earned' else 'lost'} #{Math.abs(value)} points for #{ref}!
       """
     @on 'login', =>
       @online = true
       toast.create """
-        #{@mentionName} logged in.
+        #{@mention_name} logged in.
       """
     @on 'logout', =>
       @online = false
       toast.create """
-        #{@mentionName} logged out.
+        #{@mention_name} logged out.
       """
 
   hub.users.on 'data', ({uid, type, data}) ->

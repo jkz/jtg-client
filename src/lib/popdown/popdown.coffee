@@ -12,8 +12,6 @@ angular.module 'popdown', []
     redirectUri: window.location.origin + '/lib/popdown/popdown.html'
     redirectKey: 'redirect_uri'
 
-  console.log @config.redirectUri
-
   @$get = ($window, $q, $interval) =>
     $window._popdown = {}
 

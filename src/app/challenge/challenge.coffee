@@ -3,20 +3,16 @@ angular.module 'jtg'
 .service 'Challenge', (jtg, toast, session, User) ->
   Challenge = jtg.model 'challenges'
 
-  Challenge::init = ->
-    @user = new User @user
+  Challenge.hasOne User
 
   Challenge::boost = (amount) ->
     jtg
       .post "/challenges/#{@id}/points", {amount}
       .catch ({message}) ->
         toast message ? "Could not boost the challenge"
-      .then ({user, challenge}) ->
-        console.log {user, challenge}
-      .then =>
-        # TODO maybe return challenge and user total in response
-        @points += amount
-        session.user.points -= amount
+      .then ({challenge, user}) =>
+        @extend challenge
+        session.user.extend user
 
   Challenge
 
@@ -24,8 +20,8 @@ angular.module 'jtg'
   $scope.createChallenge = lock "Creating challenge", ->
     return reject "That's not a challenge." unless $scope.challenge
 
-    new Challenge $scope.challenge
-      .create()
+    Challenge
+      .create $scope.challenge
       .catch toast.create
       .then ->
         $scope.challenge = null

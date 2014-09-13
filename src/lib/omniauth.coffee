@@ -6,28 +6,29 @@ angular.module 'omniauth', []
     interval: 200
 
   @$get = ($window, $q, $interval) =>
+    busy = false
+
     @authenticate = (provider) =>
-      return $q.reject 'in progress' if $window.OmniauthCallback
+      return $q.reject 'in progress' if busy
+      busy = true
 
       dfd = $q.defer()
+
+      dfd.promise.finally ->
+        busy = false
 
       child = $window.open "#{@config.host}/auth/#{provider}"
 
       $win = angular.element(window)
+
+      # Listen for a cross window message from the given host
       $win.on 'message', handler = ({originalEvent}) =>
         {data, origin} = originalEvent
-        console.log {data, origin}
         return unless origin == @config.host
-        dfd.resolve data
         $win.off 'message', handler
-
-      $window.OmniauthCallback = (data) ->
-        alert 'OMNIAUTH'
-        console.log "OMNIAUTH", {data}
-        data.provider = provider
         dfd.resolve data
-        delete $window.OmniauthCallback
 
+      # Detect when the window has closed without a response
       stop = $interval ->
         return unless child.closed
         $interval.cancel stop
