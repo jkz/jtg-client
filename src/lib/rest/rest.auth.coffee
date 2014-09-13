@@ -1,5 +1,5 @@
 angular.module 'rest.auth', [
-  'rest'
+  'rest.api'
   'concurrency'
   'events'
   'LocalStorageModule'
@@ -11,53 +11,64 @@ angular.module 'rest.auth', [
 # - Maybe specify a method that is called on every api request
 .service 'Token', (localStorageService) ->
   class Token
-    constructor: (@api, @endpoint) ->
-      @endpoint ?= '/tokens'
-      @storageKey = "#{@api.name}.token"
+    constructor: (@api, @storageKey) ->
+      @storageKey ?= "#{@api.name}.token"
 
-      @set key if key = localStorageService.get @storageKey
+      # Initialise the token from storage on load
+      @set(@get())
 
-    fetch: (data) =>
-      @api
-        .post @endpoint, data
-        .catch @clear
-        .then ({token}) =>
-          @set token.key
-          token
+    get: =>
+      @key ? localStorageService.get @storageKey
 
     set: (key) =>
+      return @clear() unless key
       @key = @api.headers['Authorization'] = key
       localStorageService.set @storageKey, key
+      return
 
     clear: =>
       delete @key
       delete @api.headers['Authorization']
       localStorageService.remove @storageKey
+      return
 
 
 # Manages authentication and authorization via a token.
-# The token is retrieved by connecting with a provider and credentials.
+# The token is retrieved with the `authenticate` method.
 # The token is then attached to the cookies and the api.
 # The api sends the token with every request
-.service 'Auth', (lock, resolve, EventEmitter) ->
+.service 'Auth', (EventEmitter, $q) ->
   class Auth
     constructor: (@token) ->
       @emitter = new EventEmitter
 
-    # ### Connection
-    connect: lock "Connecting", (creds) ->
-      @token
-        .fetch creds
-        .then (data) =>
-          @emitter.emit 'connect', data
+    # Override this with your favourite auth method
+    # It should return an object with a `token` property.
+    # The entire object is emitted in a `connect` event.
+    # Any rejected reason is emitted in a `misconnect` event.
+    authenticate: (args...) ->
+      $q.reject "No authenticate method defined"
 
-    disconnect: lock "Disconnecting", ->
-      @token.clear()
-      @emitter.emit 'disconnect'
-      resolve()
+    # ### Connection
+    connect: (args...) =>
+      @authenticate args...
+        .then (data) =>
+          @token.set data.token
+          @emitter.emit 'connect', data
+        .catch (reason) =>
+          @token.clear()
+          @emitter.emit 'misconnect', reason
+        .finally()
+
+    disconnect: =>
+      $q.when()
+        .then @token.clear
+        .then (data) =>
+          @emitter.emit 'disconnect', data
 
 # TODO allow autoauth disable
 .run (rest, Token, Auth, $rootScope) ->
   rest.emitter.on 'Api:new', (api) ->
     api.auth = new Auth new Token api
     $rootScope.$apply()
+

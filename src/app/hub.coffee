@@ -11,6 +11,9 @@ angular.module 'jtg'
       chat: {}
 
     channel = (namespace) =>
+      # All this commented out nonsense was there under the assumption
+      # of client side channel.join/leave.
+
       # obj =
       #   forget: (uid) ->
       #     return unless sockets[namespace][uid]

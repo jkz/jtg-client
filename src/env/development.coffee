@@ -1,11 +1,5 @@
 angular.module 'jtg'
 
-.config (facebookProvider) ->
-  facebookProvider.config.appId = 299095383509760
-
-.config (githubProvider) ->
-  githubProvider.config.clientId = '96acc831e0388a4b4afc'
-
 .config (socketProvider) ->
   socketProvider.config.host = 'http://localhost:8080'
 
@@ -21,6 +15,8 @@ angular.module 'jtg'
 .config (hubProvider) ->
   hubProvider.config.host = 'http://localhost:8080'
 
-# .run (Mock) ->
-#   # Enable the mock provider
-#   null
+.config (omniauthProvider) ->
+  omniauthProvider.config.host = 'http://localhost:3000'
+
+.run (Account, Provider) ->
+  Account.providers.push Provider.create 'Developer'

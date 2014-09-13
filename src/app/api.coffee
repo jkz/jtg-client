@@ -9,5 +9,6 @@ angular.module 'jtg'
 
   this
 
-.factory 'Reward', (jtg) ->
-  jtg.model 'rewards'
+.run (Auth, omniauth) ->
+  Auth::authenticate = omniauth.authenticate
+
