@@ -20,6 +20,7 @@ angular.module 'jtg'
 
 
     set: (user) ->
+      console.log {user}
       session.user = user
       session.user.current = true
       session.emitter.emit 'connect', user
