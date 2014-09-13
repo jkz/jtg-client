@@ -8,15 +8,15 @@ angular.module 'rest.socket', [
 .provider 'rocket', ->
   @config =
     host: undefined
+    autoConnect: false
 
-  @socket = undefined
+  @socket = null
 
   @$get = (io) =>
-    socket: @socket ||= io.connect @config.host
-    config: @config
+    @socket ||= io.connect @config.host if @config.autoConnect
 
     # Subscribe to socket events
-    register: (Model) =>
+    @register = (Model) =>
       @socket.on "#{Model.plural}", ({event, data}) =>
         remote = data[Model.singular]
         local  = Model.cache[remote.id] ?= new Model
@@ -28,6 +28,8 @@ angular.module 'rest.socket', [
             delete Model.cache[local.id]
 
         Model.emit event, local
+
+    this
 
   this
 

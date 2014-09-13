@@ -1,7 +1,7 @@
 angular.module 'jtg'
 
 # Holds the login information and emits events on changes
-.service 'session', (jtg, reject, lock, User, EventEmitter) ->
+.service 'session', (jtg, reject, lock, User, EventEmitter, omniauth) ->
   session =
     emitter: new EventEmitter
 
@@ -10,20 +10,17 @@ angular.module 'jtg'
     # Please do not set or remove it manually, but use (dis)connect.
     user: null
 
-    connect: (provider, creds) ->
-      # reject "Already connected" if session.user
-      jtg.auth.connect provider, creds
-
-    disconnect: ->
-      # reject "Already disconnect" unless session.user
-      jtg.auth.disconnect()
-
-    identify: lock "Identifying", ->
+    identify: lock "Identifying", ({provider, new_user, new_account}={}) ->
       User
         .show 'me'
         .then session.set
+        .then (user) ->
+          session.emitter.emit 'new_user', user if new_user
+          session.emitter.emit 'new_account', user.accounts?[provider] if new_account
+
 
     set: (user) ->
+      console.log {user}
       session.user = user
       session.user.current = true
       session.emitter.emit 'connect', user
@@ -34,7 +31,11 @@ angular.module 'jtg'
       session.user.current = false
       session.user = null
 
+    connect: jtg.auth.connect
+    disconnect: jtg.auth.disconnect
+
   jtg.auth.emitter.on 'connect', session.identify
+  jtg.auth.emitter.on 'misconnect', session.clear
   jtg.auth.emitter.on 'disconnect', session.clear
 
   session
@@ -45,7 +46,7 @@ angular.module 'jtg'
   session.identify() if jtg.auth.token.key
 
 .run (socket, jtg) ->
-  jtg.auth.emitter.on 'connect', (user) ->
+  jtg.auth.emitter.on 'connect', ({user}) ->
     socket.emit 'auth', token: jtg.auth.token.key
   socket.emit 'auth', token: jtg.auth.token.key if jtg.auth.token.key
 

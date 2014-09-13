@@ -1,4 +1,6 @@
 button.provider(
   ng-class="provider.slug"
   ng-click="provider.connect()"
-) {{provider.name}}
+  title="{{provider.name}}"
+)
+  i.fa.fa-lg(ng-class="fa-{{provider.slug}}")

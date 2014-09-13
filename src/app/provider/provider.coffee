@@ -1,31 +1,22 @@
 angular.module 'jtg'
 
-.service 'Provider', (EventEmitter, jtg, lock) ->
+# ## Provider
+# ---
+# Representation of authentication (and perhaps api) providers
+.service 'Provider', (jtg, lock) ->
   class Provider
     @cache = {}
 
-    emitter: new EventEmitter
+    @create = (args...) =>
+      provider = new this args...
+      @cache[provider.slug] = provider
 
     constructor: (@name, @slug) ->
       @slug ?= @name.toLowerCase()
-      Provider.cache[@slug] = this
 
-      @connect = lock "Connecting", (args...) =>
-        @creds args...
-          .then (creds) =>
-            jtg.auth.connect
-              provider: @slug
-              creds: creds
-
-    creds: ->
-      throw new Error "Not implemented"
-
-  Provider
+    connect: =>
+      jtg.auth.connect @slug
 
 .directive 'provider', ->
   restrict: 'E'
   templateUrl: 'app/provider/provider.html'
-
-.service 'providers', (Provider, Facebook, Twitter, Github) ->
-  # TODO make these configurable (e.g as a provider)
-  Provider.cache

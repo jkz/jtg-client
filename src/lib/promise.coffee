@@ -3,25 +3,17 @@ angular.module 'promise', [
   'toast'
 ]
 
-# Extend the $q object
-.run ($q) ->
-  # TODO test if this runs before it dependent services are
-  $q.resolve = (args...) ->
-    dfd = $q.defer()
-    dfd.resolve args...
-    dfd.promise
-
 .service 'promise', (resolve, reject) ->
   {resolve, reject}
 
 .service 'resolve', ($q, toast) ->
   # TODO
   # - clear toast circumstances
-  (reason, level='silent') ->
+  (result, level='silent') ->
     unless level == 'silent'
-      console[level] reason
-      toast.create reason
-    $q.resolve reason
+      console[level] result
+      toast.create result
+    $q.when result
 
 .service 'reject', ($q, toast) ->
   # TODO

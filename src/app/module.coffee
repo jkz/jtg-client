@@ -6,19 +6,17 @@ angular.module 'jtg', [
   'events'
   'socket.io'
 
-  'rest'
+  'rest.api'
   'rest.auth'
 
   'jtg.minimap'
 
-  'facebook'
-  'github'
   'promise'
   'concurrency'
   'toast'
   'feeds'
 
-  'popdown'
+  'omniauth'
 
   'angularMoment'
   'filters'
@@ -28,6 +26,14 @@ angular.module 'jtg', [
 .config (toastProvider) ->
   toastProvider.config.autoExpose = true
 
+.run (Account, Provider) ->
+  Account.providers.push [
+    Provider.create 'Facebook'
+    Provider.create 'Github'
+    Provider.create 'Soundcloud'
+    Provider.create 'Twitter'
+  ]...
+
 .run (socket) ->
   socket.on 'connect', ->
     socket.emit 'init', 'client'
@@ -35,21 +41,3 @@ angular.module 'jtg', [
 .service 'jesse', (hub) ->
   hub.hosts.for('jessethegame')
 
-  #TODO keep track of the avatar location and scale
-  # and render the toast bubbles accordingly
-
-.run ($window, $rootScope) ->
-  $win = angular.element($window)
-
-  do updateScrollAtIntro = ->
-    scrollTop = $win.scrollTop()
-    switch
-      when scrollTop > 300 and $rootScope.scrollAtIntro
-        $rootScope.scrollAtIntro = false
-      when scrollTop <= 300 and not $rootScope.scrollAtIntro
-        $rootScope.scrollAtIntro = true
-      else
-        return
-    $rootScope.$apply()
-
-  $win.on 'scroll', updateScrollAtIntro
