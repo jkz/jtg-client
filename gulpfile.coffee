@@ -108,20 +108,18 @@ gulp.task 'clean', ->
     .pipe $.clean()
 
 push = (env) ->
-  s3 =
-    conf: require('./secrets/s3.json')[env]
-    options:
-      gzippedOnly: true
+  conf = require('./secrets/s3.json')[env]
+  options = gzippedOnly: true
 
-  runSequence 'clean', 'build', ->
-    gulp.src ['build/**/*'] #, 'static/**/*']
-      .pipe $.gzip()
-      .pipe $.s3 s3.conf, s3.options
+  gulp.src ['build/**/*', 'static/**/*']
+    .pipe $.gzip()
+    .pipe $.s3 conf, options
 
 gulp.task 'stage', ->
   push 'staging'
 
 gulp.task 'deploy', ->
-  push 'production'
+  # push 'production'
+  null
 
 gulp.task 'default', ['build', 'serve', 'watch']
