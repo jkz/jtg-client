@@ -1,4 +1,4 @@
-angular.module 'jtg'
+angular.module 'jtg.conf'
 
 .constant 'HOSTS',
   API: 'http://api.jessethegame.net'
