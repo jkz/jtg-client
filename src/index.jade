@@ -31,9 +31,16 @@ body#body(ng-app="jtg")
         button(ng-click="session.disconnect()") Disconnect
         .avatar(ng-style="{'background-image': 'url(' + session.user.image + ')'}")
 
-  include ./views/intro
 
   main
+    ui-view
+
+    //- include ./views/intro
+    //- include ./views/onboard
+    //- include ./views/earn
+    //- include ./views/challenges
+    //- include ./views/stories
+
     //- aside#accounts(ng-controller="AccountCtrl")
     //-   account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
 
@@ -41,13 +48,16 @@ body#body(ng-app="jtg")
 
     //- aside#navigation
 
-    include ./views/onboard
+    section#hire
+      .splash
+        h2 Hire the Game
+        p Power Points not giving you enough control? You can always throw money at the problem.
 
-    .row(ui-view)
+      p
+        | I built all of this with great joy and I would love making things for or with you.
 
-    include ./views/earn
-    include ./views/challenges
-    include ./views/stories
+      p
+        | Drop me a line on <a href="mailto:jesse@jessethegame.net">jesse@jessethegame.net</a>
 
   footer
     minimap#minimap
@@ -65,6 +75,7 @@ body#body(ng-app="jtg")
 
   script(src="/vendor/jquery/dist/jquery.js")
   script(src="/vendor/angular/angular.js")
+  script(src="/vendor/angular-ui-router/release/angular-ui-router.js")
   script(src="/vendor/moment/moment.js")
   script(src="/vendor/angular-moment/angular-moment.js")
   script(src="/vendor/angular-local-storage/angular-local-storage.js")
@@ -76,5 +87,6 @@ body#body(ng-app="jtg")
   <!-- inject:templates.js -->
   <!-- endinject -->
 
+  // script(src="/app/config.js")
   script(src="/env/" + (process.env.NODE_ENV || 'development') + ".js")
 

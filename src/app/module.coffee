@@ -1,30 +1,35 @@
-# angular.module 'jtg.conf', []
+angular.module 'jtg.conf', [
+  'jtg.hub'
+  'jtg.api'
+  'jtg.minimap'
+
+  'socket.io'
+  'omniauth'
+  'feeds'
+  'toast'
+]
 
 angular.module 'jtg', [
-  # 'jtg.conf'
+  'jtg.api'
+  'jtg.hub'
+  'jtg.conf'
 
   'events'
   'socket.io'
 
-  'rest.api'
-  'rest.auth'
-
   'jtg.minimap'
+
+  'ui.router'
 
   'promise'
   'concurrency'
   'toast'
   'feeds'
 
-  'omniauth'
-
   'angularMoment'
   'filters'
   'directives'
 ]
-
-.config (toastProvider) ->
-  toastProvider.config.autoExpose = true
 
 .run (Account, Provider) ->
   Account.providers.push [

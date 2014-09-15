@@ -768,9 +768,21 @@ main
     &:nth-child(5n + 4)
       transform rotate(.5deg)
 
+#hire
+  .splash
+    &:before
+      background-color splash-color-1
+      // transform translateX(-50%) rotate(-1deg)
+      transform translateX(-50%) skewY(-1deg)
+
+  background-color #333
+  color white
+
 
 @import 'providers'
 @import 'stories'
 @import 'chat'
 @import 'map'
 @import 'shift'
+
+

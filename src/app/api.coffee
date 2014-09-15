@@ -1,4 +1,8 @@
-angular.module 'jtg'
+angular.module 'jtg.api', [
+  'rest.api'
+  'rest.auth'
+  'omniauth'
+]
 
 .provider 'jtg', ->
   @config =

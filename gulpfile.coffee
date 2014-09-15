@@ -70,6 +70,7 @@ gulp.task 'index', ['vendor', 'css', 'js', 'templates'], ->
         '!build/templates.js'
         '!build/vendor/**/*'
         '!build/env/**/*'
+        # '!build/app/config.js'
       ], read: false)
     , ignorePath: 'build')
     .pipe $.inject(

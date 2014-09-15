@@ -8,6 +8,17 @@ angular.module 'jtg'
       sample(['Hey', 'Sup', 'Hi', 'Welcome', 'Heya', 'Yo'])
     bye: ->
       sample(['Bye', 'Cya', 'Later', 'Ciao', 'Peace'])
+    idle: ->
+      sample([
+        "Are you ok? Click me if you need any help!"
+        "Like what you see? I'm up for hire!"
+        "You look nice today."
+        "Have you listened to my track Arcadia yet?"
+        "Tell a friend! If you hashtag #jtg you'll even score points..."
+        "I work hard to improve my game."
+        "People used to laugh when I told them I'd be a comedian. Now they don't."
+      ])
+
 
 .run (toast, session, feeds, io, slang) ->
   session.emitter.on 'connect', (user) ->
@@ -24,3 +35,27 @@ angular.module 'jtg'
 
   io.connect('http://localhost:8080/jessethegame').on 'data', (data) ->
     toast.create JSON.stringify(data)
+
+.run ($timeout, $window, slang, toast) ->
+  messages = [
+    "Are you ok? Click me if you need any help!"
+    "Like what you see? I'm up for hire!"
+    "You look nice today."
+    "Have you listened to my track Arcadia yet?"
+    "Tell a friend! If you hashtag #jtg you'll even score points..."
+    "I work hard to improve my game."
+    "People used to laugh when I told them I'd become a comedian. Now they don't laugh anymore."
+  ]
+
+  timeout = null
+
+  do resetTimer = ->
+    $timeout.cancel timeout if timeout
+    timeout = $timeout ->
+      toast.create messages.shift()
+      resetTimer() if messages.length
+    , 5000
+
+  $win = angular.element($window)
+  $win.on 'click', resetTimer
+

@@ -1,4 +1,6 @@
-angular.module 'jtg'
+angular.module 'jtg.hub', [
+  'socket.io'
+]
 
 .provider 'hub', ->
   @config =
