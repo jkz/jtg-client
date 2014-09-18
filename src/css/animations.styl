@@ -1,0 +1,21 @@
+@keyframes loading
+  0%, 100%
+    border-top solid 2px red
+  25%
+    border-right solid 2px red
+  50%
+    border-bottom solid 2px red
+  75%
+    border-left solid 2px red
+
+loading()
+  animation-name loading
+  animation-duration 2s
+  animation-timing-function ease-in
+  animation-delay 0
+  animation-iteration-count infinite
+  animation-direction normal
+  animation-play-state running
+
+.loading
+  loading()

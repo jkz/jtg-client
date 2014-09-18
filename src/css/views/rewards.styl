@@ -1,0 +1,31 @@
+#rewards
+  ul
+    list-style none
+    padding-left 3.5em
+    *
+      vertical-align middle
+
+  li[points]
+    display block
+    padding 0
+    margin 1em 0
+    &:before
+      margin-left -3.5em
+      text-align center
+      display inline-block
+      content '+' attr(points)
+      padding .5em
+      margin-right .5em
+      box-shadow inset .25em .25em rgba(0,0,0,0.15)
+      background-color #eee
+      color white
+      background-color #222
+
+
+  li.completed,
+  li:hover
+    &:before
+      background-color action-color !important
+      box-shadow inset .25em .25em rgba(0,0,0,0.05)
+      // box-shadow 0 0
+

@@ -1,0 +1,36 @@
+.toasts
+  toast
+    // margin-bottom 1em
+    display block
+    background-color white
+    color black
+    padding 1em
+    box-shadow 0 .5em rgba(0,0,0,0.05)
+    margin-top -.5em
+
+    .dismiss
+      float right
+      font-size 150%
+      opacity .25
+
+      &:hover
+        opacity .5
+
+#toasts-header
+  position fixed
+  // bottom 0
+  top 4em
+  left 2em
+  width 12em
+
+  font-size 75%
+
+  // @media (min-width: 600px)
+
+  toast
+    border-radius 0 1em 1em 1em
+
+.toasts
+  display flex
+  flex-direction column-reverse
+  transition transform .3s

@@ -1,0 +1,44 @@
+#accounts
+  right 0
+
+  transform translateX(12em)
+
+  @media (min-width: 600px)
+    transform translateX(8em)
+    &:hover
+      transform translateX(.5em)
+
+  .avatar
+    height 4em
+    width 4em
+
+    margin -1em -1em -1em 1em
+
+    display inline-block
+
+    background-size cover
+    background-position center center
+
+  button
+    height 4em
+    width 100%
+    margin-bottom 1em
+
+    background-size 4em
+    background-repeat no-repeat
+    padding-left 4em
+
+    background-size 5em
+
+    transition background .3s
+
+    background-position 0 .5em
+    &:hover
+      background-position 0 -.5em
+
+  .account
+    background-position -.75em 0em
+    &:hover
+      background-position -.75em -.25em
+
+

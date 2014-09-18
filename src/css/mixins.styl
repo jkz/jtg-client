@@ -1,0 +1,36 @@
+skewy-background(color, angle)
+  position relative
+
+  &:before
+    z-index -1
+    position absolute
+    content ''
+    display block
+    top 10%
+    bottom 10%
+    left 0
+    right 0
+    background-color color
+    transform skewY(angle)
+
+rise(n=1)
+  idle-height = (.25em * n)
+  active-height = (.15em * n)
+
+  margin -idle-height 0 0 -idle-height
+  box-shadow idle-height idle-height rgba(0,0,0,0.15)
+
+  &:active
+    margin -active-height 0 0 -active-height
+    box-shadow active-height active-height rgba(0,0,0,0.15)
+
+sink(n=1)
+  idle-height = (.25em * n)
+
+  box-shadow inset idle-height idle-height rgba(0,0,0,0.15)
+
+hover-background(idle-color, active-color)
+  transition background-color .15s
+  background-color idle-color
+  &:hover
+    background-color active-color

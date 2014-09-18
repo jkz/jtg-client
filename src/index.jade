@@ -18,7 +18,14 @@ head
 body#body(ng-app="jtg")
   header
     h1(ng-class="{'duck': expandMinimap || scrollAtIntro}")
-      | Jesse the Game
+      a(ui-sref="intro") Jesse the Game
+
+    nav
+      a(ui-sref="onboard") Onboard
+      a(ui-sref="rewards") Rewards
+      a(ui-sref="spend") Spend
+      a(ui-sref="challenges") Challenges
+      a(ui-sref="stories") Stories
 
     aside.toasts#toasts-header(ng-cloak ng-if="!scrollAtIntro")
       toast(ng-repeat="toast in toast.toasts")
@@ -50,14 +57,12 @@ body#body(ng-app="jtg")
 
     section#hire
       .splash
-        h2 Hire the Game
-        p Power Points not giving you enough control? You can always throw money at the problem.
+        h2 Hire Jesse
+        p Power Points not giving you enough control? You could always throw money at the problem.
 
-      p
-        | I built all of this with great joy and I would love making things for or with you.
-
-      p
-        | Drop me a line on <a href="mailto:jesse@jessethegame.net">jesse@jessethegame.net</a>
+      .content
+        p I built all of this with great joy and I would love making things for or with you.
+        p Drop me a line on <a href="mailto:jesse@jessethegame.net">jesse@jessethegame.net</a>
 
   footer
     minimap#minimap

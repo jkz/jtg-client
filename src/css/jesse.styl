@@ -1,0 +1,27 @@
+.jesse
+  width 12em
+  height 12em
+  display block
+  margin auto
+  margin-top -8em
+  border-radius 50%
+  background-image url(/img/jesse.png)
+  background-repeat no-repeat
+  transition background-position .3s
+  background-color #eee
+
+  background-size 6em
+  background-position center 2em
+
+  &:hover
+    background-position center 1em
+
+  @media (min-width 600px)
+    background-size 8em
+    background-position center -1em
+    &:hover
+      background-position center -2em
+
+  &.duck
+    background-position center 12em
+
