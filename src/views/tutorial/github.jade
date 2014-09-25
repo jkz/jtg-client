@@ -1,0 +1,26 @@
+.card.github
+  h3 Github
+
+  ul
+    // Connect
+    li(
+      points="rewards.connect.points"
+      ng-class="{completed: rewards.connect.count}"
+    )
+      a(ng-click="session.connect('github')") Connect your account
+
+    // Follow
+    li(
+      points="150"
+      ng-class="{completed: user.accounts.github.is_follower, disabled: !user.accounts.github}"
+    )
+      a(href="//github.com/jessethegame") Follow me
+
+    // Stargaze
+    li(
+      points="150"
+      ng-class="{disabled: !user.accounts.github}"
+    )
+      | Star any of
+      = ' '
+      a(href="//github.com/jessethegame") my repositories

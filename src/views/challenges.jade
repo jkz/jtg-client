@@ -11,7 +11,7 @@ section#challenges(ng-controller="ChallengeCtrl")
       a.pricetag(title="This will consume 300 Power Points.") -300
       input(type="submit" value="Challenge Jesse" ng-disabled="createChallenge.locked")
 
-  challenge.card(ng-repeat="challenge in challenges | orderBy:'created_at'")
+  challenge.card(ng-repeat="challenge in challenges | orderObjectBy:'created_at':true")
 
 
 

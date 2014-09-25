@@ -17,17 +17,19 @@ angular.module 'rest.socket', [
 
     # Subscribe to socket events
     @register = (Model) =>
-      @socket.on "#{Model.plural}", ({event, data}) =>
-        remote = data[Model.singular]
+      @socket.on "#{Model.plural}", ({action, data}) =>
+        remote = data
         local  = Model.cache[remote.id] ?= new Model
 
-        switch event
+        switch action
           when 'create', 'update'
             angular.extend local, remote
-          when 'delete'
+          when 'destroy'
             delete Model.cache[local.id]
 
-        Model.emit event, local
+        #TODO add a way to describe to other actions
+
+        Model.emitter.emit action, local
 
     this
 

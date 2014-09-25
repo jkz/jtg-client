@@ -1,14 +1,15 @@
 .minimap.liftup(
   ng-class="{expanded: expandMinimap}"
 )
-  .header(ng-click="expandMinimap = !expandMinimap") Minimap
+  .header(ng-click="expandMinimap = !expandMinimap") Minimap - {{map.isHostVisible}}
   .body
     .map-wrapper
       google-map(
         center="map.center"
         zoom="map.zoom"
         draggable="true"
-        events="{drag: rerenderMarkers}"
+        events="{bounds_changed: updateHostVisible}"
+        pan="true"
       )
         marker(
           idKey="marker.idKey"
@@ -27,4 +28,5 @@
   .footer
     button(ng-click="centerYou()") You
     button(ng-click="centerHost()") Jesse
-    button(ng-click="minimap.feed.start()") Broadcast
+    button(ng-if="!map.running" ng-click="map.start()") Start
+    button(ng-if="map.running" ng-click="map.stop()") Stop

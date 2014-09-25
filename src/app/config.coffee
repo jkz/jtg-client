@@ -21,5 +21,9 @@ angular.module 'jtg.conf'
 .config (hubProvider, HOSTS) ->
   hubProvider.config.host = HOSTS.HUB
 
+.config (rocketProvider, HOSTS) ->
+  rocketProvider.config.host = HOSTS.HUB + '/rocket'
+  rocketProvider.config.autoConnect = true
+
 .config (omniauthProvider, HOSTS) ->
   omniauthProvider.config.host = HOSTS.API

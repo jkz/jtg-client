@@ -17,12 +17,17 @@ angular.module 'rest.auth', [
       # Initialise the token from storage on load
       @set(@get())
 
+    header: =>
+      "Bearer #{@key}"
+
     get: =>
       @key ? localStorageService.get @storageKey
 
     set: (key) =>
+      console.log "Token.set", {key}
       return @clear() unless key
-      @key = @api.headers['Authorization'] = key
+      @key = key
+      @api.headers['Authorization'] = @header()
       localStorageService.set @storageKey, key
       return
 
@@ -49,10 +54,15 @@ angular.module 'rest.auth', [
     authenticate: (args...) ->
       $q.reject "No authenticate method defined"
 
+    identify: ->
+      $q.reject "No identify method defined"
+
     # ### Connection
     connect: (args...) =>
+      console.log "Auth.connect", {args}
       @authenticate args...
         .then (data) =>
+          console.log '@authenticate.then', {data}
           @token.set data.token
           @emitter.emit 'connect', data
         .catch (reason) =>
@@ -69,6 +79,11 @@ angular.module 'rest.auth', [
 # TODO allow autoauth disable
 .run (rest, Token, Auth, $rootScope) ->
   rest.emitter.on 'Api:new', (api) ->
-    api.auth = new Auth new Token api
+    token = new Token api
+    api.auth = new Auth token
+    # # TODO fix autoidentify timing
+    # console.log "Autoidentifying"
+    # api.auth.identify() if token.key
     $rootScope.$apply()
+
 

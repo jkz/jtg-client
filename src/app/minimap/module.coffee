@@ -1,5 +1,8 @@
 angular.module 'jtg.minimap', [
-  # 'ui.map'
+  'jtg.api'
+  'jtg.session'
+
   'google-maps'
   'socket.io'
+  'events'
 ]

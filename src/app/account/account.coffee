@@ -6,7 +6,10 @@ angular.module 'jtg'
 # An account is a provider/uid combination which ties
 # User objects to providers and enables login.
 .service 'Account', (jtg, Provider) ->
-  Account = jtg.model 'accounts'
+  # TODO
+  # Yugh, this seems superugly. We might want some support in
+  # rest.api for nested resources...
+  Account = jtg.model 'accounts', endpoint: '/me/accounts'
 
   Account.providers = []
 
@@ -16,13 +19,20 @@ angular.module 'jtg'
     # result in unexpected behaviour
     @provider = Provider.cache[@provider]
 
+  Account.connect = (provider) ->
+    jtg.auth.authenticate(provider)
+      .then Account.create
+      .then (response) ->
+        console.log {response}
+        Account.get provider
+
   Account::disconnect = ->
     Account.destroy @provider.slug
 
   Account
 
 .controller 'AccountCtrl', ($scope, Account) ->
-  $scope.providers = Account.providers
+  $scope.Account = Account
 
 .directive 'account', ->
   restrict: 'E'

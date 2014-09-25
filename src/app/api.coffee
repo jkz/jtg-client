@@ -1,6 +1,7 @@
 angular.module 'jtg.api', [
   'rest.api'
   'rest.auth'
+  'rest.socket'
   'omniauth'
 ]
 
@@ -13,6 +14,15 @@ angular.module 'jtg.api', [
 
   this
 
-.run (Auth, omniauth) ->
-  Auth::authenticate = omniauth.authenticate
+.factory 'auth', (jtg) ->
+  jtg.auth
 
+.run (Auth, omniauth, jtg, session, User) ->
+  Auth::authenticate = (args...) ->
+    omniauth
+      .authenticate(args...)
+      .then ({token}) ->
+        jtg.post '/users', {token}
+      .then ({data}) ->
+        data
+  Auth::identify = session.identify

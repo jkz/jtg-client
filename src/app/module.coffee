@@ -13,6 +13,7 @@ angular.module 'jtg', [
   'jtg.api'
   'jtg.hub'
   'jtg.conf'
+  'jtg.session'
 
   'events'
   'socket.io'
@@ -45,3 +46,9 @@ angular.module 'jtg', [
 
 .service 'jesse', (hub) ->
   hub.hosts.for('jessethegame')
+
+# This is called here to ensure all parts of the app
+# that depend on the event have been loaded
+.run (jtg) ->
+  # TODO This assumes too much information atm :/
+  jtg.auth.identify() if jtg.auth.token.key

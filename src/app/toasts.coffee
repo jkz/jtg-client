@@ -20,7 +20,7 @@ angular.module 'jtg'
       ])
 
 
-.run (toast, session, feeds, io, slang) ->
+.run (toast, session, feeds, io, slang, Challenge) ->
   session.emitter.on 'connect', (user) ->
     toast.create "#{slang.hi()} #{user.name}!"
 
@@ -35,6 +35,9 @@ angular.module 'jtg'
 
   io.connect('http://localhost:8080/jessethegame').on 'data', (data) ->
     toast.create JSON.stringify(data)
+
+  Challenge.emitter.on 'create', ({text}) ->
+    toast.create "New challenge: #{text}"
 
 .run ($timeout, $window, slang, toast) ->
   messages = [
@@ -52,8 +55,9 @@ angular.module 'jtg'
   do resetTimer = ->
     $timeout.cancel timeout if timeout
     timeout = $timeout ->
+      return unless messages.length
       toast.create messages.shift()
-      resetTimer() if messages.length
+      resetTimer()
     , 5000
 
   $win = angular.element($window)

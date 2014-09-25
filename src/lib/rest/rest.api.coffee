@@ -9,6 +9,7 @@
 # .factory 'Property' (api) ->
 #   api.model 'properties', 'property'
 #
+# TODO fix nested resource support, namely the endpoints need to be sorted.
 # TODO decide on inheritance vs composition, in this case for the eventemitter
 angular.module 'rest.api', [
   'events'
@@ -40,24 +41,29 @@ angular.module 'rest.api', [
       @models[Model.plural] = Model
       @emitter.emit 'Model:new', Model
 
-    http: (method, url, data) =>
-      $http
+
+    http: (method, url, data, {parsed}) =>
+      response = $http
         url: "#{@endpoint}#{url}.json"
         method: method
         data: data
         headers: @headers
-      .error ({data}) ->
-        data
-      .error ({code, reason}) ->
-        console.log 'rest.error', code, reason
-      .then ({data}) ->
-        console.log 'rest', method, url, data
-        data
 
-    get:  (url, query) -> @http 'get', url, query
-    post: (url, params) -> @http 'post', url, params
-    put:  (url, params) -> @http 'put',  url, params
-    del:  (url) -> @http 'delete', url
+      return response unless parsed
+
+      response
+        .error ({data}) ->
+          data
+        .error ({code, reason}) ->
+          console.log 'rest.error', code, reason
+        .then (response) ->
+          console.log 'rest', method, url, data
+          response
+
+    get:  (url, query) -> @http 'get', url, query, parsed: true
+    post: (url, params) -> @http 'post', url, params, parsed: true
+    put:  (url, params) -> @http 'put',  url, params, parsed: true
+    del:  (url) -> @http 'delete', url, null, parsed: true
 
     model: (plural, singular, parent) ->
       api = this
@@ -103,7 +109,7 @@ angular.module 'rest.api', [
         @index: (query) =>
           api
             .get @endpoint, query
-            .then (data) =>
+            .then ({data}) =>
               @build obj for obj in data[@plural]
 
         @show: (id) =>
@@ -111,7 +117,7 @@ angular.module 'rest.api', [
 
           api
             .get "#{@endpoint}/#{id}"
-            .then (data) =>
+            .then ({data}) =>
               @build data[@singular]
 
         @update: (id, data) =>
@@ -122,7 +128,7 @@ angular.module 'rest.api', [
         @destroy: (id) =>
           api
             .del "#{@endpoint}/{id}"
-            .then (data) =>
+            .then =>
               delete @cache[id]
 
         @hasOne: (Other, key) =>
@@ -154,7 +160,6 @@ angular.module 'rest.api', [
           #       else
           #         []
           @init()
-
 
         init: ->
           null

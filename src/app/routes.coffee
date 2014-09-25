@@ -27,3 +27,6 @@ angular.module 'jtg'
     .state 'rewards',
       url: "/rewards"
       templateUrl: "views/rewards.html"
+    .state 'accounts',
+      url: "/accounts"
+      templateUrl: "views/accounts.html"

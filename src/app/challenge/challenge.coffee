@@ -5,6 +5,11 @@ angular.module 'jtg'
 
   Challenge.hasOne User
 
+  Challenge::init = ->
+    Object.defineProperty this, 'timestamp',
+      get: =>
+        new Date(@created_at).getTime()
+
   Challenge::boost = (amount) ->
     jtg
       .post "/challenges/#{@id}/points", {amount}

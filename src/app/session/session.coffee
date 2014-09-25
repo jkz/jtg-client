@@ -1,7 +1,14 @@
-angular.module 'jtg'
+angular.module 'jtg.session', [
+  'jtg.api'
+
+  'concurrency'
+  'promise'
+  'events'
+  'socket.io'
+]
 
 # Holds the login information and emits events on changes
-.service 'session', (jtg, reject, lock, User, EventEmitter, omniauth) ->
+.service 'session', (auth, reject, lock, User, EventEmitter) ->
   session =
     emitter: new EventEmitter
 
@@ -12,7 +19,7 @@ angular.module 'jtg'
 
     identify: lock "Identifying", ({provider, new_user, new_account}={}) ->
       User
-        .show 'me'
+        .me()
         .then session.set
         .then (user) ->
           session.emitter.emit 'new_user', user if new_user
@@ -32,24 +39,21 @@ angular.module 'jtg'
         session.user.current = false
       session.user = null
 
-    connect: jtg.auth.connect
-    disconnect: jtg.auth.disconnect
+    connect: auth.connect
+    disconnect: auth.disconnect
 
-  jtg.auth.emitter.on 'connect', session.identify
-  jtg.auth.emitter.on 'misconnect', session.clear
-  jtg.auth.emitter.on 'disconnect', session.clear
+  auth.emitter.on 'connect', session.identify
+  auth.emitter.on 'misconnect', session.clear
+  auth.emitter.on 'disconnect', session.clear
 
   session
 
-.run ($rootScope, session, jtg, socket) ->
+.run ($rootScope, session, jtg) ->
   $rootScope.session = session
 
-  session.identify() if jtg.auth.token.key
-
-.run (socket, jtg) ->
-  jtg.auth.emitter.on 'connect', ({user}) ->
-    socket.emit 'auth', token: jtg.auth.token.key
-  socket.emit 'auth', token: jtg.auth.token.key if jtg.auth.token.key
+  # This used to be called here, but moved it to the top level so
+  # so everything is loaded before the connect event fires.
+  #session.identify() if jtg.auth.token.key
 
 .controller 'SessionCtrl', ($scope, Account) ->
   $scope.Account = Account

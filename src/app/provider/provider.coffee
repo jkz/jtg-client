@@ -3,7 +3,7 @@ angular.module 'jtg'
 # ## Provider
 # ---
 # Representation of authentication (and perhaps api) providers
-.service 'Provider', (jtg, lock) ->
+.service 'Provider', (auth) ->
   class Provider
     @cache = {}
 
@@ -15,7 +15,7 @@ angular.module 'jtg'
       @slug ?= @name.toLowerCase()
 
     connect: =>
-      jtg.auth.connect @slug
+      auth.connect @slug
 
 .directive 'provider', ->
   restrict: 'E'

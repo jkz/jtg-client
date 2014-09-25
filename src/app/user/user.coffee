@@ -1,4 +1,4 @@
-angular.module 'jtg'
+angular.module 'jtg.api'
 
 .service 'User', (jtg, Account, Provider, hub, toast) ->
   User = jtg.model 'users'
@@ -29,6 +29,14 @@ angular.module 'jtg'
       toast.create """
         #{@mention_name} logged out.
       """
+
+  User::addAccount = Account.connect
+
+  User.me = ->
+    jtg
+      .get "/me"
+      .then ({data}) =>
+        @build data[@singular]
 
   hub.users.on 'data', ({uid, type, data}) ->
     user = User.cache[uid]?.emit type, data

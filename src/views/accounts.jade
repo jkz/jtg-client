@@ -1,0 +1,8 @@
+section#accounts
+  account(ng-if="session.user" ng-repeat="(slug, account) in session.user.accounts")
+  provider(
+    ng-if="!session.user.accounts[slug]"
+    ng-repeat="(slug, provider) in Account.providers"
+    ng-click="user.addAccount(slug)"
+  )
+

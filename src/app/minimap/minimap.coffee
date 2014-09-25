@@ -9,94 +9,120 @@ angular.module 'jtg.minimap'
         $rootScope.$apply ->
           callback args...
 
-# TODO
-# - pass in host/channel as parameter to support multiple minimaps
-.provider 'minimap', ->
-  @config =
-    host: null
-    namespace: '/location'
+.service 'Minimap', (io, navigator, EventEmitter, $http, $interval) ->
+  class Minimap extends EventEmitter
+    constructor: ({@host, @namespace, @interval}) ->
+      super
 
-  @$get = (io, navigator, $interval) =>
+      @stopper = null
+      @coords = {}
 
-    stopper = null
-
-    @feed =
-      coords: undefined
-      socket: io.connect("#{@config.host}#{@config.namespace}")
-      running: no
-
-      broadcast: (coords) =>
-        @feed.socket.emit('location', coords ? @feed.coords)
-
-      locate: =>
-        navigator.geolocation.getCurrentPosition ({coords}) =>
-          @feed.coords = coords
-
-      start: =>
-        stopper ?= $interval @feed.locate, 3000
-        @feed.running = yes
-
-      stop: =>
-        @feed.running = no
-        stopper?()
-        stopper = null
-
-    this
-
-  this
-
-.directive 'minimap', (minimap, navigator, $timeout) ->
-  restrict: 'E'
-  templateUrl: 'app/minimap/minimap.html'
-
-  controller: ($scope) ->
-    # TODO
-    # Not entirely sure why this doesn't work on link,
-    # but does work as controller. Maybe a priority thing?
-    $scope.map =
-      zoom: 15
-      center:
+      @zoom = 15
+      @center =
         latitude: 0
         longitude: 0
 
-  link: (scope) ->
-    scope.minimap = minimap
+      @locations = {}
 
+      @running = no
+
+      @socket = io.connect("#{@host}#{@namespace}")
+
+      @socket.on 'location:set', (location) =>
+        @emit 'location:set', location
+
+      @socket.on 'location:del', (location) =>
+        @emit 'location:del', location
+
+    broadcast: ({coords}={}) =>
+      @coords = coords if coords?
+      console.log "broadcast", {coords}
+      @socket.emit('location', @coords)
+
+    locate: =>
+      navigator.geolocation.getCurrentPosition @broadcast
+
+    start: =>
+      @stopper ?= $interval @locate, 3000
+      @running = yes
+
+    stop: =>
+      @running = no
+      @stopper?()
+      @stopper = null
+
+    getLocations: =>
+      $http
+        .get "#{@host}#{@namespace}"
+        .then (locations) =>
+          console.log {locations}
+          for id, location in @locations
+            if locations[id]
+              @emit 'locations.set', locations[id]
+            else
+              @emit 'locations.del', location
+
+    setCenter: ({coords}={}) =>
+      {longitude, latitude} = coords
+      @center = {longitude, latitude}
+
+
+
+.directive 'minimap', (navigator, $timeout) ->
+  restrict: 'E'
+  templateUrl: 'app/minimap/minimap.html'
+  scope:
+    map: '='
+  controller: ($scope) ->
+    $scope.updateHostVisible = (map, args...) ->
+      console.log 'updateHostVisible'
+      console.log {map, args}
+      bounds = map?.getBounds()
+      console.log {bounds}
+      coords = $scope.host?.coords
+      console.log {coords}
+      contains = bounds?.contains?(coords)
+      console.log {contains}
+      $scope.map.isHostVisible = contains
+
+  link: (scope) ->
+    scope.host = null
     scope.markers = {}
     scope.markerOptions = {}
 
-    scope.center = ({longitude, latitude}) ->
-      scope.map.center = {longitude, latitude}
-
     scope.centerYou = ->
-      navigator.geolocation.getCurrentPosition ({coords}) ->
-        scope.center coords
+      navigator.geolocation.getCurrentPosition scope.map.setCenter
 
     scope.centerHost = ->
-      # TODO special case jesse
-      scope.center (scope.markers.Jesse ? scope.markers.Anon)?.coords
+      scope.map.setCenter scope.host
 
-    createIcon = (url) ->
-      # url: url
-      # scaledSize: new google.maps.Size 32, 32
-      url: '/img/jesse.png'
-      scaledSize: new google.maps.Size (186 / 4), (518 / 4)
+    createIcon = ({image, is_host}) ->
+      if is_host
+        url: '/img/jesse.png'
+        scaledSize: new google.maps.Size (186 / 4), (518 / 4)
+      else
+        url: image
+        scaledSize: new google.maps.Size 32, 32
 
-    createMarker = ({name, image}) ->
-      idKey: name
-      icon: createIcon image
+    createMarker = ({user, coords}) ->
+      return unless user
+      {id, image} = user
+      marker = scope.markers[id] ?= idKey: id, icon: createIcon user
+      marker.coords = coords
+      scope.host = marker if user.is_host
 
-    minimap.feed.socket.on 'location', ({coords, user}) ->
-      {longitude, latitude} = coords
-      marker = scope.markers[user.name] ?= createMarker user
-      marker.coords = {longitude, latitude}
-      # marker.label = user.name
-      scope.map.center = {longitude, latitude}
+    deleteMarker = ({user}) ->
+      return unless user
+      {id} = user
+      scope.marker[id]?.setMap(null)
+      delete scope.markers[id] if scope.markers[id]?
 
-# .run ($rootScope) ->
-#   $rootScope.map =
-#     zoom: 15
-#     center:
-#       latitude: 0
-#       longitude: 0
+    scope.map.on 'location:set', createMarker
+    scope.map.on 'location:del', deleteMarker
+    scope.$watch 'host', ->
+      console.log 'map', scope.map
+      scope.updateHostVisible(scope.map.control?.getGMap?())
+    , true
+
+    return
 
