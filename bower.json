@@ -10,6 +10,7 @@
     "lodash": "~2.4.1",
     "angular-google-maps": "~1.2.1",
     "fontawesome": "~4.2.0",
-    "angular-ui-router": "~0.2.11"
+    "angular-ui-router": "~0.2.11",
+    "ngstorage": "~0.3.0"
   }
 }

@@ -47,7 +47,7 @@ angular.module 'jtg'
     "Have you listened to my track Arcadia yet?"
     "Tell a friend! If you hashtag #jtg you'll even score points..."
     "I work hard to improve my game."
-    "People used to laugh when I told them I'd become a comedian. Now they don't laugh anymore."
+    "People used to laugh when I told them I'd become a comedian. Now they don't."
   ]
 
   timeout = null

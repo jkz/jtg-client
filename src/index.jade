@@ -15,7 +15,7 @@ head
   <!-- inject:css -->
   <!-- endinject -->
 
-body#body(ng-app="jtg")
+body#body(ng-app="jtg" ng-style="{'font-size': session.preferences.fontSize + 'px'}")
   header
     h1(ng-class="{'duck': expandMinimap || scrollAtIntro}")
       a(ui-sref="intro") Jesse the Game
@@ -84,6 +84,7 @@ body#body(ng-app="jtg")
   script(src="/vendor/moment/moment.js")
   script(src="/vendor/angular-moment/angular-moment.js")
   script(src="/vendor/angular-local-storage/angular-local-storage.js")
+  script(src="/vendor/ngstorage/ngstorage.js")
   script(src='/vendor/lodash/dist/lodash.compat.js')
   script(src='/vendor/angular-google-maps/dist/angular-google-maps.js')
 

@@ -57,6 +57,9 @@ angular.module 'rest.auth', [
     identify: ->
       $q.reject "No identify method defined"
 
+    init: =>
+      @identify() if @token.key
+
     # ### Connection
     connect: (args...) =>
       console.log "Auth.connect", {args}
@@ -79,11 +82,7 @@ angular.module 'rest.auth', [
 # TODO allow autoauth disable
 .run (rest, Token, Auth, $rootScope) ->
   rest.emitter.on 'Api:new', (api) ->
-    token = new Token api
-    api.auth = new Auth token
-    # # TODO fix autoidentify timing
-    # console.log "Autoidentifying"
-    # api.auth.identify() if token.key
+    api.auth = new Auth new Token api
     $rootScope.$apply()
 
 

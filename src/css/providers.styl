@@ -1,14 +1,20 @@
 provider,
 account
+  .fa
+    background-color transparent
+
   .facebook
-    // background-image url(/img/facebook.png)
     background-color #6666ee
     color #fff
     &:hover
       background-color #7777ff
 
+    .fa
+    &.fa
+      &:before
+        content: ''
+
   .twitter
-    // background-image url(/img/twitter.png)
     background-color #66eeff
     background-color #55acee
     color #fff
@@ -16,20 +22,42 @@ account
       background-color #77ffff
       background-color #66bdff
 
+    .fa
+    &.fa
+      &:before
+        content: ''
+
   .github
-    // background-image url(/img/github.png)
     background-color #222
     color #fff
     &:hover
       background-color #333
+    .fa
+    &.fa
+      &:before
+        content: ''
+
 
   .soundcloud
-    // background-image url(/img/soundcloud.png)
     background-color #ff7700
     color #fff
     &:hover
       background-color lighten(#ff7700, 20%)
 
     .fa
+    &.fa
       transform scale(.8)
+      &:before
+        content: ''
 
+
+  .developer
+    background-color #aaa
+    color #fff
+    &:hover
+      background-color lighten(#aaa, 20%)
+
+    .fa
+    &.fa
+      &:before
+        content: ''

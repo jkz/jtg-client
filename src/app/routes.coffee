@@ -6,9 +6,9 @@ angular.module 'jtg'
 
   # Now set up the states
   $stateProvider
-    .state 'intro',
+    .state 'home',
       url: "/"
-      templateUrl: "views/intro.html"
+      templateUrl: "views/home.html"
     .state 'onboard',
       url: "/tutorial"
       templateUrl: "views/onboard.html"

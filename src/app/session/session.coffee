@@ -1,11 +1,4 @@
-angular.module 'jtg.session', [
-  'jtg.api'
-
-  'concurrency'
-  'promise'
-  'events'
-  'socket.io'
-]
+angular.module 'jtg.session'
 
 # Holds the login information and emits events on changes
 .service 'session', (auth, reject, lock, User, EventEmitter) ->
@@ -39,6 +32,7 @@ angular.module 'jtg.session', [
         session.user.current = false
       session.user = null
 
+    init: auth.init
     connect: auth.connect
     disconnect: auth.disconnect
 
