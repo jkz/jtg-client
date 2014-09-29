@@ -22,7 +22,30 @@ angular.module 'jtg.api', [
     omniauth
       .authenticate(args...)
       .then ({token}) ->
-        jtg.post '/users', {token}
+        console.log {token}
+        # Account auth token
+        headers = 'Authorization': "Bearer #{token}"
+
+        # Get user token
+        jtg.http('get', '/tokens/user', null, {headers}).error (data, status) ->
+          console.log {status}
+
+          # Uh oh, no user for account
+          throw status unless status == 409
+
+          console.log "Creating user"
+
+          # Create user for account
+          jtg.http('post', '/users', null, {headers}).then ->
+            console.log "success"
+
+            # Yay, now try to get the user token again
+            jtg.http('get', '/tokens/user', null, {headers})
+
       .then ({data}) ->
+        console.log "END OF CHAIN"
+        console.log {data}
         data
+      .catch (err) ->
+        console.log {err}
   Auth::identify = session.identify

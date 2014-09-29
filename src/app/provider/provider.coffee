@@ -20,3 +20,6 @@ angular.module 'jtg'
 .directive 'provider', ->
   restrict: 'E'
   templateUrl: 'app/provider/provider.html'
+  controller: ($scope, Account) ->
+    $scope.Account = Account
+

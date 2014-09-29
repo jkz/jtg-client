@@ -1,6 +1,6 @@
 button.provider(
   ng-class="provider.slug"
-  ng-click="provider.connect()"
+  ng-click="session.user ? Account.connect(provider.slug) : provider.connect()"
   title="{{provider.name}}"
 )
   i.fa.fa-3x(ng-class="provider.slug")

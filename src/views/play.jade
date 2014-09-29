@@ -1,4 +1,22 @@
 section#play(ng-controller="AccountCtrl")
-  h2 Play
-  provider(ng-repeat="provider in Account.providers")
-  p Connect with a social account to play!
+  div(ng-if="!session.user")
+    h2 Play
+    provider(ng-repeat="provider in Account.providers")
+    p Connect with a social account to play!
+
+  div(ng-if="session.user")
+    h2 Hi {{session.user.name}}
+    provider(
+      ng-if="!session.user.accounts[provider.slug]"
+      ng-repeat="provider in Account.providers"
+    )
+    p Connect additional accounts for
+      = ' '
+      strong Power Points
+      | !
+
+    p Disconnect
+    .diconnect(
+      ng-click="account.disconnect()"
+      ng-repeat="account in session.user.accounts"
+    ) - {{account.provider}}

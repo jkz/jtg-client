@@ -42,12 +42,13 @@ angular.module 'rest.api', [
       @emitter.emit 'Model:new', Model
 
 
-    http: (method, url, data, {parsed}) =>
+    http: (method, url, data, {headers, parsed}={}) =>
+      console.log "HEADERS", angular.extend {}, @headers, headers
       response = $http
         url: "#{@endpoint}#{url}.json"
         method: method
         data: data
-        headers: @headers
+        headers: angular.extend {}, @headers, headers
 
       return response unless parsed
 
@@ -65,7 +66,7 @@ angular.module 'rest.api', [
     put:  (url, params) -> @http 'put',  url, params, parsed: true
     del:  (url) -> @http 'delete', url, null, parsed: true
 
-    model: (plural, singular, parent) ->
+    model: (plural, {singular, parent, endpoint}={}) ->
       api = this
 
       class Model extends EventEmitter
@@ -73,7 +74,7 @@ angular.module 'rest.api', [
         @plural = plural
         @singular = singular ?= plural[...plural.length - 1] # Strip trailing s from plural unless given
 
-        @endpoint = '/' + plural
+        @endpoint = endpoint ? '/' + plural
 
         @cache = {}
 
@@ -127,7 +128,7 @@ angular.module 'rest.api', [
 
         @destroy: (id) =>
           api
-            .del "#{@endpoint}/{id}"
+            .del "#{@endpoint}/#{id}"
             .then =>
               delete @cache[id]
 
