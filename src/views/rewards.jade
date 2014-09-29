@@ -12,21 +12,21 @@ section#rewards
       // Connect
       li(
         points="100"
-        ng-class="{completed: user.accounts.twitter}"
+        ng-class="{completed: !!session.user.accounts.twitter}"
       )
-        a(ng-click="session.connect('twitter')") Connect your account
+        a(ng-click="session.user.addAccount('twitter')") Connect your account
 
       // Follow
       li(
         points="150"
-        ng-class="{completed: user.accounts.twitter.is_follower, disabled: !user.accounts.twitter}"
+        ng-class="{completed: !!session.user.accounts.twitter.is_follower, disabled: !user.accounts.twitter}"
       )
-        a(href="//twitter.com/jessethegame") Follow me
+        a(href="//twitter.com/jessethegame" target="_blank") Follow me
 
       // Tweet
       li(
         points="100"
-        ng-class="{disabled: !user.accounts.twitter}"
+        ng-class="{disabled: !session.user.accounts.twitter}"
       )
         | Mention @jessethegame
 
@@ -37,25 +37,25 @@ section#rewards
       // Connect
       li(
         points="100"
-        ng-class="{completed: user.accounts.github}"
+        ng-class="{completed: !!session.user.accounts.github}"
       )
-        a(ng-click="session.connect('github')") Connect your account
+        a(ng-click="session.user.addAccount('github')") Connect your account
 
       // Follow
       li(
         points="150"
-        ng-class="{completed: user.accounts.github.is_follower, disabled: !user.accounts.github}"
+        ng-class="{completed: session.user.accounts.github.is_follower, disabled: !user.accounts.github}"
       )
-        a(href="//github.com/jessethegame") Follow me
+        a(href="//github.com/jessethegame" target="_blank") Follow me
 
       // Stargaze
       li(
         points="150"
-        ng-class="{disabled: !user.accounts.github}"
+        ng-class="{disabled: !session.user.accounts.github}"
       )
         | Star any of
         = ' '
-        a(href="//github.com/jessethegame") my repositories
+        a(href="//github.com/jessethegame" target="_blank") my repositories
 
   .card.facebook
     h3 Facebook
@@ -64,6 +64,6 @@ section#rewards
       // Connect
       li(
         points="100"
-        ng-class="{completed: user.accounts.facebook}"
+        ng-class="{completed: !!session.user.accounts.facebook}"
       )
-        a(ng-click="session.connect('facebook')") Connect your account
+        a(ng-click="session.user.addAccount('facebook')") Connect your account
